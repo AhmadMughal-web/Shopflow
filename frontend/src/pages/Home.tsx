@@ -69,7 +69,7 @@ function SectionHeader({
     <div className="mb-5 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3">
         {Icon && (
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-accent/10 text-accent">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10 text-accent-secondary">
             <Icon className="h-5 w-5" />
           </span>
         )}
@@ -77,7 +77,7 @@ function SectionHeader({
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-black tracking-tight sm:text-2xl">{title}</h2>
             {badge && (
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-accent">
+              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-accent-secondary">
                 {badge}
               </span>
             )}
@@ -86,7 +86,7 @@ function SectionHeader({
         </div>
       </div>
       {linkTo && (
-        <Link to={linkTo} className="flex items-center gap-1 text-sm font-semibold text-accent hover:underline shrink-0">
+        <Link to={linkTo} className="flex items-center gap-1 text-sm font-semibold text-accent-secondary hover:underline shrink-0">
           {linkLabel || 'View all'} <ArrowRight className="h-3 w-3" />
         </Link>
       )}
@@ -103,9 +103,9 @@ function DealCard({ product }: { product: ProductType }) {
   return (
     <Link
       to={`/product/${product.slug}`}
-      className="group flex gap-3 rounded-lg border border-border bg-surface p-3 transition-all hover:border-accent hover:shadow-md"
+      className="group flex gap-3 rounded-2xl border border-border bg-surface p-3 transition-all hover:border-accent hover:shadow-md"
     >
-      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
+      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-muted">
         <img
           src={productImage(product)}
           alt={product.name}
@@ -115,13 +115,13 @@ function DealCard({ product }: { product: ProductType }) {
       <div className="min-w-0 flex-1">
         <p className="line-clamp-2 text-sm font-semibold text-primary leading-snug">{product.name}</p>
         <div className="mt-1 flex items-center gap-2">
-          <span className="text-base font-black text-accent">{formatPrice(price(product))}</span>
+          <span className="text-base font-black text-accent-secondary">{formatPrice(price(product))}</span>
           {product.discount_price && (
             <span className="text-xs text-secondary line-through">{formatPrice(original)}</span>
           )}
         </div>
         {pct > 0 && (
-          <span className="mt-1 inline-block rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-bold text-accent">
+          <span className="mt-1 inline-block rounded-full bg-accent/10 px-1.5 py-0.5 text-[10px] font-bold text-accent-secondary">
             -{pct}% OFF
           </span>
         )}
@@ -147,7 +147,7 @@ function LazySection({ children, className }: { children: React.ReactNode; class
 
   return (
     <section ref={ref} className={className}>
-      {show ? children : <div className="h-32 animate-pulse rounded-lg bg-muted/30" />}
+      {show ? children : <div className="h-32 animate-pulse rounded-2xl bg-muted/30" />}
     </section>
   );
 }
@@ -179,19 +179,19 @@ export default function Home() {
       .then((data) => {
         setProducts(data.random || []);
         setNewestProducts(data.newest || []);
-        
+
         // Deals approximation (products from random that have a discount)
-        const discounted = (data.random || []).filter((p: ProductType) => 
+        const discounted = (data.random || []).filter((p: ProductType) =>
           p.discount_price && parseFloat(p.discount_price as unknown as string) < parseFloat(p.price as unknown as string)
         );
         setDealsProducts(discounted.slice(0, 12));
-        
+
         setTechProducts(data.laptops || []);
         setFashionProducts(data.fashion || []);
         setGroceryProducts(data.groceries || []);
         setBooksProducts(data.books || []);
         setCategories((data.categories || []).sort((a: CategoryType, b: CategoryType) => a.name.localeCompare(b.name)));
-        
+
         // Immediate featured
         const immediateFeatured = (data.random || []).filter((product: ProductType) => product.is_featured).slice(0, 8);
         if (data.featured && data.featured.length > 0) {
@@ -230,53 +230,78 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Seo
-        title="KinaHub"
+        title="ShopFlow"
         description="Shop products from local seller stores with marketplace checkout, seller CRM, and delivery support."
       />
 
-      {/* ── Hero ── */}
-      <section className="bg-background border-b border-border">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-          <div className="anim-fade-in rounded-lg border border-border bg-surface p-5 text-primary shadow-sm sm:p-6">
-            <div className="mb-5 flex gap-2 overflow-x-auto pb-1 sm:mb-6 sm:flex-wrap sm:overflow-visible sm:pb-0">
-              {quickLinks.map((slug) => (
+      {/* ── Hero: floating bento block ── */}
+      <section className="px-2 pt-3 sm:px-4 sm:pt-4">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="anim-fade-in rounded-3xl border border-border bg-surface p-5 text-primary shadow-sm sm:p-7">
+              {/* Story-style category circles */}
+              <div className="mb-5 flex gap-4 overflow-x-auto pb-1 sm:mb-6">
+                {quickLinks.map((slug) => {
+                  const Icon = getCategoryIcon(slug);
+                  return (
+                    <Link
+                      key={slug}
+                      to={`/products?category=${slug}`}
+                      className="flex shrink-0 flex-col items-center gap-1.5 group"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-accent/25 to-accent-secondary/15 text-primary transition-transform group-hover:scale-105 group-active:scale-95">
+                        <Icon className="h-6 w-6" />
+                      </span>
+                      <span className="text-[11px] font-semibold text-secondary group-hover:text-primary">
+                        {t(`categories.${slug}.name`, { defaultValue: slug })}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+              <p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-accent-secondary">
+                <Flame className="h-4 w-4" />
+                {t('home.flashPicks', { defaultValue: 'Flash picks' })}
+              </p>
+              <h1 className="max-w-2xl text-2xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+                {t('home.heroTitle', { defaultValue: 'Deals first. Products everywhere.' })}
+              </h1>
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
-                  key={slug}
-                  to={`/products?category=${slug}`}
-                  className="shrink-0 rounded-full border border-border bg-muted px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:border-accent hover:bg-accent hover:text-background"
+                  to="/products"
+                  className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 font-semibold text-primary transition-opacity hover:opacity-90"
                 >
-                  {t(`categories.${slug}.name`, { defaultValue: slug })}
+                  {t('home.shopNow', { defaultValue: 'Shop now' })} <ArrowRight className="h-4 w-4" />
                 </Link>
-              ))}
-            </div>
-            <p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-accent">
-              <Flame className="h-4 w-4" />
-              {t('home.flashPicks', { defaultValue: 'Flash picks' })}
-            </p>
-            <h1 className="max-w-2xl text-2xl font-black tracking-tight sm:text-4xl lg:text-5xl">
-              {t('home.heroTitle', { defaultValue: 'Deals first. Products everywhere.' })}
-            </h1>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 font-semibold text-background transition-colors hover:bg-orange-600"
-              >
-                {t('home.shopNow', { defaultValue: 'Shop now' })} <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/products?random=true"
-                className="inline-flex items-center gap-2 rounded-md border border-border px-5 py-3 font-semibold text-primary transition-colors hover:border-accent hover:bg-surface"
-              >
-                {t('home.randomFeed', { defaultValue: 'Random feed' })} <RefreshCw className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
+                <Link
+                  to="/products?random=true"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 font-semibold text-primary transition-colors hover:border-accent hover:bg-background"
+                >
+                  {t('home.randomFeed', { defaultValue: 'Random feed' })} <RefreshCw className="h-4 w-4" />
+                </Link>
+              </div>
 
-          <div className="rounded-lg border border-border bg-surface p-4 shadow-sm">
+              {/* Trust badges — integrated bento row inside hero card */}
+              <div className="mt-7 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {trustBadges.map(({ Icon, title, copy }) => (
+                  <div key={title} className="flex items-center gap-3 rounded-2xl bg-background p-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-secondary">
+                      <Icon className="h-4.5 w-4.5" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-primary">{title}</p>
+                      <p className="truncate text-[11px] text-secondary">{copy}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-border bg-surface p-4 shadow-sm">
               {heroProduct && heroReady ? (
                 <div className="anim-fade-in-up">
                   <Link to={`/product/${heroProduct.slug}`} className="group block">
-                    <div className="aspect-[5/4] overflow-hidden rounded-md bg-muted">
+                    <div className="aspect-[5/4] overflow-hidden rounded-2xl bg-muted">
                       <img
                         src={productImage(heroProduct)}
                         alt={heroProduct.name}
@@ -288,7 +313,7 @@ export default function Home() {
                     </div>
                     <div className="pt-4">
                       <div className="mb-2 flex items-center justify-between gap-3 text-sm">
-                        <span className="font-semibold text-accent">{heroProduct.tag || t(`categories.${heroProduct.category.slug}.name`, { defaultValue: heroProduct.category.name })}</span>
+                        <span className="font-semibold text-accent-secondary">{heroProduct.tag || t(`categories.${heroProduct.category.slug}.name`, { defaultValue: heroProduct.category.name })}</span>
                         <span className="text-secondary">{heroProduct.stock} {t('home.leftInStock', { defaultValue: 'left' })}</span>
                       </div>
                       <h2 className="line-clamp-1 text-xl font-bold sm:text-2xl">{heroProduct.name}</h2>
@@ -308,7 +333,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="animate-pulse">
-                  <div className="aspect-[5/4] rounded-md bg-muted/60" />
+                  <div className="aspect-[5/4] rounded-2xl bg-muted/60" />
                   <div className="pt-4 space-y-3">
                     <div className="flex justify-between">
                       <div className="h-4 w-24 rounded bg-muted/60" />
@@ -320,6 +345,7 @@ export default function Home() {
                   </div>
                 </div>
               )}
+            </div>
           </div>
         </div>
       </section>
@@ -330,23 +356,6 @@ export default function Home() {
           <AiInsightPanel title="AI shopping overview" insights={marketAiOverview(products)} />
         </section>
       )}
-
-      {/* ── Trust Badges ── */}
-      <section className="border-b border-border bg-muted/40">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-border px-4 sm:px-6 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8">
-          {trustBadges.map(({ Icon, title, copy }) => (
-            <div key={title} className="flex items-center gap-4 py-5 md:px-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-md bg-accent/10 text-accent">
-                <Icon className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="font-semibold text-primary">{title}</p>
-                <p className="text-sm text-secondary">{copy}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ── Flash Deals (4 cards) ── */}
       {flashDeals.length > 0 && (
@@ -359,7 +368,7 @@ export default function Home() {
             linkLabel="More deals"
             badge="HOT"
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {flashDeals.map((product) => (
               <ProductCard key={product.id} product={product} compact />
             ))}
@@ -396,26 +405,27 @@ export default function Home() {
           linkLabel={t('home.viewAll', { defaultValue: 'View all' })}
         />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              to={`/products?category=${category.slug}`}
-              className="rounded-lg border border-border bg-surface p-4 transition-colors hover:border-accent hover:bg-muted"
-            >
-              <div className="mb-3 flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-semibold text-primary">{t(`categories.${category.slug}.name`, { defaultValue: category.name })}</p>
-                  <p className="mt-1 line-clamp-2 text-xs text-secondary">{t(`categories.${category.slug}.description`, { defaultValue: category.description || '' })}</p>
+          {categories.map((category, idx) => {
+            const Icon = getCategoryIcon(category.slug);
+            const iconBg = idx % 2 === 0 ? 'bg-accent/15 text-accent-secondary' : 'bg-accent-secondary/15 text-accent-secondary';
+            return (
+              <Link
+                key={category.id}
+                to={`/products?category=${category.slug}`}
+                className="rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-accent hover:bg-muted"
+              >
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-primary">{t(`categories.${category.slug}.name`, { defaultValue: category.name })}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-secondary">{t(`categories.${category.slug}.description`, { defaultValue: category.description || '' })}</p>
+                  </div>
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconBg}`}>
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
                 </div>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-border bg-background text-accent">
-                  {(() => {
-                    const Icon = getCategoryIcon(category.slug);
-                    return <Icon className="h-5 w-5" aria-hidden="true" />;
-                  })()}
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -446,7 +456,7 @@ export default function Home() {
             linkTo="/products?featured=true"
             linkLabel="All featured"
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {featuredProducts.slice(0, 8).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -464,7 +474,7 @@ export default function Home() {
               subtitle="Freshly randomised for you every visit"
               badge="DAILY"
             />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {dailyPicks.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -479,7 +489,7 @@ export default function Home() {
           <SectionHeader
             icon={getCategoryIcon('laptops')}
             title="Tech & Laptops"
-            subtitle="Top computing gear from New Road Tech"
+            subtitle="Top computing gear from local sellers"
             linkTo="/products?category=laptops"
             linkLabel="Shop tech"
           />
@@ -498,7 +508,7 @@ export default function Home() {
               linkTo="/products?sort=popular"
               linkLabel={t('home.viewAll', { defaultValue: 'View all' })}
             />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {trendingProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -513,7 +523,7 @@ export default function Home() {
           <SectionHeader
             icon={getCategoryIcon('fashion')}
             title="Fashion & Style"
-            subtitle="Clothes, accessories & more from Thamel Style House"
+            subtitle="Clothes, accessories & more from local sellers"
             linkTo="/products?category=fashion"
             linkLabel="Shop fashion"
           />
@@ -528,7 +538,7 @@ export default function Home() {
             <SectionHeader
               icon={getCategoryIcon('groceries')}
               title="Groceries & Fresh Produce"
-              subtitle="Daily essentials from Barat Kirana Pasal"
+              subtitle="Daily essentials from local sellers"
               linkTo="/products?category=groceries"
               linkLabel="Shop groceries"
             />
@@ -561,7 +571,7 @@ export default function Home() {
               subtitle="AI-curated picks based on your browsing"
               badge="AI"
             />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">
               {recommendedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -572,15 +582,15 @@ export default function Home() {
 
       {/* ── Store Directory Banner ── */}
       <LazySection className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="rounded-xl border border-border bg-gradient-to-br from-accent/10 via-surface to-muted/60 p-8 text-center">
-          <Store className="mx-auto mb-3 h-10 w-10 text-accent" />
+        <div className="rounded-3xl border border-border bg-gradient-to-br from-accent/10 via-surface to-accent-secondary/10 p-8 text-center">
+          <Store className="mx-auto mb-3 h-10 w-10 text-accent-secondary" />
           <h2 className="text-2xl font-black tracking-tight">Browse by Store</h2>
           <p className="mx-auto mt-2 max-w-sm text-sm text-secondary">
             Explore dedicated stores — from groceries and tech to fashion and sports gear.
           </p>
           <Link
             to="/products"
-            className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-bold text-background transition-colors hover:bg-orange-600"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-bold text-primary transition-opacity hover:opacity-90"
           >
             Explore all stores <ArrowRight className="h-4 w-4" />
           </Link>

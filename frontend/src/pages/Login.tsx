@@ -137,195 +137,191 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-start justify-center px-4 py-6 relative overflow-hidden bg-background sm:items-center sm:py-10">
-      <div className="anim-fade-in-up relative z-10 w-full max-w-md p-6 bg-surface border border-border rounded-lg shadow-xl sm:p-8">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center justify-center p-3 rounded-lg bg-accent text-background mb-6">
-             <Store className="w-7 h-7" />
+      <div className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 h-72 w-72 rounded-full bg-accent-secondary/15 blur-3xl" />
+
+      <div className="anim-fade-in-up relative z-10 w-full max-w-md overflow-hidden rounded-3xl border border-border bg-surface shadow-xl">
+        {/* Gradient banner header */}
+        <div className="relative bg-gradient-to-br from-accent/25 via-accent-secondary/10 to-transparent px-6 pb-8 pt-8 text-center sm:px-8">
+          <Link to="/" className="inline-flex items-center justify-center rounded-2xl bg-primary p-3 text-background shadow-lg">
+            <Store className="w-6 h-6" />
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight mb-2 sm:text-3xl">{t('auth.loginTitle', { defaultValue: 'Login' })}</h1>
-          <p className="text-secondary text-sm">{t('auth.loginCopy', { defaultValue: 'Track orders and manage your account.' })}</p>
+          <h1 className="mt-5 text-2xl font-black tracking-tight sm:text-3xl">{t('auth.loginTitle', { defaultValue: 'Login' })}</h1>
+          <p className="mt-1 text-secondary text-sm">{t('auth.loginCopy', { defaultValue: 'Track orders and manage your account.' })}</p>
         </div>
 
-        <form className="space-y-5" onSubmit={submit}>
-          {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-          {!requires2FA ? (
-            <>
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.email', { defaultValue: 'Email' })}</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-secondary" />
+        <div className="px-6 pb-8 sm:px-8">
+          <form onSubmit={submit}>
+            {error && <p className="mb-5 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+            {!requires2FA ? (
+              <>
+                {/* Segmented grouped field box */}
+                <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Mail className="h-4.5 w-4.5 text-secondary" />
+                    </div>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                      placeholder={t('auth.emailPlaceholder', { defaultValue: 'you@example.com' })}
+                      required
+                    />
                   </div>
-                  <input 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                    placeholder={t('auth.emailPlaceholder', { defaultValue: 'you@example.com' })}
-                    required
-                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Lock className="h-4.5 w-4.5 text-secondary" />
+                    </div>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                      placeholder={t('auth.passwordPlaceholder', { defaultValue: '••••••••' })}
+                      required
+                    />
+                  </div>
+                  {isSellerLogin && (
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Lock className="h-4.5 w-4.5 text-secondary" />
+                      </div>
+                      <input
+                        type="password"
+                        value={sellerCode}
+                        onChange={(e) => setSellerCode(e.target.value)}
+                        className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                        placeholder={t('auth.sellerCodePlaceholder', { defaultValue: 'Enter invitation code' })}
+                        required
+                      />
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              <div className="space-y-1">
-                <div className="flex justify-between items-center pl-1 pr-1">
-                  <label className="text-xs font-semibold text-secondary uppercase tracking-wider">{t('auth.password', { defaultValue: 'Password' })}</label>
-                  <button type="button" onClick={() => setForgotOpen(true)} className="text-xs text-accent hover:underline">{t('auth.resetPassword', { defaultValue: 'Forgot password?' })}</button>
+                <div className="mt-3 flex items-center justify-between gap-2">
+                  <label htmlFor="isSellerLogin" className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider cursor-pointer">
+                    <input
+                      type="checkbox"
+                      id="isSellerLogin"
+                      checked={isSellerLogin}
+                      onChange={(e) => setIsSellerLogin(e.target.checked)}
+                      className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
+                    />
+                    {t('auth.loggingInAsSeller', { defaultValue: 'Login as seller?' })}
+                  </label>
+                  <button type="button" onClick={() => setForgotOpen(true)} className="text-xs font-semibold text-accent-secondary hover:underline">
+                    {t('auth.resetPassword', { defaultValue: 'Forgot password?' })}
+                  </button>
                 </div>
+              </>
+            ) : (
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.verificationCode', { defaultValue: 'Verification Code' })}</label>
+                <p className="text-xs text-secondary mb-3 pl-1">A 6-digit code has been sent to {email}.</p>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-secondary" />
                   </div>
-                  <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                    placeholder={t('auth.passwordPlaceholder', { defaultValue: '••••••••' })}
+                  <input
+                    type="text"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\s+/g, ''))}
+                    className="w-full bg-background border border-border rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base tracking-[0.5em] font-mono"
+                    placeholder="••••••"
+                    maxLength={6}
                     required
                   />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => { setRequires2FA(false); setOtpCode(''); }}
+                  className="text-xs font-semibold text-accent-secondary hover:underline mt-2 inline-block pl-1"
+                >
+                  Go back to login
+                </button>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-primary text-background font-semibold py-4 rounded-full hover:opacity-90 disabled:opacity-70 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2 group mt-5 relative overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
+                {requires2FA ? t('auth.verify', { defaultValue: 'Verify Code' }) : t('auth.signin', { defaultValue: 'Sign in' })}
+                {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+              </span>
+            </button>
+          </form>
+
+          {!requires2FA && (
+            <>
+              <div className="flex items-center gap-4 mt-6">
+                <div className="flex-1 h-px bg-border"></div>
+                <span className="text-xs text-secondary uppercase tracking-wider">or</span>
+                <div className="flex-1 h-px bg-border"></div>
               </div>
 
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 pl-1 mb-2">
-                  <input
-                    type="checkbox"
-                    id="isSellerLogin"
-                    checked={isSellerLogin}
-                    onChange={(e) => setIsSellerLogin(e.target.checked)}
-                    className="w-4 h-4 rounded border-border text-accent focus:ring-accent"
-                  />
-                  <label htmlFor="isSellerLogin" className="text-xs font-semibold text-secondary uppercase tracking-wider cursor-pointer">
-                    {t('auth.loggingInAsSeller', { defaultValue: 'Login as seller?' })}
-                  </label>
+              <GoogleAuthButton
+                label="Continue with Google"
+                demoLabel="Continue with demo account"
+                disabled={isSubmitting}
+                onGoogleToken={handleGoogleSuccess}
+                onDemoClick={handleDemoGoogleLogin}
+                className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-full py-3.5 hover:bg-muted transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              />
+
+              <div className="mt-5 rounded-2xl border border-accent-secondary/30 bg-accent-secondary/5 p-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-accent-secondary" />
+                  <p className="text-sm font-bold text-primary">{t('auth.demoTitle', { defaultValue: 'Try the demo' })}</p>
                 </div>
-                {isSellerLogin && (
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-secondary" />
-                    </div>
-                    <input 
-                      type="password" 
-                      value={sellerCode}
-                      onChange={(e) => setSellerCode(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                      placeholder={t('auth.sellerCodePlaceholder', { defaultValue: 'Enter invitation code' })}
-                      required
-                    />
-                  </div>
-                )}
+                <p className="mt-1 text-xs text-secondary">{t('auth.demoSubtitle', { defaultValue: 'No signup needed — everything resets on refresh.' })}</p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { demoLogin('customer'); navigate('/dashboard'); }}
+                    disabled={isSubmitting}
+                    className="flex flex-col items-center gap-1 rounded-xl border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent-secondary disabled:opacity-70"
+                  >
+                    <ShoppingCart className="h-5 w-5 text-accent-secondary" />
+                    <span className="text-xs font-bold text-primary">{t('auth.demoCustomer', { defaultValue: 'Demo customer' })}</span>
+                    <span className="text-[10px] text-secondary">{t('auth.demoCustomerHint', { defaultValue: 'Browse, cart, checkout' })}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { demoLogin('seller'); navigate('/seller'); }}
+                    disabled={isSubmitting}
+                    className="flex flex-col items-center gap-1 rounded-xl border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent-secondary disabled:opacity-70"
+                  >
+                    <Store className="h-5 w-5 text-accent-secondary" />
+                    <span className="text-xs font-bold text-primary">{t('auth.demoSeller', { defaultValue: 'Demo seller' })}</span>
+                    <span className="text-[10px] text-secondary">{t('auth.demoSellerHint', { defaultValue: 'Seller dashboard preview' })}</span>
+                  </button>
+                </div>
               </div>
             </>
-          ) : (
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.verificationCode', { defaultValue: 'Verification Code' })}</label>
-              <p className="text-xs text-secondary mb-3 pl-1">A 6-digit code has been sent to {email}.</p>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-secondary" />
-                </div>
-                <input 
-                  type="text" 
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value.replace(/\s+/g, ''))}
-                  className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base tracking-[0.5em] font-mono"
-                  placeholder="••••••"
-                  maxLength={6}
-                  required
-                />
-              </div>
-              <button 
-                type="button"
-                onClick={() => { setRequires2FA(false); setOtpCode(''); }}
-                className="text-xs text-accent hover:underline mt-2 inline-block pl-1"
-              >
-                Go back to login
-              </button>
-            </div>
           )}
 
-          <button 
-            type="submit" 
-            disabled={isSubmitting}
-            className="w-full bg-primary text-background font-semibold py-4 rounded-xl hover:bg-gray-200 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 group mt-8 relative overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
-              {requires2FA ? t('auth.verify', { defaultValue: 'Verify Code' }) : t('auth.signin', { defaultValue: 'Sign in' })} 
-              {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
-            </span>
-          </button>
-        </form>
-
-        {!requires2FA && (
-          <>
-            <div className="flex items-center gap-4 mt-8">
-              <div className="flex-1 h-px bg-border"></div>
-              <span className="text-xs text-secondary uppercase tracking-wider">or</span>
-              <div className="flex-1 h-px bg-border"></div>
-            </div>
-
-            <GoogleAuthButton
-              label="Continue with Google"
-              demoLabel="Continue with demo account"
-              disabled={isSubmitting}
-              onGoogleToken={handleGoogleSuccess}
-              onDemoClick={handleDemoGoogleLogin}
-              className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-xl py-3.5 hover:bg-card transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-            />
-          </>
-        )}
-
-        {!requires2FA && (
-          <>
-            <div className="mt-6 rounded-xl border border-accent/30 bg-accent/5 p-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-accent" />
-                <p className="text-sm font-bold text-primary">{t('auth.demoTitle', { defaultValue: 'Try the demo' })}</p>
-              </div>
-              <p className="mt-1 text-xs text-secondary">{t('auth.demoSubtitle', { defaultValue: 'No signup needed — everything resets on refresh.' })}</p>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => { demoLogin('customer'); navigate('/dashboard'); }}
-                  disabled={isSubmitting}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent disabled:opacity-70"
-                >
-                  <ShoppingCart className="h-5 w-5 text-accent" />
-                  <span className="text-xs font-bold text-primary">{t('auth.demoCustomer', { defaultValue: 'Demo customer' })}</span>
-                  <span className="text-[10px] text-secondary">{t('auth.demoCustomerHint', { defaultValue: 'Browse, cart, checkout' })}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { demoLogin('seller'); navigate('/seller'); }}
-                  disabled={isSubmitting}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent disabled:opacity-70"
-                >
-                  <Store className="h-5 w-5 text-accent" />
-                  <span className="text-xs font-bold text-primary">{t('auth.demoSeller', { defaultValue: 'Demo seller' })}</span>
-                  <span className="text-[10px] text-secondary">{t('auth.demoSellerHint', { defaultValue: 'Seller dashboard preview' })}</span>
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-
-        <div className="mt-8 text-center">
-          <p className="text-sm text-secondary">
-            {t('auth.noAccount', { defaultValue: 'New here?' })} <Link to="/register" className="text-accent hover:underline ml-1">{t('auth.switchToRegister', { defaultValue: 'Create account' })}</Link>
-          </p>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-secondary">
+              {t('auth.noAccount', { defaultValue: 'New here?' })} <Link to="/register" className="font-semibold text-accent-secondary hover:underline ml-1">{t('auth.switchToRegister', { defaultValue: 'Create account' })}</Link>
+            </p>
+          </div>
         </div>
 
         {forgotOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6 backdrop-blur-sm">
-<div className="anim-scale-in w-full max-w-md rounded-lg border border-border bg-surface p-5 shadow-2xl">
+            <div className="anim-scale-in w-full max-w-md rounded-2xl border border-border bg-surface p-5 shadow-2xl">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold">Reset password</h2>
                   <p className="mt-1 text-sm text-secondary">We’ll email a reset code to your account.</p>
                 </div>
-                <button type="button" onClick={() => setForgotOpen(false)} className="inline-flex h-11 md:h-9 w-11 md:w-9 items-center justify-center rounded-md border border-border text-secondary hover:text-primary" aria-label="Close">×</button>
+                <button type="button" onClick={() => setForgotOpen(false)} className="inline-flex h-11 md:h-9 w-11 md:w-9 items-center justify-center rounded-full border border-border text-secondary hover:text-primary" aria-label="Close">×</button>
               </div>
 
               <div className="mt-5 space-y-4">
@@ -373,9 +369,9 @@ export default function Login() {
               <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                 <button type="button" onClick={() => setForgotOpen(false)} className="rounded-xl border border-border px-4 py-3 text-sm font-semibold text-secondary hover:text-primary">Cancel</button>
                 {forgotStep === 'request' ? (
-                  <button type="button" onClick={() => void requestReset()} className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-background hover:bg-orange-600" disabled={isSubmitting}>Send code</button>
+                  <button type="button" onClick={() => void requestReset()} className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-primary hover:opacity-90" disabled={isSubmitting}>Send code</button>
                 ) : (
-                  <button type="button" onClick={() => void confirmReset()} className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-background hover:bg-orange-600" disabled={isSubmitting}>Reset password</button>
+                  <button type="button" onClick={() => void confirmReset()} className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-primary hover:opacity-90" disabled={isSubmitting}>Reset password</button>
                 )}
               </div>
             </div>

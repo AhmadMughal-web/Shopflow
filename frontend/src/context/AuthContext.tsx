@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       first_name: 'Demo',
       last_name: role === 'seller' ? 'Seller' : 'Customer',
       phone: null,
-      address: 'Kathmandu, Nepal',
+      address: 'Lahore, Pakistan',
       role,
       effective_role: role,
       is_active: true,

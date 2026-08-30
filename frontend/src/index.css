@@ -18,41 +18,54 @@ html {
   --color-secondary: var(--secondary);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
   --color-sale: var(--sale);
   --color-warning: var(--warning);
   --font-sans: "Inter", "Space Grotesk", sans-serif;
 }
 
 :root {
-  --background: #f6f7fb;
+  --background: #fafaf7;
   --surface: #ffffff;
-  --muted: #eef1f5;
-  --primary: #151515;
-  --secondary: #667085;
-  --border: #e5e7eb;
-  --accent: #f85606;
-  --sale: #d92d20;
-  --warning: #f59e0b;
+  --muted: #f0f0ea;
+  --primary: #0d0d0d;
+  --secondary: #6b6b6b;
+  --border: #e8e8e4;
+  --accent: #c3f53c;
+  --accent-secondary: #7c3aed;
+  --sale: #ff3b5c;
+  --warning: #ffc800;
 }
 
 :root[data-theme='dark'] {
-  --background: #0f1115;
-  --surface: #171a21;
-  --muted: #1f2430;
-  --primary: #f3f4f6;
-  --secondary: #a1a8b8;
-  --border: #2a3140;
-  --accent: #ff7a18;
-  --sale: #ef4444;
-  --warning: #f59e0b;
+  --background: #0a0a0a;
+  --surface: #161616;
+  --muted: #1f1f1f;
+  --primary: #f5f5f0;
+  --secondary: #9a9a9a;
+  --border: #2a2a2a;
+  --accent: #c3f53c;
+  --accent-secondary: #a78bfa;
+  --sale: #ff3b5c;
+  --warning: #ffc800;
 }
 
 body {
   background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 8% 0%, rgba(163, 230, 53, 0.10), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 100% 12%, rgba(56, 189, 248, 0.09), transparent 60%);
+  background-attachment: fixed;
   color: var(--primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   transition: background-color 180ms ease, color 180ms ease;
+}
+
+:root[data-theme='dark'] body {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 8% 0%, rgba(163, 230, 53, 0.05), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 100% 12%, rgba(56, 189, 248, 0.05), transparent 60%);
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {

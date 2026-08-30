@@ -21,7 +21,7 @@ function mockOrder(id: number, customerEmail: string, status: OrderType['status'
     promo_code: '',
     discount_amount: '0',
     total_price: String(total),
-    shipping_address: 'Kathmandu, Nepal',
+    shipping_address: 'Lahore, Pakistan',
     customer_note: '',
     items: items.map(([name, quantity], i) => ({
       id: i + 1,

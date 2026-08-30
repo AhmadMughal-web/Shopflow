@@ -140,7 +140,7 @@ def ensure_seller_store(email, password, business_name, phone, description, logo
         "Bharatpur General Store": "Bharatpur, Chitwan",
         "Everest Lifestyle Mart": "Gyaneshwor, Kathmandu",
         "Pokhara Modern Mall": "Lakeside, Pokhara",
-    }.get(business_name, "Kathmandu, Nepal")
+    }.get(business_name, "Lahore, Pakistan")
     
     area_val = {
         "New Road Tech Suppliers": "New Road",

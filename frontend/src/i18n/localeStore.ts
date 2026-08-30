@@ -1,10 +1,10 @@
 export type Locale = 'en' | 'np';
 
-export const LOCALE_STORAGE_KEY = 'kinahub_locale';
+export const LOCALE_STORAGE_KEY = 'shopflow_locale';
 
 const localeLabels: Record<Locale, string> = {
   en: 'English',
-  np: 'नेपाली',
+  np: 'नेपlी',
 };
 
 const localeDirections: Record<Locale, 'ltr' | 'rtl'> = {
@@ -12,8 +12,10 @@ const localeDirections: Record<Locale, 'ltr' | 'rtl'> = {
   np: 'ltr',
 };
 
+// English-only for now — Nepali is disabled at the source so it can never
+// be loaded or selected, even if an old value is sitting in localStorage.
 export function isLocale(value: string | null | undefined): value is Locale {
-  return value === 'en' || value === 'np';
+  return value === 'en';
 }
 
 let currentLocale: Locale = getStoredLocale();
@@ -28,9 +30,6 @@ export function getLocaleDirection(locale: Locale) {
 }
 
 export function getStoredLocale(): Locale {
-  if (typeof window === 'undefined') return 'en';
-  const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-  if (isLocale(stored)) return stored;
   return 'en';
 }
 

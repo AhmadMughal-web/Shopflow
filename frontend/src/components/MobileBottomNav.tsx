@@ -11,13 +11,12 @@ export default function MobileBottomNav() {
   const accountPath = user ? '/dashboard' : '/register';
 
   const itemClass = ({ isActive }: { isActive: boolean }) =>
-    `flex flex-col items-center justify-center gap-1 text-[11px] font-semibold transition-colors btn-press-effect group ${
-      isActive ? 'text-accent' : 'text-secondary hover:text-primary'
+    `flex flex-col items-center justify-center gap-0.5 rounded-2xl py-2 text-[10px] font-semibold transition-colors btn-press-effect group ${isActive ? 'text-primary bg-accent' : 'text-secondary'
     }`;
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-surface/95 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-8px_24px_rgba(0,0,0,0.12)] backdrop-blur md:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4">
+    <nav className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-0 md:hidden">
+      <div className="mx-auto grid max-w-md grid-cols-4 gap-1 rounded-3xl border border-border bg-surface/95 p-1.5 shadow-[0_8px_28px_rgba(0,0,0,0.16)] backdrop-blur-md">
         <NavLink to="/" className={itemClass}>
           <Home className="h-5 w-5 icon-hover-effect group-hover:scale-110" />
           {t('nav.home', { defaultValue: 'Home' })}
@@ -30,7 +29,7 @@ export default function MobileBottomNav() {
           <span className="relative">
             <ShoppingBag className="h-5 w-5 icon-hover-effect group-hover:scale-110" />
             {totalCount > 0 && (
-              <span className="absolute -right-2 -top-2 rounded-full bg-accent px-1.5 text-[10px] font-bold text-background transition-transform duration-200 group-hover:scale-110">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-secondary px-1 text-[9px] font-extrabold text-white transition-transform duration-200 group-hover:scale-110">
                 {totalCount}
               </span>
             )}

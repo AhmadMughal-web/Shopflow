@@ -61,8 +61,8 @@ export default function Register() {
     setError('');
     try {
       const user = await loginWithGoogle(
-        accessToken, 
-        role, 
+        accessToken,
+        role,
         businessName,
         sellerCode
       );
@@ -140,43 +140,38 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-start justify-center px-4 py-6 relative overflow-hidden bg-background sm:items-center sm:py-10">
       <div className="pointer-events-none absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-accent/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full bg-orange-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full bg-accent-secondary/10 blur-3xl" />
 
       <div className="anim-fade-in-up relative z-10 w-full max-w-7xl grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,440px)] lg:gap-14 lg:items-stretch">
-        {/* ── Left: video panel ── */}
-        <div className="hidden lg:block relative min-h-[600px] overflow-hidden rounded-2xl border border-border shadow-xl bg-gradient-to-br from-muted via-background to-muted">
+        {/* ── Left: decorative panel ── */}
+        <div className="hidden lg:block relative min-h-[600px] overflow-hidden rounded-3xl border border-border shadow-xl bg-gradient-to-br from-muted via-background to-muted">
           <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-orange-400/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-accent-secondary/15 blur-3xl" />
 
           <div className="relative flex h-full flex-col justify-between p-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="inline-flex items-center justify-center rounded-xl bg-accent/10 p-2">
-                  <Store className="h-5 w-5 text-accent" />
+                  <Store className="h-5 w-5 text-accent-secondary" />
                 </span>
-                <span className="text-lg font-extrabold tracking-tight text-primary">KinaHub</span>
+                <span className="text-lg font-extrabold tracking-tight text-primary">ShopFlow</span>
               </div>
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-semibold text-primary backdrop-blur-md">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
-                </span>
-                {t('auth.demoLive', { defaultValue: 'Live demo' })}
+              <span className="flex items-center gap-1.5 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold text-primary backdrop-blur-md">
+                <Sparkles className="h-3.5 w-3.5 text-accent-secondary" />
+                {t('auth.demoLive', { defaultValue: 'Fresh finds daily' })}
               </span>
             </div>
 
-            {/* 16:9 video frame — video fits perfectly */}
+            {/* Decorative visual panel */}
             <div className="flex flex-1 items-center py-6">
-              <div className="relative w-full aspect-video overflow-hidden rounded-xl border border-border bg-black shadow-2xl">
-                <video
-                  src="/demo/KinaHub_Demo.mp4"
-                  className="absolute inset-0 h-full w-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-label="KinaHub demo video"
-                />
+              <div className="relative w-full aspect-video overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-accent/15 via-surface to-accent-secondary/15">
+                <div className="demo-blob pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-accent/30 blur-2xl" />
+                <div className="demo-blob pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-accent-secondary/30 blur-2xl" />
+                <div className="relative flex h-full w-full items-center justify-center">
+                  <span className="demo-float inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-accent shadow-xl">
+                    <Store className="h-10 w-10 text-primary" />
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -191,13 +186,13 @@ export default function Register() {
                 <div className="flex -space-x-2">
                   {['from-amber-400 to-orange-500', 'from-sky-400 to-blue-500', 'from-emerald-400 to-teal-500'].map((grad, i) => (
                     <span key={i} className={`inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br ${grad} text-[10px] font-bold text-white`}>
-                      {['RS', 'SM', 'AP'][i]}
+                      {['AK', 'HR', 'MB'][i]}
                     </span>
                   ))}
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-secondary">
                   <ShieldCheck className="h-4 w-4 text-green-500" />
-                  {t('auth.demoTrusted', { defaultValue: 'Trusted by 500+ Nepali shoppers' })}
+                  {t('auth.demoTrusted', { defaultValue: 'Trusted by 500+ Lahore shoppers' })}
                 </div>
               </div>
               <div className="mt-6 grid max-w-md grid-cols-3 gap-3">
@@ -206,7 +201,7 @@ export default function Register() {
                   { value: '50+', label: t('auth.statSellers', { defaultValue: 'Local stores' }) },
                   { value: '10k+', label: t('auth.statOrders', { defaultValue: 'Orders delivered' }) },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-border bg-surface px-3 py-2.5 text-center shadow-sm">
+                  <div key={stat.label} className="rounded-2xl border border-border bg-surface px-3 py-2.5 text-center shadow-sm">
                     <p className="text-lg font-bold tracking-tight text-primary">{stat.value}</p>
                     <p className="mt-0.5 text-[10px] text-secondary">{stat.label}</p>
                   </div>
@@ -216,186 +211,180 @@ export default function Register() {
           </div>
         </div>
 
-        {/* ── Right: phone-style form card ── */}
+        {/* ── Right: form card ── */}
         <div className="flex items-center justify-center py-2">
-          <div className="w-full max-w-[400px] rounded-2xl border border-border bg-surface p-6 shadow-xl sm:p-8">
-            <div className="text-center mb-8">
-              <Link to="/" className="inline-flex items-center justify-center p-3 rounded-lg bg-accent text-background mb-6">
-                <Store className="w-7 h-7" />
+          <div className="w-full max-w-[400px] overflow-hidden rounded-3xl border border-border bg-surface shadow-xl">
+            {/* Gradient banner header */}
+            <div className="bg-gradient-to-br from-accent/25 via-accent-secondary/10 to-transparent px-6 pb-7 pt-7 text-center sm:px-8">
+              <Link to="/" className="inline-flex items-center justify-center rounded-2xl bg-primary p-3 text-background shadow-lg">
+                <Store className="w-6 h-6" />
               </Link>
-              <h1 className="text-2xl font-bold tracking-tight mb-2 sm:text-3xl">{t('auth.registerTitle', { defaultValue: 'Create account' })}</h1>
-              <p className="text-secondary text-sm">{t('auth.registerCopy', { defaultValue: 'Save addresses and track orders.' })}</p>
+              <h1 className="mt-4 text-2xl font-black tracking-tight sm:text-3xl">{t('auth.registerTitle', { defaultValue: 'Create account' })}</h1>
+              <p className="mt-1 text-secondary text-sm">{t('auth.registerCopy', { defaultValue: 'Save addresses and track orders.' })}</p>
             </div>
 
-          <form className="space-y-5" onSubmit={submit}>
-            {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-            {!requires2FA ? (
-              <>
-                <div className="grid grid-cols-2 gap-2 rounded-lg bg-background p-1">
-                  {(['customer', 'seller'] as const).map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => setRole(item)}
-                      className={`rounded-md px-3 py-2 text-sm font-semibold capitalize ${role === item ? 'bg-accent text-background' : 'text-secondary'}`}
-                    >
-                      {t(`auth.role${item === 'customer' ? 'Customer' : 'Seller'}`, { defaultValue: item })}
-                    </button>
-                  ))}
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.name', { defaultValue: 'Name' })}</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-secondary" />
+            <div className="px-6 pb-8 sm:px-8">
+              <form onSubmit={submit}>
+                {error && <p className="mb-5 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+                {!requires2FA ? (
+                  <>
+                    <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl bg-background p-1">
+                      {(['customer', 'seller'] as const).map((item) => (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => setRole(item)}
+                          className={`rounded-xl px-3 py-2 text-sm font-semibold capitalize transition-colors ${role === item ? 'bg-accent text-primary' : 'text-secondary'}`}
+                        >
+                          {t(`auth.role${item === 'customer' ? 'Customer' : 'Seller'}`, { defaultValue: item })}
+                        </button>
+                      ))}
                     </div>
-                    <input 
-                      type="text" 
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                      placeholder={t('auth.namePlaceholder', { defaultValue: 'Ram Shah' })}
-                      required
-                    />
-                  </div>
-                </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.email', { defaultValue: 'Email' })}</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-secondary" />
+                    {/* Segmented grouped field box */}
+                    <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <User className="h-4.5 w-4.5 text-secondary" />
+                        </div>
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                          placeholder={t('auth.namePlaceholder', { defaultValue: 'Ali Khan' })}
+                          required
+                        />
+                      </div>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <Mail className="h-4.5 w-4.5 text-secondary" />
+                        </div>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                          placeholder={t('auth.emailPlaceholder', { defaultValue: 'ali.khan@example.com' })}
+                          required
+                        />
+                      </div>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <Lock className="h-4.5 w-4.5 text-secondary" />
+                        </div>
+                        <input
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full bg-background pl-11 pr-4 py-3.5 focus:outline-none text-base"
+                          placeholder={t('auth.passwordPlaceholder', { defaultValue: '••••••••' })}
+                          required
+                        />
+                      </div>
                     </div>
-                    <input 
-                      type="email" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                      placeholder={t('auth.emailPlaceholder', { defaultValue: 'ram.shah@example.com' })}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.password', { defaultValue: 'Password' })}</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-secondary" />
+                  </>
+                ) : (
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.verificationCode', { defaultValue: 'Verification Code' })}</label>
+                    <p className="text-xs text-secondary mb-3 pl-1">A 6-digit code has been sent to {email}.</p>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Lock className="h-5 w-5 text-secondary" />
+                      </div>
+                      <input
+                        type="text"
+                        value={otpCode}
+                        onChange={(e) => setOtpCode(e.target.value.replace(/\s+/g, ''))}
+                        className="w-full bg-background border border-border rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base tracking-[0.5em] font-mono"
+                        placeholder="••••••"
+                        maxLength={6}
+                        required
+                      />
                     </div>
-                    <input 
-                      type="password" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base"
-                      placeholder={t('auth.passwordPlaceholder', { defaultValue: '••••••••' })}
-                      required
-                    />
                   </div>
-                </div>
+                )}
 
-
-              </>
-            ) : (
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-secondary uppercase tracking-wider pl-1">{t('auth.verificationCode', { defaultValue: 'Verification Code' })}</label>
-                <p className="text-xs text-secondary mb-3 pl-1">A 6-digit code has been sent to {email}.</p>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-secondary" />
-                  </div>
-                  <input 
-                    type="text" 
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value.replace(/\s+/g, ''))}
-                    className="w-full bg-background border border-border rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 text-base tracking-[0.5em] font-mono"
-                    placeholder="••••••"
-                    maxLength={6}
-                    required
-                  />
-                </div>
-              </div>
-            )}
-
-            <button 
-              type="submit" 
-              disabled={isSubmitting}
-              className="w-full bg-primary text-background font-semibold py-4 rounded-xl hover:bg-gray-200 disabled:opacity-70 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 group mt-8 relative overflow-hidden"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
-                {requires2FA ? t('auth.verify', { defaultValue: 'Verify Code' }) : t('auth.signup', { defaultValue: 'Create account' })} 
-                {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
-              </span>
-            </button>
-          </form>
-
-          {!requires2FA && (
-            <>
-              <div className="flex items-center gap-4 mt-8">
-                <div className="flex-1 h-px bg-border"></div>
-                <span className="text-xs text-secondary uppercase tracking-wider">or</span>
-                <div className="flex-1 h-px bg-border"></div>
-              </div>
-
-              {role === 'seller' && HAS_GOOGLE_OAUTH ? (
                 <button
-                  type="button"
-                  onClick={() => setGoogleSellerModalOpen(true)}
+                  type="submit"
                   disabled={isSubmitting}
-                  className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-xl py-3.5 hover:bg-card transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full bg-primary text-background font-semibold py-4 rounded-full hover:opacity-90 disabled:opacity-70 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2 group mt-5 relative overflow-hidden"
                 >
-                  <GoogleIcon />
-                  <span className="font-medium text-secondary">Continue with Google</span>
+                  <span className="relative z-10 flex items-center gap-2">
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
+                    {requires2FA ? t('auth.verify', { defaultValue: 'Verify Code' }) : t('auth.signup', { defaultValue: 'Create account' })}
+                    {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+                  </span>
                 </button>
-              ) : (
-                <GoogleAuthButton
-                  label="Continue with Google"
-                  demoLabel="Continue with demo account"
-                  disabled={isSubmitting}
-                  onGoogleToken={handleGoogleClick}
-                  onDemoClick={handleDemoClick}
-                  className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-xl py-3.5 hover:bg-card transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-                />
+              </form>
+
+              {!requires2FA && (
+                <>
+                  <div className="flex items-center gap-4 mt-6">
+                    <div className="flex-1 h-px bg-border"></div>
+                    <span className="text-xs text-secondary uppercase tracking-wider">or</span>
+                    <div className="flex-1 h-px bg-border"></div>
+                  </div>
+
+                  {role === 'seller' && HAS_GOOGLE_OAUTH ? (
+                    <button
+                      type="button"
+                      onClick={() => setGoogleSellerModalOpen(true)}
+                      disabled={isSubmitting}
+                      className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-full py-3.5 hover:bg-muted transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      <GoogleIcon />
+                      <span className="font-medium text-secondary">Continue with Google</span>
+                    </button>
+                  ) : (
+                    <GoogleAuthButton
+                      label="Continue with Google"
+                      demoLabel="Continue with demo account"
+                      disabled={isSubmitting}
+                      onGoogleToken={handleGoogleClick}
+                      onDemoClick={handleDemoClick}
+                      className="w-full mt-4 flex items-center justify-center gap-3 bg-background border border-border rounded-full py-3.5 hover:bg-muted transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                    />
+                  )}
+
+                  <div className="mt-5 rounded-2xl border border-accent-secondary/30 bg-accent-secondary/5 p-4">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-accent-secondary" />
+                      <p className="text-sm font-bold text-primary">{t('auth.demoTitle', { defaultValue: 'Try the demo' })}</p>
+                    </div>
+                    <p className="mt-1 text-xs text-secondary">{t('auth.demoSubtitle', { defaultValue: 'No signup needed — everything resets on refresh.' })}</p>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => { demoLogin('customer'); navigate('/dashboard'); }}
+                        disabled={isSubmitting}
+                        className="flex flex-col items-center gap-1 rounded-xl border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent-secondary disabled:opacity-70"
+                      >
+                        <ShoppingCart className="h-5 w-5 text-accent-secondary" />
+                        <span className="text-xs font-bold text-primary">{t('auth.demoCustomer', { defaultValue: 'Demo customer' })}</span>
+                        <span className="text-[10px] text-secondary">{t('auth.demoCustomerHint', { defaultValue: 'Browse, cart, checkout' })}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { demoLogin('seller'); navigate('/seller'); }}
+                        disabled={isSubmitting}
+                        className="flex flex-col items-center gap-1 rounded-xl border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent-secondary disabled:opacity-70"
+                      >
+                        <Store className="h-5 w-5 text-accent-secondary" />
+                        <span className="text-xs font-bold text-primary">{t('auth.demoSeller', { defaultValue: 'Demo seller' })}</span>
+                        <span className="text-[10px] text-secondary">{t('auth.demoSellerHint', { defaultValue: 'Seller dashboard preview' })}</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
 
-              <div className="mt-6 rounded-xl border border-accent/30 bg-accent/5 p-4">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-accent" />
-                  <p className="text-sm font-bold text-primary">{t('auth.demoTitle', { defaultValue: 'Try the demo' })}</p>
-                </div>
-                <p className="mt-1 text-xs text-secondary">{t('auth.demoSubtitle', { defaultValue: 'No signup needed — everything resets on refresh.' })}</p>
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => { demoLogin('customer'); navigate('/dashboard'); }}
-                    disabled={isSubmitting}
-                    className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent disabled:opacity-70"
-                  >
-                    <ShoppingCart className="h-5 w-5 text-accent" />
-                    <span className="text-xs font-bold text-primary">{t('auth.demoCustomer', { defaultValue: 'Demo customer' })}</span>
-                    <span className="text-[10px] text-secondary">{t('auth.demoCustomerHint', { defaultValue: 'Browse, cart, checkout' })}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { demoLogin('seller'); navigate('/seller'); }}
-                    disabled={isSubmitting}
-                    className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background px-3 py-3 text-center transition-colors hover:border-accent disabled:opacity-70"
-                  >
-                    <Store className="h-5 w-5 text-accent" />
-                    <span className="text-xs font-bold text-primary">{t('auth.demoSeller', { defaultValue: 'Demo seller' })}</span>
-                    <span className="text-[10px] text-secondary">{t('auth.demoSellerHint', { defaultValue: 'Seller dashboard preview' })}</span>
-                  </button>
-                </div>
+              <div className="mt-6 text-center">
+                <p className="text-sm text-secondary">
+                  {t('auth.haveAccount', { defaultValue: 'Already have an account?' })} <Link to="/login" className="font-semibold text-accent-secondary hover:underline ml-1">{t('auth.switchToLogin', { defaultValue: 'Login' })}</Link>
+                </p>
               </div>
-            </>
-          )}
-
-          <div className="mt-8 text-center">
-            <p className="text-sm text-secondary">
-              {t('auth.haveAccount', { defaultValue: 'Already have an account?' })} <Link to="/login" className="text-accent hover:underline ml-1">{t('auth.switchToLogin', { defaultValue: 'Login' })}</Link>
-            </p>
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -407,7 +396,7 @@ export default function Register() {
           aria-modal="true"
           aria-labelledby="seller-google-title"
         >
-          <div className="anim-scale-in w-full max-w-md rounded-lg border border-border bg-surface p-5 shadow-2xl">
+          <div className="anim-scale-in w-full max-w-md rounded-2xl border border-border bg-surface p-5 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 id="seller-google-title" className="text-lg font-bold">
@@ -420,7 +409,7 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => setGoogleSellerModalOpen(false)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary hover:text-primary"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-secondary hover:text-primary"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
@@ -476,7 +465,7 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => void confirmGoogleSellerBusiness()}
-                className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-background hover:bg-orange-600"
+                className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-primary hover:opacity-90"
               >
                 Continue with Google
               </button>

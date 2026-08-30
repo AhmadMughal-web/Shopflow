@@ -164,9 +164,9 @@ export default function Products() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Seo
         title={query ? `Search results for ${query}` : categoryTitle}
-        description="Browse KinaHub products by category, price, rating, seller store, and search."
+        description="Browse ShopFlow products by category, price, rating, seller store, and search."
       />
-      <div className="mb-4 rounded-lg border border-border bg-surface p-4 sm:mb-6">
+      <div className="mb-4 rounded-2xl border border-border bg-surface p-4 sm:mb-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{categoryTitle}</h1>
@@ -180,19 +180,19 @@ export default function Products() {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder={t('products.searchPlaceholder', { defaultValue: 'Search products' })}
-                className="h-11 w-full rounded-md border border-border bg-background pl-10 pr-3 text-base text-primary outline-none transition-colors focus:border-accent"
+                className="h-11 w-full rounded-full border border-border bg-background pl-10 pr-3 text-base text-primary outline-none transition-colors focus:border-accent"
               />
             </form>
             <button
               type="button"
               onClick={() => setFiltersOpen((current) => !current)}
-              className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border px-4 text-sm font-semibold transition-colors sm:w-auto ${filtersOpen || activeFilterCount > 0 ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-primary hover:border-accent'}`}
+              className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors sm:w-auto ${filtersOpen || activeFilterCount > 0 ? 'border-accent-secondary bg-accent-secondary/10 text-accent-secondary' : 'border-border bg-background text-primary hover:border-accent-secondary'}`}
               aria-expanded={filtersOpen}
             >
               <Filter className="h-4 w-4" />
               {t('products.openFilters', { defaultValue: 'Filters' })}
               {activeFilterCount > 0 && (
-                <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-background">
+                <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-primary">
                   {activeFilterCount}
                 </span>
               )}
@@ -202,11 +202,11 @@ export default function Products() {
       </div>
 
       {filtersOpen && (
-        <section className="anim-slide-down mb-6 rounded-lg border border-border bg-surface p-4 shadow-sm">
+        <section className="anim-slide-down mb-6 rounded-2xl border border-border bg-surface p-4 shadow-sm">
             <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <h2 className="flex items-center gap-2 text-lg font-bold">
-                  <Filter className="h-4 w-4 text-accent" />
+                  <Filter className="h-4 w-4 text-accent-secondary" />
                   {t('products.categoriesTitle', { defaultValue: 'Categories' })}
                 </h2>
                 <p className="mt-1 text-sm text-secondary">{t('products.filter', { defaultValue: 'Filter' })} products by category, price, and sort order.</p>
@@ -214,7 +214,7 @@ export default function Products() {
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="inline-flex h-9 items-center gap-2 rounded-md border border-border px-3 text-sm font-semibold text-secondary hover:border-accent hover:text-primary"
+                className="inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-secondary hover:border-accent-secondary hover:text-primary"
               >
                 <X className="h-4 w-4" />
                 {t('products.closeFilters', { defaultValue: 'Close filters' })}
@@ -222,18 +222,18 @@ export default function Products() {
             </div>
 
             <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-              <div className="rounded-lg border border-border bg-background p-4">
+              <div className="rounded-2xl border border-border bg-background p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-accent" />
+                  <Filter className="h-4 w-4 text-accent-secondary" />
                   <h3 className="font-bold">{t('products.categoriesTitle', { defaultValue: 'Categories' })}</h3>
                 </div>
                 <div className="grid max-h-[34vh] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 lg:grid-cols-4">
                   <button
                     type="button"
                     onClick={() => updateFilters({ category: null })}
-                    className={`flex items-center gap-2 rounded-md border px-3 py-2 text-left text-sm font-medium transition-colors ${!categoryFilter ? 'border-accent bg-accent text-background' : 'border-border bg-surface text-secondary hover:border-accent hover:text-primary'}`}
+                    className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm font-medium transition-colors ${!categoryFilter ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
                   >
-                    <span className={`flex h-8 w-8 items-center justify-center rounded-md ${!categoryFilter ? 'bg-background/15 text-background' : 'bg-muted text-accent'}`}>
+                    <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${!categoryFilter ? 'bg-primary/10 text-primary' : 'bg-muted text-accent-secondary'}`}>
                       {(() => {
                         const Icon = getCategoryIcon('all');
                         return <Icon className="h-4 w-4" aria-hidden="true" />;
@@ -250,14 +250,14 @@ export default function Products() {
                         key={category.id}
                         type="button"
                         onClick={() => updateFilters({ category: active ? null : category.slug })}
-                        className={`flex items-start gap-2 rounded-md border px-3 py-2 text-left transition-colors ${active ? 'border-accent bg-accent text-background' : 'border-border bg-surface text-secondary hover:border-accent hover:text-primary'}`}
+                        className={`flex items-start gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${active ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
                       >
-                        <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${active ? 'bg-background/15 text-background' : 'bg-muted text-accent'}`}>
+                        <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${active ? 'bg-primary/10 text-primary' : 'bg-muted text-accent-secondary'}`}>
                           <Icon className="h-4 w-4" aria-hidden="true" />
                         </span>
                         <span className="min-w-0">
                           <span className="block text-sm font-semibold">{t(`categories.${category.slug}.name`, { defaultValue: category.name })}</span>
-                          <span className={`mt-0.5 line-clamp-2 text-xs ${active ? 'text-background/80' : 'text-secondary'}`}>
+                          <span className={`mt-0.5 line-clamp-2 text-xs ${active ? 'text-primary/70' : 'text-secondary'}`}>
                             {t(`categories.${category.slug}.description`, { defaultValue: category.description || '' })}
                           </span>
                         </span>
@@ -268,9 +268,9 @@ export default function Products() {
               </div>
 
               <div className="space-y-4">
-                <div className="rounded-lg border border-border bg-background p-4">
+                <div className="rounded-2xl border border-border bg-background p-4">
                   <div className="mb-3 flex items-center gap-2">
-                    <ArrowUpDown className="h-4 w-4 text-accent" />
+                    <ArrowUpDown className="h-4 w-4 text-accent-secondary" />
                     <h3 className="font-bold">{t('products.sortBy', { defaultValue: 'Sort by' })}</h3>
                   </div>
                   <label className="relative block">
@@ -279,7 +279,7 @@ export default function Products() {
                     <select
                       value={sort}
                       onChange={(event) => updateFilters({ sort: event.target.value || null })}
-                      className="h-11 w-full appearance-none rounded-md border border-border bg-surface pl-10 pr-9 text-sm font-semibold text-primary outline-none transition-colors focus:border-accent"
+                      className="h-11 w-full appearance-none rounded-xl border border-border bg-surface pl-10 pr-9 text-sm font-semibold text-primary outline-none transition-colors focus:border-accent"
                       aria-label={t('products.sortAria', { defaultValue: 'Sort products' })}
                     >
                       {sortOptions(t).map((option) => (
@@ -291,9 +291,9 @@ export default function Products() {
                   </label>
                 </div>
 
-                <div className="rounded-lg border border-border bg-background p-4">
+                <div className="rounded-2xl border border-border bg-background p-4">
                   <div className="mb-3 flex items-center gap-2">
-                    <span className="flex h-4 w-4 items-center justify-center text-accent">$</span>
+                    <span className="flex h-4 w-4 items-center justify-center text-accent-secondary">$</span>
                     <h3 className="font-bold">{t('products.priceRange', { defaultValue: 'Price range' })}</h3>
                   </div>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -306,7 +306,7 @@ export default function Products() {
                         onChange={(event) => setPriceMin(event.target.value)}
                         inputMode="numeric"
                         placeholder="0"
-                        className="h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
+                        className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
                       />
                     </label>
                     <label className="block">
@@ -318,7 +318,7 @@ export default function Products() {
                         onChange={(event) => setPriceMax(event.target.value)}
                         inputMode="numeric"
                         placeholder="250000"
-                        className="h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
+                        className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
                       />
                     </label>
                   </div>
@@ -326,14 +326,14 @@ export default function Products() {
                     <button
                       type="button"
                       onClick={applyPriceRange}
-                      className="inline-flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-semibold text-background transition-colors hover:bg-orange-600"
+                      className="inline-flex h-10 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
                     >
                       {t('products.applyFilters', { defaultValue: 'Apply filters' })}
                     </button>
                     <button
                       type="button"
                       onClick={randomize}
-                      className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-surface px-4 text-sm font-semibold text-primary transition-colors hover:border-accent"
+                      className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-primary transition-colors hover:border-accent-secondary"
                     >
                       <Shuffle className="h-4 w-4" />
                       {t('products.shuffle', { defaultValue: 'Shuffle' })}
@@ -341,7 +341,7 @@ export default function Products() {
                     <button
                       type="button"
                       onClick={clearFilters}
-                      className="inline-flex h-10 items-center gap-2 rounded-md border border-border px-4 text-sm font-semibold text-secondary transition-colors hover:border-accent hover:text-primary"
+                      className="inline-flex h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold text-secondary transition-colors hover:border-accent-secondary hover:text-primary"
                     >
                       {t('products.clearFilters', { defaultValue: 'Clear filters' })}
                     </button>
@@ -388,7 +388,7 @@ export default function Products() {
               )}
             </>
           ) : (
-            <div className="rounded-lg border border-border bg-surface p-10 text-center">
+            <div className="rounded-2xl border border-border bg-surface p-10 text-center">
               <h2 className="text-xl font-bold">{t('products.noProducts', { defaultValue: 'No products found' })}</h2>
               <p className="mt-2 text-sm text-secondary">{t('products.tryAnother', { defaultValue: 'Try another category or search.' })}</p>
             </div>
