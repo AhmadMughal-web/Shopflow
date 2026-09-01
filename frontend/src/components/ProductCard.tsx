@@ -34,25 +34,26 @@ function ProductCardComponent({ product, compact = false }: ProductCardProps) {
             <div className="flex h-full w-full items-center justify-center text-secondary">{t('products.noImage', { defaultValue: 'No image' })}</div>
           )}
           {product.tag && (
-            <span className="absolute left-3 top-3 rounded-full bg-accent px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary shadow-sm">
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-accent px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-primary shadow-sm">
               {product.tag}
             </span>
           )}
           {discountPercent > 0 && (
-            <span className="absolute right-3 top-3 rounded-full bg-sale px-2 py-1 text-[11px] font-semibold text-background shadow-sm">
+            <span className="absolute right-2.5 top-2.5 rounded-full bg-sale px-2 py-1 text-[10px] font-bold text-background shadow-sm">
               -{discountPercent}%
             </span>
           )}
+          {/* Rating chip overlaid on image bottom-left */}
+          <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+            <Star className="h-3 w-3 fill-warning text-warning" />
+            {Number(product.rating).toFixed(1)}
+          </span>
         </div>
 
-        <div className={`${compact ? 'p-3' : 'p-3 sm:p-4'} flex min-h-[132px] flex-col sm:min-h-[168px]`}>
-          <div className="mb-2 flex items-center justify-between gap-3 text-xs text-secondary">
-            <span className="truncate uppercase tracking-wide">{t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name })}</span>
-            <span className="flex shrink-0 items-center gap-1 transition-transform duration-300 hover:scale-110">
-              <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-              {Number(product.rating).toFixed(1)}
-            </span>
-          </div>
+        <div className={`${compact ? 'p-3' : 'p-3 sm:p-4'} flex min-h-[110px] flex-col sm:min-h-[140px]`}>
+          <span className="mb-1.5 inline-block w-fit rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-secondary">
+            {t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name })}
+          </span>
 
           <h3 className="line-clamp-2 min-h-[40px] text-[13px] font-semibold leading-5 text-primary sm:text-sm group-hover:text-accent-secondary transition-colors duration-200">
             {product.name}
@@ -60,22 +61,22 @@ function ProductCardComponent({ product, compact = false }: ProductCardProps) {
           {product.store?.name && (
             <p className="mt-1 flex min-w-0 items-center gap-1.5 text-xs font-medium text-secondary">
               <Store className="h-3.5 w-3.5 shrink-0 text-accent-secondary" aria-hidden="true" />
-              <span className="truncate">{t('products.soldBy', { defaultValue: 'Sold by' })} {product.store.name}</span>
+              <span className="truncate">{product.store.name}</span>
             </p>
           )}
-          <p className="mt-1 hidden text-xs leading-5 text-secondary sm:line-clamp-2">{product.description}</p>
+        </div>
 
-          <div className="mt-auto flex items-end justify-between gap-2 pt-3 sm:gap-3 sm:pt-4">
-            <div className="min-w-0">
-              {hasDiscount && (
-                <p className="text-xs text-secondary line-through">{formatPrice(product.price)}</p>
-              )}
-              <p className="text-sm font-bold text-primary sm:text-base">{formatPrice(price(product))}</p>
-            </div>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-background transition-all duration-300 group-hover:bg-accent group-hover:text-primary group-hover:shadow-lg group-hover:-translate-y-1 sm:h-9 sm:w-9 btn-press-effect">
-              <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 icon-hover-effect" />
-            </span>
+        {/* Distinct highlighted price/cart footer strip */}
+        <div className="flex items-end justify-between gap-2 bg-muted/60 px-3 py-2.5 sm:px-4">
+          <div className="min-w-0">
+            {hasDiscount && (
+              <p className="text-xs text-secondary line-through">{formatPrice(product.price)}</p>
+            )}
+            <p className="text-sm font-black text-primary sm:text-base">{formatPrice(price(product))}</p>
           </div>
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-background transition-all duration-300 group-hover:bg-accent group-hover:text-primary group-hover:shadow-lg group-hover:-translate-y-1 sm:h-9 sm:w-9 btn-press-effect">
+            <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 icon-hover-effect" />
+          </span>
         </div>
       </article>
     </Link>

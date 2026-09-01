@@ -2,29 +2,29 @@ from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
 
 # ─── Zone definitions ────────────────────────────────────────────────
-# Dukan's warehouse is assumed to be in central Kathmandu (Thamel area).
+# Dukan's warehouse is assumed to be in central Lahore (Mall Road area).
 # Zones radiate outward; each has a base fee and a per-km-equivalent surcharge.
 
 ZONE_CONFIG = {
-    # Zone 1 — Core Kathmandu (< ~3 km from centre)
+    # Zone 1 — Core Lahore (< ~3 km from centre)
     "core": {
         "base_fee": Decimal("40.00"),
         "eta_food": "20-30 mins",
         "eta_standard": "45-60 mins",
     },
-    # Zone 2 — Greater Kathmandu (3-7 km)
+    # Zone 2 — Greater Lahore (3-7 km)
     "inner": {
         "base_fee": Decimal("70.00"),
         "eta_food": "30-45 mins",
         "eta_standard": "1-2 hours",
     },
-    # Zone 3 — Lalitpur / ring-road fringe (7-12 km)
+    # Zone 3 — Ring-road fringe (7-12 km)
     "middle": {
         "base_fee": Decimal("100.00"),
         "eta_food": "45-60 mins",
         "eta_standard": "2-3 hours",
     },
-    # Zone 4 — Bhaktapur / outer valley (12-20 km)
+    # Zone 4 — Outer Lahore (12-20 km)
     "outer": {
         "base_fee": Decimal("150.00"),
         "eta_food": "60-90 mins",
@@ -41,49 +41,37 @@ ZONE_CONFIG = {
 # Map every area to a zone.  Keys are lowercase.
 AREA_ZONE_MAP = {
     # ── Zone: core ──
-    "thamel": "core", "ason": "core", "new road": "core", "basantapur": "core",
-    "chhetrapati": "core", "bhotahity": "core", "sundhara": "core",
-    "kamaladi": "core", "putalisadak": "core", "ratnapark": "core",
-    "jamal": "core", "dillibazar": "core", "kamalpokhari": "core",
-    "lainchaur": "core", "lazimpat": "core", "naxal": "core",
-    "durbarmarg": "core", "durbar marg": "core", "tripureshwor": "core", "thapathali": "core",
-    "gairidhara": "core", "tangal": "core", "baluwatar": "core",
+    "mall road": "core", "anarkali": "core", "ichhra": "core", "mozang": "core",
+    "mozang chungi": "core", "data darbar": "core", "qartaba chowk": "core",
+    "garden town": "core", "shadman": "core", "muslim town": "core",
+    "nisbat road": "core", "lower mall": "core", "empress road": "core",
 
     # ── Zone: inner ──
-    "baneshwor": "inner", "new baneshwor": "inner", "old baneshwor": "inner",
-    "maitidevi": "inner", "gyaneshwor": "inner", "hattisar": "inner",
-    "battisputali": "inner", "ghattekulo": "inner", "sorhakhutte": "inner",
-    "chabahil": "inner", "dhumbarahi": "inner", "maharajgunj": "inner",
-    "dallu": "inner", "chhauni": "inner", "teku": "inner", "kalimati": "inner",
-    "balkhu": "inner", "bafal": "inner", "nayabazar": "inner",
-    "sinamangal": "inner", "gaushala": "inner", "pashupatinath": "inner",
-    "min bhawan": "inner", "minbhawan": "inner", "sankhamul": "inner",
-    "chandol": "inner", "tahachal": "inner", "tusal": "inner",
+    "gulberg": "inner", "gulberg iii": "inner", "gulberg 3": "inner",
+    "liberty market": "inner", "liberty": "inner", "model town": "inner",
+    "faisal town": "inner", "township": "inner", "samanabad": "inner",
+    "green town": "inner", "wapda town": "inner", "wapda town phase 1": "inner",
+    "iqbal town": "inner", "allama iqbal town": "inner", "cavalry ground": "inner",
+    "gulshan-e-ravi": "inner", "gulshan e ravi": "inner", "ferozepur road": "inner",
+    "chauburji": "inner",
 
     # ── Zone: middle ──
-    "balaju": "inner", "gongabu": "middle", "basundhara": "middle",
-    "dhapasi": "middle", "ranibari": "middle", "kapan": "middle",
-    "boudha": "middle", "boudhanath": "middle", "jorpati": "middle",
-    "pepsicola": "middle", "koteshwor": "middle", "tinkune": "middle",
-    "jadibuti": "middle", "kalanki": "middle", "sitapaila": "middle",
-    "swayambhu": "middle", "kirtipur": "middle", "panga": "middle",
-    "jawalakhel": "middle", "kupondole": "middle", "pulchowk": "middle",
-    "patan": "middle", "lalitpur": "middle", "mangal bazaar": "middle",
-    "lagankhel": "middle", "sanepa": "middle", "ekantakuna": "middle",
-    "dhobighat": "middle", "gwarko": "middle", "satdobato": "middle",
-    "nakhipot": "middle", "nakkhu": "middle", "khumaltar": "middle",
+    "johar town": "middle", "dha phase 1": "middle", "dha 1": "middle",
+    "dha phase 2": "middle", "dha 2": "middle", "dha phase 3": "middle", "dha 3": "middle",
+    "askari": "middle", "askari 10": "middle", "askari 11": "middle",
+    "nishtar colony": "middle", "kot lakhpat": "middle",
+    "thokar niaz baig": "middle", "thokar": "middle", "walton": "middle",
+    "harbanspura": "middle",
 
     # ── Zone: outer ──
-    "bhaktapur": "outer", "bhaktapur durbar square": "outer",
-    "sano thimi": "outer", "kausaltar": "outer", "suryabinayak": "outer",
-    "tokha": "outer", "budhanilkantha": "outer", "imadol": "outer",
-    "hattiban": "outer", "bhaisipati": "outer", "bhaisepati": "outer",
-    "chapagaun": "outer", "dhapakhel": "outer", "lubhu": "outer",
-    "thecho": "outer", "tyagal": "outer", "un park": "outer",
+    "dha phase 5": "outer", "dha 5": "outer", "dha phase 6": "outer", "dha 6": "outer",
+    "dha phase 7": "outer", "dha 7": "outer", "dha phase 8": "outer", "dha 8": "outer",
+    "bahria town": "outer", "valencia town": "outer", "valencia": "outer",
+    "sabzazar": "outer",
 
     # ── Zone: remote ──
-    "farping": "remote", "pharping": "remote", "sankhu": "remote",
-    "chandragiri": "remote",
+    "raiwind road": "remote", "barki road": "remote", "shahdara": "remote",
+    "baghbanpura": "remote", "manga mandi": "remote", "ferozewala": "remote",
 }
 
 # ─── Category-based surcharges ───────────────────────────────────────
@@ -108,16 +96,16 @@ MAX_DELIVERY_FEE = Decimal("400.00")           # cap at Rs 400
 def _resolve_zone(shipping_address: str) -> str:
     """Match an address string to the best zone, defaulting to 'middle'."""
     addr = shipping_address.lower().strip()
-    # Try longest match first so "new baneshwor" beats "baneshwor"
+    # Try longest match first so "dha phase 1" beats "dha 1"
     for area in sorted(AREA_ZONE_MAP.keys(), key=len, reverse=True):
         if area in addr:
             return AREA_ZONE_MAP[area]
-    return "middle"  # sensible default for unknown Kathmandu addresses
+    return "middle"  # sensible default for unknown Lahore addresses
 
 
 def _is_peak_hour() -> bool:
-    """Check if current Nepal time falls in peak delivery windows."""
-    # Nepal is UTC+5:45 — but on the server we just use local time
+    """Check if current Pakistan Standard Time falls in peak delivery windows."""
+    # Pakistan is UTC+5 — but on the server we just use local time
     hour = datetime.now().hour
     return (11 <= hour <= 13) or (18 <= hour <= 20)
 
@@ -155,7 +143,7 @@ def calculate_delivery_info(shipping_address: str, products, quantity_map: dict 
 
     for product in products:
         # 1. Determine product origin zone (store area)
-        store_area = product.store.area if product.store and product.store.area else "thamel"
+        store_area = product.store.area if product.store and product.store.area else "mall road"
         product_zone = _resolve_zone(store_area)
         
         # 2. Check for free local delivery (same zone)

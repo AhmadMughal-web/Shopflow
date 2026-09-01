@@ -148,7 +148,7 @@ export default function ProductDetails() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 animate-pulse">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
           {/* Image skeleton */}
-          <div className="aspect-square w-full rounded-xl bg-muted/60"></div>
+          <div className="aspect-square w-full rounded-2xl bg-muted/60"></div>
           {/* Info skeleton */}
           <div className="flex flex-col pt-4">
             <div className="mb-2 h-4 w-32 rounded bg-muted/60"></div>
@@ -160,8 +160,8 @@ export default function ProductDetails() {
               <div className="h-4 w-2/3 rounded bg-muted/60"></div>
             </div>
             <div className="mt-8 flex gap-4">
-              <div className="h-12 w-32 rounded-lg bg-muted/60"></div>
-              <div className="h-12 flex-1 rounded-lg bg-muted/60"></div>
+              <div className="h-12 w-32 rounded-2xl bg-muted/60"></div>
+              <div className="h-12 flex-1 rounded-2xl bg-muted/60"></div>
             </div>
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function ProductDetails() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:py-24">
         <h2 className="text-xl font-bold sm:text-2xl">{t('products.notFound', { defaultValue: 'Product not found' })}</h2>
-        <Link to="/products" className="mt-4 inline-block font-semibold text-accent hover:underline">
+        <Link to="/products" className="mt-4 inline-block font-semibold text-accent-secondary hover:underline">
           {t('products.backToProducts', { defaultValue: 'Back to products' })}
         </Link>
       </div>
@@ -221,13 +221,13 @@ export default function ProductDetails() {
 
       const created = (await response.json()) as ReviewType;
       setReviews((current) => [created, ...current]);
-      setReviewForm({ 
-        name: user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || user.email : '', 
-        rating: 5, 
-        title: '', 
-        comment: '', 
-        image_url: '', 
-        video_url: '' 
+      setReviewForm({
+        name: user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || user.email : '',
+        rating: 5,
+        title: '',
+        comment: '',
+        image_url: '',
+        video_url: ''
       });
       setImagePreview(null);
       setVideoPreview(null);
@@ -252,21 +252,21 @@ export default function ProductDetails() {
       </Link>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_440px] lg:gap-8">
-        <div className="anim-fade-in self-start rounded-lg border border-border bg-surface p-4 shadow-sm sm:p-5 lg:p-4 flex flex-col md:flex-row gap-4">
+        <div className="anim-fade-in self-start rounded-3xl border border-border bg-surface p-4 shadow-sm sm:p-5 lg:p-4 flex flex-col md:flex-row gap-4">
           {product.images && product.images.length > 1 && (
             <div className="flex order-2 md:order-1 md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] pb-2 md:pb-0 scrollbar-thin md:w-20 shrink-0">
               {product.images.map((img) => (
                 <button
                   key={img.id}
                   onClick={() => setActiveImage(img.image_url)}
-                  className={`relative aspect-square w-16 md:w-full shrink-0 overflow-hidden rounded-md border-2 transition-all ${activeImage === img.image_url ? 'border-accent' : 'border-transparent hover:border-border'}`}
+                  className={`relative aspect-square w-16 md:w-full shrink-0 overflow-hidden rounded-xl border-2 transition-all ${activeImage === img.image_url ? 'border-accent' : 'border-transparent hover:border-border'}`}
                 >
                   <img src={img.image_url} alt={img.alt_text || product.name} className="h-full w-full object-cover object-center" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>
           )}
-          <div className="aspect-[4/3] w-full order-1 md:order-2 overflow-hidden rounded-md bg-muted">
+          <div className="aspect-[4/3] w-full order-1 md:order-2 overflow-hidden rounded-2xl bg-muted">
             {image ? (
               <img src={image} alt={product.name} className="h-full w-full object-cover object-center" loading="eager" fetchPriority="high" decoding="async" />
             ) : (
@@ -275,14 +275,15 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        <aside className="lg:sticky lg:top-28 lg:h-fit">
-          <div className="rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+        <aside className="lg:sticky lg:top-28 lg:h-fit space-y-4">
+          {/* Bento purchase card */}
+          <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
             <div className="mb-4 flex flex-wrap items-center gap-2">
-              <span className="rounded bg-accent/10 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-accent">
+              <span className="rounded-full bg-accent/10 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-accent-secondary">
                 {t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name })}
               </span>
               {product.tag && (
-                <span className="rounded bg-muted px-2 py-1 text-xs font-semibold text-secondary">{product.tag}</span>
+                <span className="rounded-full bg-muted px-2 py-1 text-xs font-semibold text-secondary">{product.tag}</span>
               )}
               <span className="ml-auto flex items-center gap-1 text-sm font-semibold text-primary">
                 <Star className="h-4 w-4 fill-warning text-warning" />
@@ -292,25 +293,6 @@ export default function ProductDetails() {
 
             <p className="mb-2 text-sm text-secondary">{product.brand?.name || t('products.localShopProduct', { defaultValue: 'Local shop product' })}</p>
             <h1 className="text-xl font-black tracking-tight sm:text-3xl">{product.name}</h1>
-            {product.store?.name && (
-              <div className="mt-4 rounded-md border border-border bg-background p-3">
-                <Link to={`/store/${product.store.slug}`} className="flex items-start gap-3 transition-colors hover:bg-accent/5 cursor-pointer -mx-3 -mt-3 p-3 rounded-t-md">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent">
-                    <Store className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-secondary">{t('products.sellerStore', { defaultValue: 'Seller store' })}</p>
-                    <p className="truncate font-bold text-primary">{product.store.name}</p>
-                    <p className="text-xs text-secondary">{t('products.platformDelivery', { defaultValue: 'Ordered through KinaHub, fulfilled by this local shop.' })}</p>
-                  </div>
-                </Link>
-              </div>
-            )}
-            <p className="mt-4 leading-7 text-secondary">{product.description}</p>
-
-            <div className="mt-4">
-              <AiInsightPanel title="Product AI summary" insights={productAiSummary(product)} compact />
-            </div>
 
             <div className="mt-6 flex items-baseline gap-3">
               <span className="text-2xl font-black text-primary sm:text-3xl">{formatPrice(price(product))}</span>
@@ -319,9 +301,30 @@ export default function ProductDetails() {
               )}
             </div>
 
-            <div className="mt-6 flex items-center justify-between rounded-md bg-background p-3">
+            {/* Bento tile: seller store */}
+            {product.store?.name && (
+              <Link to={`/store/${product.store.slug}`} className="mt-4 flex items-start gap-3 rounded-2xl bg-background p-3 transition-colors hover:bg-accent/5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent-secondary">
+                  <Store className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-secondary">{t('products.sellerStore', { defaultValue: 'Seller store' })}</p>
+                  <p className="truncate font-bold text-primary">{product.store.name}</p>
+                  <p className="text-xs text-secondary">{t('products.platformDelivery', { defaultValue: 'Ordered through ShopFlow, fulfilled by this local shop.' })}</p>
+                </div>
+              </Link>
+            )}
+
+            <p className="mt-4 leading-7 text-secondary">{product.description}</p>
+
+            <div className="mt-4">
+              <AiInsightPanel title="Product AI summary" insights={productAiSummary(product)} compact />
+            </div>
+
+            {/* Bento tile: quantity + stock */}
+            <div className="mt-6 flex items-center justify-between rounded-2xl bg-background p-3">
               <span className="text-sm font-semibold">{product.stock > 0 ? `${product.stock} ${t('products.inStock', { defaultValue: 'in stock' })}` : t('products.outOfStock', { defaultValue: 'Out of stock' })}</span>
-              <div className="flex items-center rounded-md border border-border bg-surface">
+              <div className="flex items-center rounded-full border border-border bg-surface">
                 <button
                   type="button"
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
@@ -344,7 +347,7 @@ export default function ProductDetails() {
               type="button"
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-accent px-5 py-4 font-bold text-background transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-4 font-bold text-primary transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {added ? (
                 <span className="flex items-center gap-2 anim-fade-in">
@@ -361,20 +364,21 @@ export default function ProductDetails() {
               <button
                 type="button"
                 onClick={() => navigate('/cart')}
-                className="mt-2 w-full rounded-md border border-accent py-3 text-sm font-semibold text-accent hover:bg-accent/10 transition-colors"
+                className="mt-2 w-full rounded-full border border-accent-secondary py-3 text-sm font-semibold text-accent-secondary hover:bg-accent-secondary/10 transition-colors"
               >
                 {t('products.viewCart', { defaultValue: 'View Cart →' })}
               </button>
             )}
 
+            {/* Bento tiles: delivery/protection */}
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="rounded-md border border-border p-3">
-                <Truck className="mb-2 h-5 w-5 text-accent" />
+              <div className="rounded-2xl bg-background p-3">
+                <Truck className="mb-2 h-5 w-5 text-accent-secondary" />
                 <p className="text-sm font-semibold">{t('products.fastDelivery', { defaultValue: 'Fast delivery' })}</p>
                 <p className="text-xs text-secondary">{t('products.localShipping', { defaultValue: 'Local shipping options' })}</p>
               </div>
-              <div className="rounded-md border border-border p-3">
-                <ShieldCheck className="mb-2 h-5 w-5 text-accent" />
+              <div className="rounded-2xl bg-background p-3">
+                <ShieldCheck className="mb-2 h-5 w-5 text-accent-secondary" />
                 <p className="text-sm font-semibold">{t('products.protectedOrder', { defaultValue: 'Protected order' })}</p>
                 <p className="text-xs text-secondary">{t('products.warrantyListed', { defaultValue: 'Warranty where listed' })}</p>
               </div>
@@ -382,7 +386,7 @@ export default function ProductDetails() {
           </div>
 
           {product.specs.length > 0 && (
-            <div className="mt-4 rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+            <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
               <h2 className="mb-4 font-bold">{t('products.details', { defaultValue: 'Details' })}</h2>
               <dl className="space-y-3">
                 {product.specs.map((spec) => (
@@ -398,7 +402,7 @@ export default function ProductDetails() {
       </div>
 
       {recentlyViewed.length > 0 && (
-        <section className="mt-8 rounded-lg border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
+        <section className="mt-8 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
           <div className="mb-5 flex items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-black tracking-tight">
@@ -408,7 +412,7 @@ export default function ProductDetails() {
                 {t('products.recentlyViewedHint', { defaultValue: 'Jump back to products you checked earlier.' })}
               </p>
             </div>
-            <Link to="/products" className="text-sm font-semibold text-accent hover:underline">
+            <Link to="/products" className="text-sm font-semibold text-accent-secondary hover:underline">
               {t('products.browseAll', { defaultValue: 'Browse all' })}
             </Link>
           </div>
@@ -420,7 +424,7 @@ export default function ProductDetails() {
         </section>
       )}
 
-      <section className="mt-8 rounded-lg border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
+      <section className="mt-8 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-black tracking-tight">{t('products.reviewsTitle', { defaultValue: 'Ratings & reviews' })}</h2>
@@ -439,148 +443,148 @@ export default function ProductDetails() {
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[360px_1fr]">
           {user ? (
-            <form onSubmit={submitReview} className="rounded-lg border border-border bg-background p-4">
+            <form onSubmit={submitReview} className="rounded-2xl border border-border bg-background p-4">
               <h3 className="text-base font-bold">{t('products.writeReview', { defaultValue: 'Write a review' })}</h3>
-            <div className="mt-4 grid gap-3">
-              <label className="block">
-                <span className="mb-2 block text-sm font-semibold">{t('products.yourName', { defaultValue: 'Your name' })}</span>
-                <input
-                  value={reviewForm.name}
-                  onChange={(event) => setReviewForm((current) => ({ ...current, name: event.target.value }))}
-                  className={`h-11 w-full rounded-md border border-border bg-surface px-3 text-base outline-none focus:border-accent ${user ? 'opacity-70 cursor-not-allowed' : ''}`}
-                  placeholder={t('auth.namePlaceholder', { defaultValue: 'Ram Shah' })}
-                  readOnly={!!user}
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-semibold">{t('products.rating', { defaultValue: 'Rating' })}</span>
-                <select
-                  value={reviewForm.rating}
-                  onChange={(event) => setReviewForm((current) => ({ ...current, rating: Number(event.target.value) }))}
-                  className="h-11 w-full rounded-md border border-border bg-surface px-3 text-base outline-none focus:border-accent"
-                >
-                  {[5, 4, 3, 2, 1].map((value) => (
-                    <option key={value} value={value}>
-                      {value} / 5
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-semibold">{t('products.reviewTitle', { defaultValue: 'Title' })}</span>
-                <input
-                  value={reviewForm.title}
-                  onChange={(event) => setReviewForm((current) => ({ ...current, title: event.target.value }))}
-                  className="h-11 w-full rounded-md border border-border bg-surface px-3 text-base outline-none focus:border-accent"
-                  placeholder={t('products.reviewTitlePlaceholder', { defaultValue: 'Short summary' })}
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-semibold">{t('products.reviewComment', { defaultValue: 'Review' })}</span>
-                <textarea
-                  value={reviewForm.comment}
-                  onChange={(event) => setReviewForm((current) => ({ ...current, comment: event.target.value }))}
-                  className="min-h-32 w-full rounded-md border border-border bg-surface px-3 py-3 text-base outline-none focus:border-accent"
-                  placeholder={t('products.reviewCommentPlaceholder', { defaultValue: 'Tell others what you thought about the product.' })}
-                />
-              </label>
+              <div className="mt-4 grid gap-3">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">{t('products.yourName', { defaultValue: 'Your name' })}</span>
+                  <input
+                    value={reviewForm.name}
+                    onChange={(event) => setReviewForm((current) => ({ ...current, name: event.target.value }))}
+                    className={`h-11 w-full rounded-xl border border-border bg-surface px-3 text-base outline-none focus:border-accent ${user ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    placeholder={t('auth.namePlaceholder', { defaultValue: 'Ali Khan' })}
+                    readOnly={!!user}
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">{t('products.rating', { defaultValue: 'Rating' })}</span>
+                  <select
+                    value={reviewForm.rating}
+                    onChange={(event) => setReviewForm((current) => ({ ...current, rating: Number(event.target.value) }))}
+                    className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-base outline-none focus:border-accent"
+                  >
+                    {[5, 4, 3, 2, 1].map((value) => (
+                      <option key={value} value={value}>
+                        {value} / 5
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">{t('products.reviewTitle', { defaultValue: 'Title' })}</span>
+                  <input
+                    value={reviewForm.title}
+                    onChange={(event) => setReviewForm((current) => ({ ...current, title: event.target.value }))}
+                    className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-base outline-none focus:border-accent"
+                    placeholder={t('products.reviewTitlePlaceholder', { defaultValue: 'Short summary' })}
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">{t('products.reviewComment', { defaultValue: 'Review' })}</span>
+                  <textarea
+                    value={reviewForm.comment}
+                    onChange={(event) => setReviewForm((current) => ({ ...current, comment: event.target.value }))}
+                    className="min-h-32 w-full rounded-xl border border-border bg-surface px-3 py-3 text-base outline-none focus:border-accent"
+                    placeholder={t('products.reviewCommentPlaceholder', { defaultValue: 'Tell others what you thought about the product.' })}
+                  />
+                </label>
 
-              {/* Media attachment section */}
-              <div className="space-y-3">
-                <span className="block text-sm font-semibold">Attachments (optional)</span>
-                <div className="flex flex-wrap gap-3">
-                  {/* Image attach */}
-                  <div className="flex-1 min-w-[200px]">
-                    <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border bg-surface px-3 py-2.5 text-sm text-secondary hover:border-accent hover:text-accent transition-colors">
-                      <Camera className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{imagePreview ? 'Image attached' : 'Add photo'}</span>
-                      <input
-                        ref={imageInputRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const url = URL.createObjectURL(file);
-                            setImagePreview(url);
-                            setReviewForm(c => ({ ...c, image_url: url }));
-                          }
-                        }}
-                      />
-                    </label>
-                    {imagePreview && (
-                      <div className="relative mt-2 inline-block">
-                        <img src={imagePreview} alt="Preview" className="h-20 w-20 rounded-md object-cover border border-border" />
-                        <button type="button" onClick={() => { setImagePreview(null); setReviewForm(c => ({ ...c, image_url: '' })); if (imageInputRef.current) imageInputRef.current.value = ''; }} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600">
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  {/* Video attach */}
-                  <div className="flex-1 min-w-[200px]">
-                    <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border bg-surface px-3 py-2.5 text-sm text-secondary hover:border-accent hover:text-accent transition-colors">
-                      <Film className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{videoPreview ? 'Video attached' : 'Add video (max 2 min)'}</span>
-                      <input
-                        ref={videoInputRef}
-                        type="file"
-                        accept="video/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          const url = URL.createObjectURL(file);
-                          // Validate duration <= 2 minutes
-                          const vid = document.createElement('video');
-                          vid.preload = 'metadata';
-                          vid.onloadedmetadata = () => {
-                            URL.revokeObjectURL(vid.src);
-                            if (vid.duration > 120) {
-                              setReviewError('Video must be under 2 minutes.');
-                              if (videoInputRef.current) videoInputRef.current.value = '';
-                              return;
+                {/* Media attachment section */}
+                <div className="space-y-3">
+                  <span className="block text-sm font-semibold">Attachments (optional)</span>
+                  <div className="flex flex-wrap gap-3">
+                    {/* Image attach */}
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-surface px-3 py-2.5 text-sm text-secondary hover:border-accent-secondary hover:text-accent-secondary transition-colors">
+                        <Camera className="h-4 w-4 shrink-0" />
+                        <span className="truncate">{imagePreview ? 'Image attached' : 'Add photo'}</span>
+                        <input
+                          ref={imageInputRef}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const url = URL.createObjectURL(file);
+                              setImagePreview(url);
+                              setReviewForm(c => ({ ...c, image_url: url }));
                             }
-                            setReviewError('');
-                            const objUrl = URL.createObjectURL(file);
-                            setVideoPreview(objUrl);
-                            setReviewForm(c => ({ ...c, video_url: objUrl }));
-                          };
-                          vid.src = url;
-                        }}
-                      />
-                    </label>
-                    {videoPreview && (
-                      <div className="relative mt-2 inline-block">
-                        <video src={videoPreview} className="h-20 w-32 rounded-md object-cover border border-border" muted />
-                        <button type="button" onClick={() => { setVideoPreview(null); setReviewForm(c => ({ ...c, video_url: '' })); if (videoInputRef.current) videoInputRef.current.value = ''; }} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600">
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    )}
+                          }}
+                        />
+                      </label>
+                      {imagePreview && (
+                        <div className="relative mt-2 inline-block">
+                          <img src={imagePreview} alt="Preview" className="h-20 w-20 rounded-xl object-cover border border-border" />
+                          <button type="button" onClick={() => { setImagePreview(null); setReviewForm(c => ({ ...c, image_url: '' })); if (imageInputRef.current) imageInputRef.current.value = ''; }} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600">
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    {/* Video attach */}
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-surface px-3 py-2.5 text-sm text-secondary hover:border-accent-secondary hover:text-accent-secondary transition-colors">
+                        <Film className="h-4 w-4 shrink-0" />
+                        <span className="truncate">{videoPreview ? 'Video attached' : 'Add video (max 2 min)'}</span>
+                        <input
+                          ref={videoInputRef}
+                          type="file"
+                          accept="video/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const url = URL.createObjectURL(file);
+                            // Validate duration <= 2 minutes
+                            const vid = document.createElement('video');
+                            vid.preload = 'metadata';
+                            vid.onloadedmetadata = () => {
+                              URL.revokeObjectURL(vid.src);
+                              if (vid.duration > 120) {
+                                setReviewError('Video must be under 2 minutes.');
+                                if (videoInputRef.current) videoInputRef.current.value = '';
+                                return;
+                              }
+                              setReviewError('');
+                              const objUrl = URL.createObjectURL(file);
+                              setVideoPreview(objUrl);
+                              setReviewForm(c => ({ ...c, video_url: objUrl }));
+                            };
+                            vid.src = url;
+                          }}
+                        />
+                      </label>
+                      {videoPreview && (
+                        <div className="relative mt-2 inline-block">
+                          <video src={videoPreview} className="h-20 w-32 rounded-xl object-cover border border-border" muted />
+                          <button type="button" onClick={() => { setVideoPreview(null); setReviewForm(c => ({ ...c, video_url: '' })); if (videoInputRef.current) videoInputRef.current.value = ''; }} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600">
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                disabled={reviewSubmitting}
-                className="inline-flex h-11 items-center justify-center rounded-md bg-accent px-4 text-sm font-semibold text-background transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {reviewSubmitting ? t('common.saving', { defaultValue: 'Saving...' }) : t('products.submitReview', { defaultValue: 'Submit review' })}
-              </button>
-              {reviewError && <p className="text-sm text-red-500">{reviewError}</p>}
-            </div>
-          </form>
+                <button
+                  type="submit"
+                  disabled={reviewSubmitting}
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-4 text-sm font-semibold text-primary transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {reviewSubmitting ? t('common.saving', { defaultValue: 'Saving...' }) : t('products.submitReview', { defaultValue: 'Submit review' })}
+                </button>
+                {reviewError && <p className="text-sm text-red-500">{reviewError}</p>}
+              </div>
+            </form>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-background p-8 text-center">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-background p-8 text-center">
               <MessageCircle className="mb-3 h-8 w-8 text-secondary" />
               <h3 className="text-base font-bold">{t('products.writeReview', { defaultValue: 'Write a review' })}</h3>
               <p className="mt-2 text-sm text-secondary">
                 {t('products.loginToReview', { defaultValue: 'You must be logged in to leave a review.' })}
               </p>
-              <Link to="/login" className="mt-4 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-orange-600">
+              <Link to="/login" className="mt-4 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-primary transition-opacity hover:opacity-90">
                 {t('auth.switchToLogin', { defaultValue: 'Login' })}
               </Link>
             </div>
@@ -588,12 +592,12 @@ export default function ProductDetails() {
 
           <div className="space-y-3">
             {reviewLoading ? (
-              <div className="rounded-lg border border-border bg-background p-4 text-sm text-secondary">
+              <div className="rounded-2xl border border-border bg-background p-4 text-sm text-secondary">
                 {t('common.loading', { defaultValue: 'Loading...' })}
               </div>
             ) : reviews.length > 0 ? (
               reviews.map((review) => (
-                <article key={review.id} className="rounded-lg border border-border bg-background p-4">
+                <article key={review.id} className="rounded-2xl border border-border bg-background p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-semibold text-primary">{review.name}</p>
@@ -609,13 +613,13 @@ export default function ProductDetails() {
                   {(review.image_url || review.video_url) && (
                     <div className="mt-4 flex gap-2 overflow-x-auto pb-2 snap-x hide-scrollbar">
                       {review.video_url && (
-                        <div className="relative h-48 w-32 shrink-0 snap-center overflow-hidden rounded-md bg-black">
+                        <div className="relative h-48 w-32 shrink-0 snap-center overflow-hidden rounded-xl bg-black">
                           <video src={review.video_url} className="h-full w-full object-cover" controls playsInline loop muted />
                         </div>
                       )}
                       {review.image_url && (
-                        <div className="relative h-48 w-32 shrink-0 snap-center overflow-hidden rounded-md bg-muted">
-                  <img src={review.image_url} alt="Review attachment" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                        <div className="relative h-48 w-32 shrink-0 snap-center overflow-hidden rounded-xl bg-muted">
+                          <img src={review.image_url} alt="Review attachment" className="h-full w-full object-cover" loading="lazy" decoding="async" />
                         </div>
                       )}
                     </div>
@@ -623,7 +627,7 @@ export default function ProductDetails() {
                 </article>
               ))
             ) : (
-              <div className="rounded-lg border border-border bg-background p-4 text-sm text-secondary">
+              <div className="rounded-2xl border border-border bg-background p-4 text-sm text-secondary">
                 {t('products.noReviewsYet', { defaultValue: 'No reviews yet. Be the first to leave one.' })}
               </div>
             )}
@@ -631,7 +635,7 @@ export default function ProductDetails() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-lg border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
+      <section className="mt-8 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:mt-10 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-black tracking-tight">
@@ -641,40 +645,23 @@ export default function ProductDetails() {
               {t('products.similarProductsHint', { defaultValue: 'Recommended by category, brand, store, and price.' })}
             </p>
           </div>
-          <Link to="/products" className="text-sm font-semibold text-accent hover:underline">
+          <Link to="/products" className="text-sm font-semibold text-accent-secondary hover:underline">
             {t('products.browseAll', { defaultValue: 'Browse all' })}
           </Link>
         </div>
 
         {similarLoading ? (
-          <div className="mt-6 rounded-lg border border-border bg-background p-4 text-sm text-secondary">
+          <div className="mt-6 rounded-2xl border border-border bg-background p-4 text-sm text-secondary">
             {t('common.loading', { defaultValue: 'Loading...' })}
           </div>
         ) : similarProducts.length > 0 ? (
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
             {similarProducts.map((item) => (
-              <Link key={item.id} to={`/product/${item.slug}`} className="group overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-accent hover:bg-accent/5">
-                <div className="aspect-[4/3] overflow-hidden bg-muted">
-                  <img src={productImage(item)} alt={item.name} className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" />
-                </div>
-                <div className="p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-secondary">
-                    {item.store?.name || t('products.localShopProduct', { defaultValue: 'Local shop product' })}
-                  </p>
-                  <h3 className="mt-1 line-clamp-2 text-sm font-bold text-primary">{item.name}</h3>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-sm font-black text-primary">{formatPrice(price(item))}</span>
-                    <span className="flex items-center gap-1 text-xs font-semibold text-secondary">
-                      <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-                      {Number(item.average_rating ?? item.rating).toFixed(1)}
-                    </span>
-                  </div>
-                </div>
-              </Link>
+              <ProductCard key={item.id} product={item} compact />
             ))}
           </div>
         ) : (
-          <div className="mt-6 rounded-lg border border-border bg-background p-4 text-sm text-secondary">
+          <div className="mt-6 rounded-2xl border border-border bg-background p-4 text-sm text-secondary">
             {t('products.noSimilarProducts', { defaultValue: 'No similar products found right now.' })}
           </div>
         )}
@@ -684,13 +671,13 @@ export default function ProductDetails() {
         <div className="mx-auto flex max-w-7xl items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold text-primary">{product.name}</p>
-            <p className="text-sm font-black text-accent">{formatPrice(subtotal)}</p>
+            <p className="text-sm font-black text-accent-secondary">{formatPrice(subtotal)}</p>
           </div>
           <button
             type="button"
             onClick={handleAddToCart}
             disabled={product.stock === 0}
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm font-bold text-background transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-bold text-primary transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label={product.stock === 0 ? t('products.outOfStock', { defaultValue: 'Out of stock' }) : t('products.addToCart', { defaultValue: 'Add to cart' })}
           >
             <ShoppingBag className="h-4 w-4" />

@@ -38,36 +38,39 @@ export default function AiShopping() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <div className="rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-accent">
-              <Bot className="h-4 w-4" />
-              {t('ai.eyebrow', { defaultValue: 'KinaHub AI' })}
-            </p>
-            <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
-              {t('ai.title', { defaultValue: 'Shopping navigation that feels specific' })}
-            </h1>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-secondary">
-              {t('ai.subtitle', {
-                defaultValue:
-                  'Use AI to jump to the right products, stores, and filters faster. It points you toward specific local sellers instead of generic marketplace noise.',
-              })}
-            </p>
-          </div>
+      {/* Gradient banner hero */}
+      <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
+        <div className="bg-gradient-to-br from-accent-secondary/20 via-accent/10 to-transparent p-5 sm:p-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-accent-secondary">
+                <Bot className="h-4 w-4" />
+                {t('ai.eyebrow', { defaultValue: 'ShopFlow AI' })}
+              </p>
+              <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
+                {t('ai.title', { defaultValue: 'Shopping navigation that feels specific' })}
+              </h1>
+              <p className="mt-3 max-w-xl text-sm leading-7 text-secondary">
+                {t('ai.subtitle', {
+                  defaultValue:
+                    'Use AI to jump to the right products, stores, and filters faster. It points you toward specific local sellers instead of generic marketplace noise.',
+                })}
+              </p>
+            </div>
 
-          <div className="flex flex-wrap gap-2">
-            <Link to="/products" className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-background hover:bg-orange-600">
-              {t('ai.openProducts', { defaultValue: 'Open products' })} <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link to="/products?sort=price_low" className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-semibold text-primary hover:border-accent">
-              <Sparkles className="h-4 w-4" />
-              {t('ai.priceRadar', { defaultValue: 'Price radar' })}
-            </Link>
-            <Link to="/products?sort=rating_high" className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-semibold text-primary hover:border-accent">
-              <RefreshCw className="h-4 w-4" />
-              {t('ai.bestRated', { defaultValue: 'Best rated' })}
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link to="/products" className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-primary hover:opacity-90">
+                {t('ai.openProducts', { defaultValue: 'Open products' })} <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link to="/products?sort=price_low" className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-primary hover:border-accent-secondary">
+                <Sparkles className="h-4 w-4" />
+                {t('ai.priceRadar', { defaultValue: 'Price radar' })}
+              </Link>
+              <Link to="/products?sort=rating_high" className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-primary hover:border-accent-secondary">
+                <RefreshCw className="h-4 w-4" />
+                {t('ai.bestRated', { defaultValue: 'Best rated' })}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -78,9 +81,9 @@ export default function AiShopping() {
         </section>
       )}
 
-      <section className="mt-6 rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+      <section className="mt-6 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center gap-2">
-          <Search className="h-4 w-4 text-accent" />
+          <Search className="h-4 w-4 text-accent-secondary" />
           <h2 className="text-lg font-bold">{t('ai.searchIdeasTitle', { defaultValue: 'Specific search ideas' })}</h2>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -89,7 +92,7 @@ export default function AiShopping() {
               <Link
                 key={idea}
                 to={`/products?q=${encodeURIComponent(idea)}`}
-                className="rounded-full border border-border bg-background px-3 py-2 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-primary"
+                className="rounded-full border border-border bg-background px-3 py-2 text-sm font-medium text-secondary transition-colors hover:border-accent-secondary hover:text-primary"
               >
                 {idea}
               </Link>
@@ -100,9 +103,9 @@ export default function AiShopping() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+      <section className="mt-6 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-accent" />
+          <Sparkles className="h-4 w-4 text-accent-secondary" />
           <h2 className="text-lg font-bold">{t('ai.shortcutsTitle', { defaultValue: 'AI shortcuts' })}</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -110,11 +113,14 @@ export default function AiShopping() {
             <Link
               key={shortcut.title}
               to={shortcut.href}
-              className="rounded-lg border border-border bg-background p-4 transition-colors hover:border-accent hover:bg-accent/5"
+              className="rounded-2xl border border-border bg-background p-4 transition-colors hover:border-accent-secondary hover:bg-accent-secondary/5"
             >
+              <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-accent-secondary/15 text-accent-secondary">
+                <Sparkles className="h-4 w-4" />
+              </span>
               <p className="text-sm font-bold text-primary">{shortcut.title}</p>
               <p className="mt-2 text-sm leading-6 text-secondary">{shortcut.body}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent-secondary">
                 {shortcut.action} <ArrowRight className="h-4 w-4" />
               </span>
             </Link>
@@ -122,13 +128,13 @@ export default function AiShopping() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+      <section className="mt-6 rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-bold">{t('ai.featuredTitle', { defaultValue: 'Suggested products' })}</h2>
             <p className="mt-1 text-sm text-secondary">{t('ai.featuredCopy', { defaultValue: 'These are pulled from the live catalog and can be opened directly.' })}</p>
           </div>
-          <Link to="/products" className="text-sm font-semibold text-accent hover:underline">
+          <Link to="/products" className="text-sm font-semibold text-accent-secondary hover:underline">
             {t('ai.viewCatalog', { defaultValue: 'View catalog' })}
           </Link>
         </div>
@@ -146,7 +152,7 @@ export default function AiShopping() {
             ))}
           </div>
         ) : (
-          <div className="rounded-md border border-border bg-background p-4 text-sm text-secondary">
+          <div className="rounded-2xl border border-border bg-background p-4 text-sm text-secondary">
             {t('ai.noProducts', { defaultValue: 'No products loaded yet.' })}
           </div>
         )}

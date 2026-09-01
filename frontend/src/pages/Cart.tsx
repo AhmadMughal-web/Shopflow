@@ -16,17 +16,19 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:py-32">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-border bg-surface sm:h-24 sm:w-24">
-          <ShoppingBag className="h-8 w-8 text-secondary sm:h-10 sm:w-10" />
+        <div className="mx-auto max-w-sm rounded-3xl border border-border bg-surface p-8 shadow-sm">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent/10 sm:h-24 sm:w-24">
+            <ShoppingBag className="h-8 w-8 text-accent-secondary sm:h-10 sm:w-10" />
+          </div>
+          <h2 className="mb-3 text-xl font-bold tracking-tight sm:text-2xl">{t('cart.emptyTitle', { defaultValue: 'Your cart is empty' })}</h2>
+          <p className="mb-8 text-secondary">{t('cart.emptyCopy', { defaultValue: 'Browse products and add what you need.' })}</p>
+          <Link
+            to="/products"
+            className="inline-block rounded-full bg-accent px-8 py-3 font-semibold text-primary transition-opacity hover:opacity-90"
+          >
+            {t('cart.browseCatalog', { defaultValue: 'Browse Catalog' })}
+          </Link>
         </div>
-        <h2 className="mb-3 text-xl font-bold tracking-tight sm:text-2xl">{t('cart.emptyTitle', { defaultValue: 'Your cart is empty' })}</h2>
-        <p className="mb-8 text-secondary">{t('cart.emptyCopy', { defaultValue: 'Browse products and add what you need.' })}</p>
-        <Link
-          to="/products"
-          className="inline-block rounded-lg bg-accent px-8 py-3 font-semibold text-background transition-colors hover:bg-orange-600"
-        >
-          {t('cart.browseCatalog', { defaultValue: 'Browse Catalog' })}
-        </Link>
       </div>
     );
   }
@@ -52,107 +54,111 @@ export default function Cart() {
         {/* Cart Items */}
         <div className="space-y-4 lg:w-2/3 lg:space-y-6">
           {items.map(({ product, quantity }) => {
-              const image = productImage(product);
-              const itemTotal = price(product) * quantity;
+            const image = productImage(product);
+            const itemTotal = price(product) * quantity;
 
-              return (
-                <div
-                  key={product.id}
-                  className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-border bg-surface p-4 sm:p-5 md:flex-row md:gap-6 lg:p-6"
-                >
-                  {/* Product Image */}
-                  <Link to={`/product/${product.slug}`} className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-background sm:h-24 sm:w-24 md:h-32 md:w-32 hover:opacity-80 transition-opacity">
-                    {image ? (
-                      <img src={image} alt={product.name} className="h-full w-full object-cover" />
-                    ) : (
-                      <Box className="h-8 w-8 text-secondary/30" />
-                    )}
-                  </Link>
+            return (
+              <div
+                key={product.id}
+                className="group relative flex flex-col gap-4 overflow-hidden rounded-3xl border border-border bg-surface p-4 sm:p-5 md:flex-row md:gap-6 lg:p-6"
+              >
+                {/* Product Image */}
+                <Link to={`/product/${product.slug}`} className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-background sm:h-24 sm:w-24 md:h-32 md:w-32 hover:opacity-80 transition-opacity">
+                  {image ? (
+                    <img src={image} alt={product.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <Box className="h-8 w-8 text-secondary/30" />
+                  )}
+                </Link>
 
-                  {/* Product Info */}
-                  <div className="flex-1 flex flex-col">
-                    <div className="mb-2 flex items-start justify-between gap-3">
-                      <Link to={`/product/${product.slug}`} className="block hover:opacity-80 transition-opacity">
-                        <p className="mb-1 text-xs font-bold uppercase tracking-wider text-accent">
-                          {product.brand?.name || 'KinaHub'}
-                        </p>
-                        <h3 className="text-lg font-semibold sm:text-xl">{product.name}</h3>
-                        <p className="text-sm text-secondary">{product.category ? t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name }) : ''}</p>
-                      </Link>
+                {/* Product Info */}
+                <div className="flex-1 flex flex-col">
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <Link to={`/product/${product.slug}`} className="block hover:opacity-80 transition-opacity">
+                      <p className="mb-1 text-xs font-bold uppercase tracking-wider text-accent-secondary">
+                        {product.brand?.name || 'ShopFlow'}
+                      </p>
+                      <h3 className="text-lg font-semibold sm:text-xl">{product.name}</h3>
+                      <p className="text-sm text-secondary">{product.category ? t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name }) : ''}</p>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(product.id)}
+                      className="text-secondary hover:text-red-400 p-2 rounded-full hover:bg-background transition-colors"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="mt-auto flex items-end justify-between gap-3">
+                    <div className="flex items-center gap-1 bg-background border border-border rounded-full p-1">
                       <button
                         type="button"
-                        onClick={() => removeFromCart(product.id)}
-                        className="text-secondary hover:text-red-400 p-2 rounded-lg hover:bg-background transition-colors"
+                        onClick={() => updateQuantity(product.id, quantity - 1)}
+                        className="w-8 h-8 flex items-center justify-center text-secondary hover:text-primary transition-colors"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center text-sm font-medium">{quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(product.id, quantity + 1)}
+                        className="w-8 h-8 flex items-center justify-center text-secondary hover:text-primary transition-colors"
+                      >
+                        <Plus className="w-4 h-4" />
                       </button>
                     </div>
-
-                    <div className="mt-auto flex items-end justify-between gap-3">
-                      <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
-                          className="w-8 h-8 flex items-center justify-center text-secondary hover:text-primary transition-colors"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="w-8 text-center text-sm font-medium">{quantity}</span>
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center text-secondary hover:text-primary transition-colors"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <span className="text-base font-bold sm:text-lg">{formatPrice(itemTotal)}</span>
-                    </div>
+                    <span className="text-base font-bold sm:text-lg">{formatPrice(itemTotal)}</span>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
 
         {/* Order Summary */}
         <div className="lg:w-1/3">
-          <div className="sticky top-28 rounded-2xl border border-border bg-surface p-5 sm:p-6">
-            <div className="mb-5">
-              <AiInsightPanel title="Cart AI brief" insights={cartAiOverview(items)} compact />
-            </div>
-            <h2 className="mb-6 text-xl font-bold">{t('cart.orderSummary', { defaultValue: 'Order summary' })}</h2>
+          <div className="sticky top-28 overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
+            <div className="p-5 sm:p-6">
+              <div className="mb-5">
+                <AiInsightPanel title="Cart AI brief" insights={cartAiOverview(items)} compact />
+              </div>
+              <h2 className="mb-4 text-xl font-bold">{t('cart.orderSummary', { defaultValue: 'Order summary' })}</h2>
 
-            <div className="space-y-4 mb-6 text-sm">
-              <div className="flex justify-between">
-                <span className="text-secondary">{t('cart.subtotal', { defaultValue: 'Subtotal' })}</span>
-                <span className="font-medium">{formatPrice(totalPrice)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary">{t('cart.shippingEstimate', { defaultValue: 'Shipping estimate' })}</span>
-                <span className="font-medium">{formatPrice(shipping)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary">{t('cart.tax', { defaultValue: 'Tax' })}</span>
-                <span className="font-medium text-secondary">{t('cart.calculatedAtCheckout', { defaultValue: 'Calculated at checkout' })}</span>
+              {/* Bento-grouped cost breakdown */}
+              <div className="space-y-2 rounded-2xl bg-background p-4 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-secondary">{t('cart.subtotal', { defaultValue: 'Subtotal' })}</span>
+                  <span className="font-medium">{formatPrice(totalPrice)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-secondary">{t('cart.shippingEstimate', { defaultValue: 'Shipping estimate' })}</span>
+                  <span className="font-medium">{formatPrice(shipping)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-secondary">{t('cart.tax', { defaultValue: 'Tax' })}</span>
+                  <span className="font-medium text-secondary">{t('cart.calculatedAtCheckout', { defaultValue: 'Calculated at checkout' })}</span>
+                </div>
               </div>
             </div>
 
-            <div className="border-t border-border pt-4 mb-8">
-              <div className="flex justify-between items-end">
+            {/* Highlighted total + checkout footer strip */}
+            <div className="bg-accent/10 p-5 sm:p-6">
+              <div className="mb-4 flex justify-between items-end">
                 <span className="font-bold">{t('cart.total', { defaultValue: 'Total' })}</span>
-                <span className="text-2xl font-bold text-accent">{formatPrice(totalPrice + shipping)}</span>
+                <span className="text-2xl font-black text-primary">{formatPrice(totalPrice + shipping)}</span>
               </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={() => navigate('/checkout')}
-              className="w-full bg-accent text-background font-semibold py-4 rounded-xl hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 group"
-            >
-          {t('cart.proceedToCheckout', { defaultValue: 'Proceed to checkout' })} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </button>
-      </div>
-    </div>
+              <button
+                type="button"
+                onClick={() => navigate('/checkout')}
+                className="w-full bg-accent text-primary font-semibold py-4 rounded-full hover:opacity-90 transition-opacity flex items-center justify-center gap-2 group"
+              >
+                {t('cart.proceedToCheckout', { defaultValue: 'Proceed to checkout' })} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

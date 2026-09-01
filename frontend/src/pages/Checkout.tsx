@@ -47,7 +47,7 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodId>('cod');
   const [deliveryEta, setDeliveryEta] = useState('');
   const [deliveryFee, setDeliveryFee] = useState(0);
-  const [itemDeliveries, setItemDeliveries] = useState<Record<string, {fee: string, eta: string}>>({});
+  const [itemDeliveries, setItemDeliveries] = useState<Record<string, { fee: string, eta: string }>>({});
   const [isCalculatingDelivery, setIsCalculatingDelivery] = useState(false);
   const [placed, setPlaced] = useState(false);
   const [error, setError] = useState('');
@@ -86,7 +86,7 @@ export default function Checkout() {
           {
             key: 'cardholderName',
             label: t('checkout.cardHolderName', { defaultValue: 'Cardholder name' }),
-            placeholder: t('auth.namePlaceholder', { defaultValue: 'Ram Shah' }),
+            placeholder: t('auth.namePlaceholder', { defaultValue: 'Ali Khan' }),
           },
           {
             key: 'cardNumber',
@@ -149,7 +149,7 @@ export default function Checkout() {
           {
             key: 'payerName',
             label: t('checkout.payerName', { defaultValue: 'Payer name' }),
-            placeholder: t('auth.namePlaceholder', { defaultValue: 'Ram Shah' }),
+            placeholder: t('auth.namePlaceholder', { defaultValue: 'Ali Khan' }),
           },
           {
             key: 'referenceId',
@@ -232,7 +232,7 @@ export default function Checkout() {
         });
         setDeliveryFee(Number(response.total_fee || response.delivery_fee || 0));
         setItemDeliveries(response.item_deliveries || {});
-        
+
         // Aggregate unique ETAs for fallback/total display
         if (response.item_deliveries) {
           const etas = Object.values(response.item_deliveries).map((info) => info.eta);
@@ -266,7 +266,7 @@ export default function Checkout() {
       setError(t('checkout.geoNotSupported', { defaultValue: 'Geolocation is not supported by your browser' }));
       return;
     }
-    
+
     setIsLocating(true);
     setError('');
     navigator.geolocation.getCurrentPosition(
@@ -279,7 +279,7 @@ export default function Checkout() {
             const address = data.address;
             const area = address.suburb || address.neighbourhood || address.city_district || address.town || address.city || 'Kathmandu';
             const detail = [address.road, address.house_number].filter(Boolean).join(', ') || data.display_name;
-            
+
             setAddressQuery(area);
             setAddressDetail(detail);
             setShowAddressSuggestions(false);
@@ -388,7 +388,7 @@ export default function Checkout() {
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
         <h1 className="text-3xl font-black tracking-tight">{t('checkout.title', { defaultValue: 'Checkout' })}</h1>
         <p className="mt-3 text-secondary">{t('cart.emptyTitle', { defaultValue: 'Your cart is empty.' })}</p>
-        <Link to="/products" className="mt-6 inline-flex rounded-md bg-accent px-5 py-3 font-semibold text-background">
+        <Link to="/products" className="mt-6 inline-flex rounded-full bg-accent px-5 py-3 font-semibold text-primary">
           {t('cart.browseCatalog', { defaultValue: 'Browse products' })}
         </Link>
       </div>
@@ -417,14 +417,14 @@ export default function Checkout() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
         <section className="space-y-6">
-          <div className="rounded-lg border border-border bg-surface p-4 shadow-sm sm:p-6">
+          <div className="rounded-3xl border border-border bg-surface p-4 shadow-sm sm:p-6">
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{t('checkout.title', { defaultValue: 'Checkout' })}</h1>
             <p className="mt-2 text-sm text-secondary">{t('checkout.copy', { defaultValue: 'Delivery, payment, and order review.' })}</p>
           </div>
 
-          <div className="rounded-lg border border-border bg-surface p-4 shadow-sm sm:p-6">
+          <div className="rounded-3xl border border-border bg-surface p-4 shadow-sm sm:p-6">
             <div className="mb-5 flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-accent" />
+              <MapPin className="h-4 w-4 text-accent-secondary" />
               <h2 className="text-lg font-bold">{t('checkout.deliveryAddress', { defaultValue: 'Delivery address' })}</h2>
             </div>
 
@@ -470,12 +470,12 @@ export default function Checkout() {
                   }}
                   placeholder={t('checkout.searchHint', { defaultValue: 'Type Gongabu, Thamel, Gyaneshwor...' })}
                   ref={addressInputRef}
-                  className="h-11 w-full rounded-md border border-border bg-background pl-10 pr-3 text-base outline-none transition-colors focus:border-accent"
+                  className="h-11 w-full rounded-xl border border-border bg-background pl-10 pr-3 text-base outline-none transition-colors focus:border-accent"
                 />
               </div>
 
               {showAddressSuggestions && addressSuggestions.length > 0 && (
-                <div className="absolute z-10 mt-2 max-h-56 w-full overflow-y-auto overflow-hidden rounded-lg border border-border bg-surface shadow-xl">
+                <div className="absolute z-10 mt-2 max-h-56 w-full overflow-y-auto overflow-hidden rounded-2xl border border-border bg-surface shadow-xl">
                   {addressSuggestions.map((item, index) => (
                     <button
                       key={`${item.label}-${item.city}`}
@@ -512,7 +512,7 @@ export default function Checkout() {
                       instructionsRef.current?.focus();
                     }
                   }}
-                  className="min-h-24 w-full rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                  className="min-h-24 w-full rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                   placeholder={t('checkout.housePlaceholder', { defaultValue: 'House number, ward, apartment, landmark' })}
                 />
               </div>
@@ -529,7 +529,7 @@ export default function Checkout() {
                       promoCodeRef.current?.focus();
                     }
                   }}
-                  className="min-h-24 w-full rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                  className="min-h-24 w-full rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                   placeholder={t('checkout.instructionsPlaceholder', { defaultValue: 'Call on arrival, leave at reception, gate code, and similar notes' })}
                 />
               </div>
@@ -538,7 +538,7 @@ export default function Checkout() {
 
 
 
-          <div className="rounded-lg border border-border bg-surface p-4 shadow-sm sm:p-6">
+          <div className="rounded-3xl border border-border bg-surface p-4 shadow-sm sm:p-6">
             <h2 className="mb-4 text-lg font-bold">{t('checkout.paymentMethod', { defaultValue: 'Payment method' })}</h2>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               {paymentMethods.map((method) => {
@@ -548,15 +548,13 @@ export default function Checkout() {
                     key={method.id}
                     type="button"
                     onClick={() => setPaymentMethod(method.id)}
-                    className={`rounded-lg border p-3 text-left transition-all ${
-                      active ? 'border-accent bg-accent/10 shadow-[0_0_0_1px_rgba(248,86,6,0.35)]' : 'border-border bg-background hover:border-accent'
-                    }`}
+                    className={`rounded-2xl border p-3 text-left transition-all ${active ? 'border-accent bg-accent/10 ring-2 ring-accent/30' : 'border-border bg-background hover:border-accent-secondary'
+                      }`}
                   >
                     <div className="flex flex-col gap-2">
                       <span
-                        className={`inline-flex h-12 w-fit max-w-full items-center justify-center overflow-hidden rounded-md border bg-white px-3 shadow-sm dark:bg-white ${
-                          active ? 'border-accent ring-1 ring-accent/20' : 'border-border'
-                        }`}
+                        className={`inline-flex h-12 w-fit max-w-full items-center justify-center overflow-hidden rounded-xl border bg-white px-3 shadow-sm dark:bg-white ${active ? 'border-accent ring-1 ring-accent/20' : 'border-border'
+                          }`}
                       >
                         {method.logoSrc ? (
                           <span className="flex h-8 items-center justify-center rounded-sm bg-white px-1.5 py-1">
@@ -567,9 +565,9 @@ export default function Checkout() {
                             />
                           </span>
                         ) : method.id === 'card' ? (
-                          <CreditCard className={`h-7 w-7 ${active ? 'text-accent' : 'text-secondary'}`} />
+                          <CreditCard className={`h-7 w-7 ${active ? 'text-accent-secondary' : 'text-secondary'}`} />
                         ) : (
-                          <Banknote className={`h-7 w-7 ${active ? 'text-accent' : 'text-secondary'}`} />
+                          <Banknote className={`h-7 w-7 ${active ? 'text-accent-secondary' : 'text-secondary'}`} />
                         )}
                       </span>
                       <div>
@@ -583,7 +581,7 @@ export default function Checkout() {
             </div>
 
             {selectedPaymentConfig && (
-              <div className="mt-6 rounded-lg border border-border bg-background p-4">
+              <div className="mt-6 rounded-2xl bg-background p-4">
                 <h3 className="text-base font-bold">{selectedPaymentConfig.title}</h3>
                 <p className="mt-1 text-sm text-secondary">{selectedPaymentConfig.helper}</p>
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -596,7 +594,7 @@ export default function Checkout() {
                         placeholder={field.placeholder}
                         type={field.type || 'text'}
                         inputMode={field.inputMode}
-                        className="h-11 w-full rounded-md border border-border bg-surface px-3 text-base outline-none transition-colors focus:border-accent"
+                        className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-base outline-none transition-colors focus:border-accent"
                       />
                     </label>
                   ))}
@@ -608,141 +606,147 @@ export default function Checkout() {
         </section>
 
         <aside className="lg:sticky lg:top-28 lg:h-fit">
-          <div className="rounded-lg border border-border bg-surface p-4 shadow-sm sm:p-6">
-            <h2 className="text-xl font-bold">{t('checkout.orderSummary', { defaultValue: 'Order summary' })}</h2>
-            <div className="mt-5 rounded-lg border border-border bg-background p-3">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-primary">{t('checkout.items', { defaultValue: 'Items' })}</p>
-                <p className="text-xs text-secondary">{items.length}</p>
-              </div>
-              <div className="mt-3 space-y-3">
-                {items.map(({ product, quantity }) => (
-                  <div key={product.id} className="flex flex-col gap-2 rounded-md bg-surface p-2">
-                    <div className="flex items-center gap-3">
-                      <Link to={`/product/${product.slug}`} className="h-12 w-12 shrink-0 overflow-hidden rounded-md bg-muted hover:opacity-80 transition-opacity">
-                        {productImage(product) ? (
-                          <img src={productImage(product)} alt={product.name} className="h-full w-full object-cover" />
-                        ) : null}
-                      </Link>
-                      <div className="min-w-0 flex-1">
-                        <Link to={`/product/${product.slug}`} className="truncate text-sm font-semibold hover:text-primary transition-colors block">
-                          {product.name}
+          <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
+            <div className="p-4 sm:p-6">
+              <h2 className="text-xl font-bold">{t('checkout.orderSummary', { defaultValue: 'Order summary' })}</h2>
+              <div className="mt-5 rounded-2xl bg-background p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-semibold text-primary">{t('checkout.items', { defaultValue: 'Items' })}</p>
+                  <p className="text-xs text-secondary">{items.length}</p>
+                </div>
+                <div className="mt-3 space-y-3">
+                  {items.map(({ product, quantity }) => (
+                    <div key={product.id} className="flex flex-col gap-2 rounded-xl bg-surface p-2">
+                      <div className="flex items-center gap-3">
+                        <Link to={`/product/${product.slug}`} className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-muted hover:opacity-80 transition-opacity">
+                          {productImage(product) ? (
+                            <img src={productImage(product)} alt={product.name} className="h-full w-full object-cover" />
+                          ) : null}
                         </Link>
-                        <p className="text-xs text-secondary">{t('cart.qty', { defaultValue: 'Qty' })} {quantity}</p>
-                      </div>
-                      <p className="shrink-0 text-sm font-semibold">{formatPrice(price(product) * quantity)}</p>
-                    </div>
-                    {itemDeliveries[product.id] && !isCalculatingDelivery && (
-                      <div className="mt-1 flex items-center justify-between rounded bg-background px-2 py-1.5 text-xs">
-                        <div className="flex items-center gap-1.5 text-accent">
-                          <Truck className="h-3.5 w-3.5" />
-                          <span className="font-medium">{itemDeliveries[product.id].eta}</span>
+                        <div className="min-w-0 flex-1">
+                          <Link to={`/product/${product.slug}`} className="truncate text-sm font-semibold hover:text-primary transition-colors block">
+                            {product.name}
+                          </Link>
+                          <p className="text-xs text-secondary">{t('cart.qty', { defaultValue: 'Qty' })} {quantity}</p>
                         </div>
-                        <span className="font-semibold text-secondary">
-                          {Number(itemDeliveries[product.id].fee) === 0
-                            ? t('checkout.freeDelivery', { defaultValue: 'Free' })
-                            : `+ ${formatPrice(Number(itemDeliveries[product.id].fee))}`}
-                        </span>
+                        <p className="shrink-0 text-sm font-semibold">{formatPrice(price(product) * quantity)}</p>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {itemDeliveries[product.id] && !isCalculatingDelivery && (
+                        <div className="mt-1 flex items-center justify-between rounded-lg bg-background px-2 py-1.5 text-xs">
+                          <div className="flex items-center gap-1.5 text-accent-secondary">
+                            <Truck className="h-3.5 w-3.5" />
+                            <span className="font-medium">{itemDeliveries[product.id].eta}</span>
+                          </div>
+                          <span className="font-semibold text-secondary">
+                            {Number(itemDeliveries[product.id].fee) === 0
+                              ? t('checkout.freeDelivery', { defaultValue: 'Free' })
+                              : `+ ${formatPrice(Number(itemDeliveries[product.id].fee))}`}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="mt-5 space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-secondary">{t('checkout.subtotal', { defaultValue: 'Subtotal' })}</span>
-                <span className="font-medium">{formatPrice(totalPrice)}</span>
-              </div>
-              <div className="flex justify-between py-2 text-sm">
-                <span className="text-secondary">{t('checkout.deliverySummary', { defaultValue: 'Delivery' })}</span>
-                <span className="font-medium text-primary">
-                  {isCalculatingDelivery ? (
-                    <span className="text-xs text-secondary animate-pulse">{t('checkout.calculating', { defaultValue: 'Calculating...' })}</span>
-                  ) : (
-                    shipping === 0 ? t('checkout.freeDelivery', { defaultValue: 'Free' }) : formatPrice(shipping)
+              <div className="mt-5 space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-secondary">{t('checkout.subtotal', { defaultValue: 'Subtotal' })}</span>
+                  <span className="font-medium">{formatPrice(totalPrice)}</span>
+                </div>
+                <div className="flex justify-between py-2 text-sm">
+                  <span className="text-secondary">{t('checkout.deliverySummary', { defaultValue: 'Delivery' })}</span>
+                  <span className="font-medium text-primary">
+                    {isCalculatingDelivery ? (
+                      <span className="text-xs text-secondary animate-pulse">{t('checkout.calculating', { defaultValue: 'Calculating...' })}</span>
+                    ) : (
+                      shipping === 0 ? t('checkout.freeDelivery', { defaultValue: 'Free' }) : formatPrice(shipping)
+                    )}
+                  </span>
+                </div>
+
+                {!isCalculatingDelivery && deliveryEta && Object.keys(itemDeliveries).length === 0 && (
+                  <div className="flex justify-between py-1 text-sm bg-accent-secondary/10 rounded-lg px-2 -mx-2">
+                    <span className="text-accent-secondary text-xs font-semibold">{t('checkout.etaSummary', { defaultValue: 'Estimated Time' })}</span>
+                    <span className="text-accent-secondary text-xs font-bold">{deliveryEta}</span>
+                  </div>
+                )}
+                <div className="rounded-2xl bg-background p-4">
+                  <div className="flex items-center gap-2">
+                    <BadgePercent className="h-4 w-4 text-accent-secondary" />
+                    <h3 className="font-semibold">{t('checkout.promoCode', { defaultValue: 'Promo code' })}</h3>
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      ref={promoCodeRef}
+                      value={promoCodeInput}
+                      onChange={(event) => setPromoCodeInput(event.target.value.toLowerCase())}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault();
+                          applyPromoCode();
+                        }
+                      }}
+                      placeholder={t('checkout.promoPlaceholder', { defaultValue: 'Enter promo code' })}
+                      className="h-11 min-w-0 flex-1 rounded-xl border border-border bg-surface px-3 text-base outline-none transition-colors focus:border-accent"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => applyPromoCode()}
+                      className="rounded-xl bg-accent px-4 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
+                    >
+                      {t('common.apply', { defaultValue: 'Apply' })}
+                    </button>
+                  </div>
+                  {promoMessage && <p className="mt-3 text-xs text-secondary">{promoMessage}</p>}
+                  {appliedPromoCode && (
+                    <button
+                      type="button"
+                      onClick={removePromoCode}
+                      className="mt-3 text-xs font-semibold text-accent-secondary hover:underline"
+                    >
+                      {t('checkout.removePromo', { defaultValue: 'Remove promo code' })}
+                    </button>
                   )}
-                </span>
-              </div>
-              
-              {!isCalculatingDelivery && deliveryEta && Object.keys(itemDeliveries).length === 0 && (
-                <div className="flex justify-between py-1 text-sm bg-accent/10 rounded-md px-2 -mx-2">
-                  <span className="text-accent text-xs font-semibold">{t('checkout.etaSummary', { defaultValue: 'Estimated Time' })}</span>
-                  <span className="text-accent text-xs font-bold">{deliveryEta}</span>
                 </div>
-              )}
-              <div className="rounded-lg border border-border bg-background p-4">
-                <div className="flex items-center gap-2">
-                  <BadgePercent className="h-4 w-4 text-accent" />
-                  <h3 className="font-semibold">{t('checkout.promoCode', { defaultValue: 'Promo code' })}</h3>
-                </div>
-                <div className="mt-3 flex gap-2">
-                  <input
-                    ref={promoCodeRef}
-                    value={promoCodeInput}
-                    onChange={(event) => setPromoCodeInput(event.target.value.toLowerCase())}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        event.preventDefault();
-                        applyPromoCode();
-                      }
-                    }}
-                    placeholder={t('checkout.promoPlaceholder', { defaultValue: 'Enter promo code' })}
-                    className="h-11 min-w-0 flex-1 rounded-md border border-border bg-surface px-3 text-base outline-none transition-colors focus:border-accent"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => applyPromoCode()}
-                    className="rounded-md bg-accent px-4 text-sm font-semibold text-background transition-colors hover:bg-orange-600"
-                  >
-                    {t('common.apply', { defaultValue: 'Apply' })}
-                  </button>
-                </div>
-                {promoMessage && <p className="mt-3 text-xs text-secondary">{promoMessage}</p>}
-                {appliedPromoCode && (
-                  <button
-                    type="button"
-                    onClick={removePromoCode}
-                    className="mt-3 text-xs font-semibold text-accent hover:underline"
-                  >
-                    {t('checkout.removePromo', { defaultValue: 'Remove promo code' })}
-                  </button>
+                {discountAmount > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-secondary">{t('checkout.promoDiscount', { defaultValue: 'Promo discount' })}</span>
+                    <span className="font-medium text-green-500">- {formatPrice(discountAmount)}</span>
+                  </div>
                 )}
               </div>
-              {discountAmount > 0 && (
-                <div className="flex justify-between">
-                  <span className="text-secondary">{t('checkout.promoDiscount', { defaultValue: 'Promo discount' })}</span>
-                  <span className="font-medium text-green-500">- {formatPrice(discountAmount)}</span>
-                </div>
-              )}
-              <div className="flex justify-between border-t border-border pt-4">
-                <span className="font-bold">{t('checkout.total', { defaultValue: 'Total' })}</span>
-                <span className="text-lg font-black text-accent">{formatPrice(total)}</span>
+
+              <div className="mt-5 rounded-2xl bg-background p-4 text-sm">
+                <p className="mt-1 text-secondary">
+                  {t('checkout.dynamicDeliveryLabel', { defaultValue: 'Dynamic Delivery' })} · {deliveryEta || t('checkout.pendingEta', { defaultValue: 'Pending...' })}
+                </p>
+                <p className="mt-2 text-secondary">
+                  {deliveryAddress || t('checkout.searchAnAreaFirst', { defaultValue: 'Search an area first to build the full delivery address.' })}
+                </p>
               </div>
             </div>
 
-            <div className="mt-5 rounded-lg border border-border bg-background p-4 text-sm">
-              <p className="mt-1 text-secondary">
-                {t('checkout.dynamicDeliveryLabel', { defaultValue: 'Dynamic Delivery' })} · {deliveryEta || t('checkout.pendingEta', { defaultValue: 'Pending...' })}
-              </p>
-              <p className="mt-2 text-secondary">
-                {deliveryAddress || t('checkout.searchAnAreaFirst', { defaultValue: 'Search an area first to build the full delivery address.' })}
+            {/* Highlighted total + place order footer strip */}
+            <div className="bg-accent/10 p-4 sm:p-6">
+              <div className="flex justify-between pb-4">
+                <span className="font-bold">{t('checkout.total', { defaultValue: 'Total' })}</span>
+                <span className="text-lg font-black text-primary">{formatPrice(total)}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={placeOrder}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-4 text-lg font-black text-primary shadow-sm transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={!addressQuery.trim() || Boolean(validatePaymentDetails())}
+              >
+                {t('checkout.placeOrder', { defaultValue: 'Complete order' })} <ArrowRight className="h-5 w-5" />
+              </button>
+              {error && <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+              <p className="mt-3 text-xs text-secondary">
+                {t('checkout.selectedPayment', { defaultValue: 'Selected payment:' })} <span className="font-semibold text-primary">{selectedPaymentLabel}</span>
               </p>
             </div>
-
-            <button
-              type="button"
-              onClick={placeOrder}
-              className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 py-4 text-lg font-black text-background shadow-sm transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
-              disabled={!addressQuery.trim() || Boolean(validatePaymentDetails())}
-            >
-              {t('checkout.placeOrder', { defaultValue: 'Complete order' })} <ArrowRight className="h-5 w-5" />
-            </button>
-            {error && <p className="mt-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-            <p className="mt-3 text-xs text-secondary">
-              {t('checkout.selectedPayment', { defaultValue: 'Selected payment:' })} <span className="font-semibold text-primary">{selectedPaymentLabel}</span>
-            </p>
           </div>
         </aside>
       </div>

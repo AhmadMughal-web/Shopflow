@@ -43,14 +43,13 @@ export default function Products() {
     [sort, t]
   );
 
-  const activeFilterCount = useMemo(() => {
+  const advancedFilterCount = useMemo(() => {
     let count = 0;
-    if (categoryFilter) count += 1;
     if (sort) count += 1;
     if (priceMin.trim()) count += 1;
     if (priceMax.trim()) count += 1;
     return count;
-  }, [categoryFilter, priceMax, priceMin, sort]);
+  }, [priceMax, priceMin, sort]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -82,7 +81,7 @@ export default function Products() {
     fetch(`${API}/categories/`)
       .then((response) => response.json())
       .then(setCategories)
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -161,12 +160,14 @@ export default function Products() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <Seo
         title={query ? `Search results for ${query}` : categoryTitle}
         description="Browse ShopFlow products by category, price, rating, seller store, and search."
       />
-      <div className="mb-4 rounded-2xl border border-border bg-surface p-4 sm:mb-6">
+
+      {/* Header card: title + search + filters trigger */}
+      <div className="mb-3 rounded-2xl border border-border bg-surface p-4 sm:mb-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{categoryTitle}</h1>
@@ -185,15 +186,14 @@ export default function Products() {
             </form>
             <button
               type="button"
-              onClick={() => setFiltersOpen((current) => !current)}
-              className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors sm:w-auto ${filtersOpen || activeFilterCount > 0 ? 'border-accent-secondary bg-accent-secondary/10 text-accent-secondary' : 'border-border bg-background text-primary hover:border-accent-secondary'}`}
-              aria-expanded={filtersOpen}
+              onClick={() => setFiltersOpen(true)}
+              className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors sm:w-auto ${advancedFilterCount > 0 ? 'border-accent-secondary bg-accent-secondary/10 text-accent-secondary' : 'border-border bg-background text-primary hover:border-accent-secondary'}`}
             >
               <Filter className="h-4 w-4" />
-              {t('products.openFilters', { defaultValue: 'Filters' })}
-              {activeFilterCount > 0 && (
+              {t('products.openFilters', { defaultValue: 'Sort & Price' })}
+              {advancedFilterCount > 0 && (
                 <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-primary">
-                  {activeFilterCount}
+                  {advancedFilterCount}
                 </span>
               )}
             </button>
@@ -201,199 +201,183 @@ export default function Products() {
         </div>
       </div>
 
-      {filtersOpen && (
-        <section className="anim-slide-down mb-6 rounded-2xl border border-border bg-surface p-4 shadow-sm">
-            <div className="mb-4 flex items-center justify-between gap-4">
-              <div>
-                <h2 className="flex items-center gap-2 text-lg font-bold">
-                  <Filter className="h-4 w-4 text-accent-secondary" />
-                  {t('products.categoriesTitle', { defaultValue: 'Categories' })}
-                </h2>
-                <p className="mt-1 text-sm text-secondary">{t('products.filter', { defaultValue: 'Filter' })} products by category, price, and sort order.</p>
+      {/* Persistent horizontal category chip rail */}
+      <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        <button
+          type="button"
+          onClick={() => updateFilters({ category: null })}
+          className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${!categoryFilter ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
+        >
+          {t('products.allCategory', { defaultValue: 'All' })}
+        </button>
+        {categories.map((category) => {
+          const Icon = getCategoryIcon(category.slug);
+          const active = categoryFilter === category.slug;
+          return (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => updateFilters({ category: active ? null : category.slug })}
+              className={`flex shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${active ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
+            >
+              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+              {t(`categories.${category.slug}.name`, { defaultValue: category.name })}
+            </button>
+          );
+        })}
+      </div>
+
+      <section>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-sm text-secondary">
+          <p>
+            {t('products.showing', { defaultValue: 'Showing' })} <span className="font-semibold text-primary">{products.length}</span> {t('products.productsWord', { defaultValue: 'products' })}
+            {sort && (
+              <>
+                {' '}
+                {t('products.sortedBy', { defaultValue: 'sorted by' })} <span className="font-semibold text-primary">{currentSortLabel}</span>
+              </>
+            )}
+          </p>
+        </div>
+        {loading ? (
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            {[...Array(8)].map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+              {displayedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            <div ref={sentinelRef} className="h-12" aria-hidden="true" />
+            {hasMore && (
+              <div className="mt-4 flex justify-center">
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-xs font-semibold text-secondary">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
+                  {t('products.loadingMore', { defaultValue: 'Loading more products...' })}
+                </div>
               </div>
+            )}
+          </>
+        ) : (
+          <div className="rounded-2xl border border-border bg-surface p-10 text-center">
+            <h2 className="text-xl font-bold">{t('products.noProducts', { defaultValue: 'No products found' })}</h2>
+            <p className="mt-2 text-sm text-secondary">{t('products.tryAnother', { defaultValue: 'Try another category or search.' })}</p>
+          </div>
+        )}
+      </section>
+
+      {/* Bottom-sheet style Sort & Price panel */}
+      {filtersOpen && (
+        <div className="fixed inset-0 z-[110] flex items-end justify-center sm:items-center">
+          <div
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            onClick={() => setFiltersOpen(false)}
+          />
+          <div className="anim-slide-up relative w-full max-w-lg rounded-t-3xl border border-border bg-surface p-5 shadow-2xl sm:rounded-3xl sm:p-6">
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <h2 className="flex items-center gap-2 text-lg font-bold">
+                <Filter className="h-4 w-4 text-accent-secondary" />
+                {t('products.openFilters', { defaultValue: 'Sort & Price' })}
+              </h2>
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-secondary hover:border-accent-secondary hover:text-primary"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-secondary hover:text-primary"
+                aria-label={t('products.closeFilters', { defaultValue: 'Close filters' })}
               >
                 <X className="h-4 w-4" />
-                {t('products.closeFilters', { defaultValue: 'Close filters' })}
               </button>
             </div>
 
-            <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-              <div className="rounded-2xl border border-border bg-background p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-accent-secondary" />
-                  <h3 className="font-bold">{t('products.categoriesTitle', { defaultValue: 'Categories' })}</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="mb-2 flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4 text-accent-secondary" />
+                  <h3 className="font-bold">{t('products.sortBy', { defaultValue: 'Sort by' })}</h3>
                 </div>
-                <div className="grid max-h-[34vh] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 lg:grid-cols-4">
-                  <button
-                    type="button"
-                    onClick={() => updateFilters({ category: null })}
-                    className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm font-medium transition-colors ${!categoryFilter ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
+                <label className="relative block">
+                  <span className="sr-only">{t('products.sortAria', { defaultValue: 'Sort products' })}</span>
+                  <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary" />
+                  <select
+                    value={sort}
+                    onChange={(event) => updateFilters({ sort: event.target.value || null })}
+                    className="h-11 w-full appearance-none rounded-xl border border-border bg-background pl-10 pr-9 text-sm font-semibold text-primary outline-none transition-colors focus:border-accent"
+                    aria-label={t('products.sortAria', { defaultValue: 'Sort products' })}
                   >
-                    <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${!categoryFilter ? 'bg-primary/10 text-primary' : 'bg-muted text-accent-secondary'}`}>
-                      {(() => {
-                        const Icon = getCategoryIcon('all');
-                        return <Icon className="h-4 w-4" aria-hidden="true" />;
-                      })()}
-                    </span>
-                    <span>{t('products.allCategory', { defaultValue: 'All' })}</span>
-                  </button>
-                  {categories.map((category) => {
-                    const Icon = getCategoryIcon(category.slug);
-                    const active = categoryFilter === category.slug;
-
-                    return (
-                      <button
-                        key={category.id}
-                        type="button"
-                        onClick={() => updateFilters({ category: active ? null : category.slug })}
-                        className={`flex items-start gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${active ? 'border-accent bg-accent text-primary' : 'border-border bg-surface text-secondary hover:border-accent-secondary hover:text-primary'}`}
-                      >
-                        <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${active ? 'bg-primary/10 text-primary' : 'bg-muted text-accent-secondary'}`}>
-                          <Icon className="h-4 w-4" aria-hidden="true" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-sm font-semibold">{t(`categories.${category.slug}.name`, { defaultValue: category.name })}</span>
-                          <span className={`mt-0.5 line-clamp-2 text-xs ${active ? 'text-primary/70' : 'text-secondary'}`}>
-                            {t(`categories.${category.slug}.description`, { defaultValue: category.description || '' })}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                    {sortOptions(t).map((option) => (
+                      <option key={option.value || 'default'} value={option.value}>
+                        {option.value ? t(`products.sort_${option.value}`, { defaultValue: option.label }) : t('products.sortBy', { defaultValue: 'Sort by' })}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
 
-              <div className="space-y-4">
-                <div className="rounded-2xl border border-border bg-background p-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <ArrowUpDown className="h-4 w-4 text-accent-secondary" />
-                    <h3 className="font-bold">{t('products.sortBy', { defaultValue: 'Sort by' })}</h3>
-                  </div>
-                  <label className="relative block">
-                    <span className="sr-only">{t('products.sortAria', { defaultValue: 'Sort products' })}</span>
-                    <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary" />
-                    <select
-                      value={sort}
-                      onChange={(event) => updateFilters({ sort: event.target.value || null })}
-                      className="h-11 w-full appearance-none rounded-xl border border-border bg-surface pl-10 pr-9 text-sm font-semibold text-primary outline-none transition-colors focus:border-accent"
-                      aria-label={t('products.sortAria', { defaultValue: 'Sort products' })}
-                    >
-                      {sortOptions(t).map((option) => (
-                        <option key={option.value || 'default'} value={option.value}>
-                          {option.value ? t(`products.sort_${option.value}`, { defaultValue: option.label }) : t('products.sortBy', { defaultValue: 'Sort by' })}
-                        </option>
-                      ))}
-                    </select>
+              <div>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="flex h-4 w-4 items-center justify-center text-accent-secondary">$</span>
+                  <h3 className="font-bold">{t('products.priceRange', { defaultValue: 'Price range' })}</h3>
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-secondary">
+                      {t('products.minPrice', { defaultValue: 'Min price' })}
+                    </span>
+                    <input
+                      value={priceMin}
+                      onChange={(event) => setPriceMin(event.target.value)}
+                      inputMode="numeric"
+                      placeholder="0"
+                      className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-secondary">
+                      {t('products.maxPrice', { defaultValue: 'Max price' })}
+                    </span>
+                    <input
+                      value={priceMax}
+                      onChange={(event) => setPriceMax(event.target.value)}
+                      inputMode="numeric"
+                      placeholder="250000"
+                      className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
+                    />
                   </label>
                 </div>
+              </div>
 
-                <div className="rounded-2xl border border-border bg-background p-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <span className="flex h-4 w-4 items-center justify-center text-accent-secondary">$</span>
-                    <h3 className="font-bold">{t('products.priceRange', { defaultValue: 'Price range' })}</h3>
-                  </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <label className="block">
-                      <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-secondary">
-                        {t('products.minPrice', { defaultValue: 'Min price' })}
-                      </span>
-                      <input
-                        value={priceMin}
-                        onChange={(event) => setPriceMin(event.target.value)}
-                        inputMode="numeric"
-                        placeholder="0"
-                        className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
-                      />
-                    </label>
-                    <label className="block">
-                      <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-secondary">
-                        {t('products.maxPrice', { defaultValue: 'Max price' })}
-                      </span>
-                      <input
-                        value={priceMax}
-                        onChange={(event) => setPriceMax(event.target.value)}
-                        inputMode="numeric"
-                        placeholder="250000"
-                        className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm text-primary outline-none transition-colors focus:border-accent"
-                      />
-                    </label>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={applyPriceRange}
-                      className="inline-flex h-10 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
-                    >
-                      {t('products.applyFilters', { defaultValue: 'Apply filters' })}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={randomize}
-                      className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-primary transition-colors hover:border-accent-secondary"
-                    >
-                      <Shuffle className="h-4 w-4" />
-                      {t('products.shuffle', { defaultValue: 'Shuffle' })}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={clearFilters}
-                      className="inline-flex h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold text-secondary transition-colors hover:border-accent-secondary hover:text-primary"
-                    >
-                      {t('products.clearFilters', { defaultValue: 'Clear filters' })}
-                    </button>
-                  </div>
-                </div>
+              <div className="flex flex-wrap gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => { applyPriceRange(); setFiltersOpen(false); }}
+                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-primary transition-opacity hover:opacity-90"
+                >
+                  {t('products.applyFilters', { defaultValue: 'Apply filters' })}
+                </button>
+                <button
+                  type="button"
+                  onClick={randomize}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 text-sm font-semibold text-primary transition-colors hover:border-accent-secondary"
+                >
+                  <Shuffle className="h-4 w-4" />
+                  {t('products.shuffle', { defaultValue: 'Shuffle' })}
+                </button>
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 text-sm font-semibold text-secondary transition-colors hover:border-accent-secondary hover:text-primary"
+                >
+                  {t('products.clearFilters', { defaultValue: 'Clear filters' })}
+                </button>
               </div>
             </div>
-        </section>
-      )}
-
-      <section>
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-sm text-secondary">
-            <p>
-              {t('products.showing', { defaultValue: 'Showing' })} <span className="font-semibold text-primary">{products.length}</span> {t('products.productsWord', { defaultValue: 'products' })}
-              {sort && (
-                <>
-                  {' '}
-                  {t('products.sortedBy', { defaultValue: 'sorted by' })} <span className="font-semibold text-primary">{currentSortLabel}</span>
-                </>
-              )}
-            </p>
           </div>
-          {loading ? (
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-              {[...Array(8)].map((_, i) => (
-                <ProductCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : products.length > 0 ? (
-            <>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-                {displayedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-              <div ref={sentinelRef} className="h-12" aria-hidden="true" />
-              {hasMore && (
-                <div className="mt-4 flex justify-center">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-xs font-semibold text-secondary">
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-                    {t('products.loadingMore', { defaultValue: 'Loading more products...' })}
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="rounded-2xl border border-border bg-surface p-10 text-center">
-              <h2 className="text-xl font-bold">{t('products.noProducts', { defaultValue: 'No products found' })}</h2>
-              <p className="mt-2 text-sm text-secondary">{t('products.tryAnother', { defaultValue: 'Try another category or search.' })}</p>
-            </div>
-          )}
-      </section>
+        </div>
+      )}
     </div>
   );
 }

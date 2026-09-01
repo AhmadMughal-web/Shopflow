@@ -52,18 +52,35 @@ function mockOrder(id: number, customerEmail: string, status: OrderType['status'
 }
 
 const DEMO_SELLER_ORDERS: OrderType[] = [
-  mockOrder(1001, 'ram.shah@gmail.com', 'pending', [['Set Thakali', 2], ['Fresh Milk 1L', 1]], 1790),
-  mockOrder(1002, 'sita.rai@outlook.com', 'processing', [['Basmati Rice 5kg', 1], ['Mustang Honey', 1]], 1450),
-  mockOrder(1003, 'anjali.pokharel@gmail.com', 'shipped', [['Pashmina Scarf', 1]], 1450, 'esewa'),
-  mockOrder(1004, 'nischal.kc@gmail.com', 'delivered', [['Dal Bhat Power Set', 3]], 990, 'cod', 'pickup'),
+  mockOrder(1001, 'ali.khan@gmail.com', 'pending', [['Basmati Rice 5kg', 2], ['Fresh Milk 1L', 1]], 1790),
+  mockOrder(1002, 'hira.raza@outlook.com', 'processing', [['Basmati Rice 5kg', 1], ['Sohan Halwa Box', 1]], 1450),
+  mockOrder(1003, 'ayesha.malik@gmail.com', 'shipped', [['Embroidered Shawl', 1]], 1450, 'esewa'),
+  mockOrder(1004, 'bilal.ahmed@gmail.com', 'delivered', [['Chicken Karahi Meal Set', 3]], 990, 'cod', 'pickup'),
 ];
 
 const DEMO_CUSTOMER_ORDERS: OrderType[] = [
-  mockOrder(1001, 'demo.customer@kinahub.local', 'delivered', [['Set Thakali', 2]], 1790),
-  mockOrder(1002, 'demo.customer@kinahub.local', 'shipped', [['Mustang Honey', 1]], 660),
+  mockOrder(1001, 'demo.customer@shopflow.local', 'delivered', [['Basmati Rice 5kg', 2]], 1790),
+  mockOrder(1002, 'demo.customer@shopflow.local', 'shipped', [['Sohan Halwa Box', 1]], 660),
 ];
 
 const DEMO_ADMIN_ORDERS: OrderType[] = DEMO_SELLER_ORDERS;
+
+function StatusControl({ order, mode, onChange }: { order: OrderType; mode: OrdersPageProps['mode']; onChange: (status: string) => void }) {
+  if (mode === 'customer') {
+    return <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold capitalize">{orderStatusLabel(order.status)}</span>;
+  }
+  return (
+    <select
+      value={order.status}
+      onChange={(event) => onChange(event.target.value)}
+      className="w-full rounded-xl border border-border bg-background px-2 py-2 text-sm capitalize outline-none focus:border-accent sm:w-auto"
+    >
+      {orderStatuses.map((status) => (
+        <option key={status} value={status}>{orderStatusLabel(status)}</option>
+      ))}
+    </select>
+  );
+}
 
 export default function OrdersPage({ mode }: OrdersPageProps) {
   const { token, isDemo } = useAuth();
@@ -106,7 +123,7 @@ export default function OrdersPage({ mode }: OrdersPageProps) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h1 className="text-2xl font-black tracking-tight">
           {mode === 'customer' ? t('dashboard.orderHistory', { defaultValue: 'Order history' }) : mode === 'seller' ? t('dashboard.orderFulfillment', { defaultValue: 'Order fulfillment' }) : t('dashboard.platformOrders', { defaultValue: 'Platform orders' })}
         </h1>
@@ -116,15 +133,64 @@ export default function OrdersPage({ mode }: OrdersPageProps) {
             : t('dashboard.orderFulfillmentDescription', { defaultValue: 'Review orders, payment method, fulfillment status, and customer contact.' })}
         </p>
         {isDemo && (
-          <p className="mt-3 rounded-md bg-accent/10 px-3 py-2 text-xs font-semibold text-accent">
+          <p className="mt-3 rounded-xl bg-accent-secondary/10 px-3 py-2 text-xs font-semibold text-accent-secondary">
             {t('dashboard.demoNotice', { defaultValue: 'Demo mode: sample data shown, nothing is saved. Everything resets on refresh.' })}
           </p>
         )}
       </section>
 
-      {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      {/* Mobile: card list */}
+      <section className="space-y-3 md:hidden">
+        {orders.length === 0 ? (
+          <div className="rounded-2xl border border-border bg-surface p-6 text-center text-secondary">
+            {t('dashboard.noOrders', { defaultValue: 'No orders yet.' })}
+          </div>
+        ) : (
+          orders.map((order) => (
+            <div key={order.id} className="rounded-2xl border border-border bg-surface p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-bold text-primary">#{order.id}</p>
+                  <p className="text-xs text-secondary">{order.customer_email}</p>
+                </div>
+                <p className="text-base font-black text-primary">{formatPrice(order.total_price)}</p>
+              </div>
+
+              <div className="mt-3 space-y-1 rounded-xl bg-background p-3 text-sm">
+                {order.items.map((item) => (
+                  <p key={item.id}>{item.product.name} <span className="text-secondary">x{item.quantity}</span></p>
+                ))}
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                <div className="rounded-xl bg-background p-2.5">
+                  <p className="text-secondary">{t('dashboard.payment', { defaultValue: 'Payment' })}</p>
+                  <p className="font-semibold text-primary">{paymentLabel(order.payment_method)}</p>
+                </div>
+                <div className="rounded-xl bg-background p-2.5">
+                  <p className="text-secondary">{t('dashboard.delivery', { defaultValue: 'Delivery' })}</p>
+                  <p className="font-semibold text-primary">{deliveryLabel(order.delivery_method)}</p>
+                </div>
+              </div>
+
+              {order.promo_code && (
+                <p className="mt-2 text-xs text-secondary">
+                  {t('dashboard.promo', { defaultValue: 'Promo' })}: <span className="font-semibold uppercase text-primary">{order.promo_code}</span> (- {formatPrice(order.discount_amount)})
+                </p>
+              )}
+
+              <div className="mt-3">
+                <StatusControl order={order} mode={mode} onChange={(status) => updateStatus(order.id, status)} />
+              </div>
+            </div>
+          ))
+        )}
+      </section>
+
+      {/* Desktop: table */}
+      <section className="hidden rounded-2xl border border-border bg-surface p-4 sm:p-6 md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1080px] text-left text-sm">
             <thead className="text-secondary">
@@ -165,19 +231,7 @@ export default function OrdersPage({ mode }: OrdersPageProps) {
                   </td>
                   <td className="py-3 font-semibold">{formatPrice(order.total_price)}</td>
                   <td className="py-3">
-                    {mode === 'customer' ? (
-                      <span className="rounded-full bg-muted px-2 py-1 text-xs font-semibold capitalize">{orderStatusLabel(order.status)}</span>
-                    ) : (
-                      <select
-                        value={order.status}
-                        onChange={(event) => updateStatus(order.id, event.target.value)}
-                        className="rounded-md border border-border bg-background px-2 py-2 text-base capitalize outline-none focus:border-accent"
-                      >
-                        {orderStatuses.map((status) => (
-                          <option key={status} value={status}>{orderStatusLabel(status)}</option>
-                        ))}
-                      </select>
-                    )}
+                    <StatusControl order={order} mode={mode} onChange={(status) => updateStatus(order.id, status)} />
                   </td>
                 </tr>
               ))}

@@ -54,9 +54,9 @@ function mockProduct(id: number, name: string, category: string, categorySlug: s
 
 const DEMO_PRODUCTS: ProductType[] = [
   mockProduct(901, 'Basmati Rice 5kg', 'Groceries', 'groceries', 850, 42, 780),
-  mockProduct(902, 'Set Thakali', 'Food & Dining', 'food-dining', 899, 27),
-  mockProduct(903, 'Pashmina Scarf', 'Fashion', 'fashion', 1450, 15, 1299),
-  mockProduct(904, 'Mustang Honey 500g', 'Groceries', 'groceries', 600, 33),
+  mockProduct(902, 'Chicken Karahi Meal Set', 'Food & Dining', 'food-dining', 899, 27),
+  mockProduct(903, 'Embroidered Shawl', 'Fashion', 'fashion', 1450, 15, 1299),
+  mockProduct(904, 'Desi Ghee 500g', 'Groceries', 'groceries', 600, 33),
 ];
 
 export default function SellerProducts() {
@@ -97,7 +97,7 @@ export default function SellerProducts() {
     fetch(`${API}/categories/`)
       .then((r) => r.json())
       .then(setCategories)
-      .catch(() => {});
+      .catch(() => { });
   }, [token, isDemo]);
 
   // Clean up object URLs when component unmounts
@@ -263,36 +263,38 @@ export default function SellerProducts() {
     }
   }
 
+  const displayedProducts = isDemo ? demoProducts : products;
+
   return (
     <div className="space-y-6">
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h1 className="text-2xl font-black tracking-tight">{t('seller.title', { defaultValue: 'Product management' })}</h1>
         <p className="mt-2 text-secondary">{t('seller.copy', { defaultValue: 'Create products, track stock, and keep your catalog ready for checkout.' })}</p>
         {isDemo && (
-          <p className="mt-3 rounded-md bg-accent/10 px-3 py-2 text-xs font-semibold text-accent">
+          <p className="mt-3 rounded-xl bg-accent-secondary/10 px-3 py-2 text-xs font-semibold text-accent-secondary">
             {t('dashboard.demoNotice', { defaultValue: 'Demo mode: sample data shown, nothing is saved. Everything resets on refresh.' })}
           </p>
         )}
       </section>
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
-          <Plus className="h-5 w-5 text-accent" />
+          <Plus className="h-5 w-5 text-accent-secondary" />
           {t('seller.addProduct', { defaultValue: 'Add product' })}
         </h2>
 
-        {error && <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="mb-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
         <form onSubmit={createProduct} className="grid gap-4 md:grid-cols-2">
           <input
-            className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+            className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
             placeholder={t('seller.productName', { defaultValue: 'Product name' })}
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             required
           />
           <select
-            className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+            className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
             value={form.category_id}
             onChange={(e) => setForm({ ...form, category_id: e.target.value })}
             required
@@ -303,22 +305,22 @@ export default function SellerProducts() {
             ))}
           </select>
           <input
-            className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
-            placeholder={t('seller.price', { defaultValue: 'Price (NPR)' })}
+            className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+            placeholder={t('seller.price', { defaultValue: 'Price (PKR)' })}
             type="number" min="0"
             value={form.price}
             onChange={(e) => setForm({ ...form, price: e.target.value })}
             required
           />
           <input
-            className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+            className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
             placeholder={t('seller.discountPrice', { defaultValue: 'Discount price (optional)' })}
             type="number" min="0"
             value={form.discount_price}
             onChange={(e) => setForm({ ...form, discount_price: e.target.value })}
           />
           <input
-            className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+            className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
             placeholder={t('seller.stock', { defaultValue: 'Stock quantity' })}
             type="number" min="0"
             value={form.stock}
@@ -334,9 +336,8 @@ export default function SellerProducts() {
 
             {/* Drop zone */}
             <div
-              className={`relative flex min-h-[110px] flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-5 transition-colors cursor-pointer ${
-                isDragging ? 'border-accent bg-accent/5' : 'border-border bg-background hover:border-accent hover:bg-accent/5'
-              }`}
+              className={`relative flex min-h-[110px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-5 transition-colors cursor-pointer ${isDragging ? 'border-accent bg-accent/5' : 'border-border bg-background hover:border-accent-secondary hover:bg-accent-secondary/5'
+                }`}
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
@@ -356,7 +357,7 @@ export default function SellerProducts() {
               />
               <Upload className="h-7 w-7 text-secondary" />
               <p className="text-sm font-medium text-secondary text-center">
-                <span className="text-accent font-semibold">Click to upload</span> or drag &amp; drop
+                <span className="text-accent-secondary font-semibold">Click to upload</span> or drag &amp; drop
               </p>
               <p className="text-xs text-secondary/60">PNG, JPG, WEBP — select multiple at once</p>
             </div>
@@ -366,11 +367,11 @@ export default function SellerProducts() {
               <div className="flex flex-wrap gap-3 pt-1">
                 {images.map((img, idx) => (
                   <div key={img.url} className="relative group">
-                    <div className={`h-24 w-24 overflow-hidden rounded-lg border-2 transition-colors ${idx === 0 ? 'border-accent' : 'border-border'}`}>
+                    <div className={`h-24 w-24 overflow-hidden rounded-xl border-2 transition-colors ${idx === 0 ? 'border-accent' : 'border-border'}`}>
                       <img src={img.url} alt="" className="h-full w-full object-cover" />
                     </div>
                     {idx === 0 && (
-                      <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold text-background whitespace-nowrap">
+                      <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold text-primary whitespace-nowrap">
                         Primary
                       </span>
                     )}
@@ -387,7 +388,7 @@ export default function SellerProducts() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="h-24 w-24 flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-border bg-background text-secondary hover:border-accent hover:text-accent transition-colors"
+                  className="h-24 w-24 flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border bg-background text-secondary hover:border-accent-secondary hover:text-accent-secondary transition-colors"
                 >
                   <ImagePlus className="h-5 w-5" />
                   <span className="text-[10px] font-semibold">Add more</span>
@@ -397,7 +398,7 @@ export default function SellerProducts() {
           </div>
 
           <textarea
-            className="md:col-span-2 rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent resize-none"
+            className="md:col-span-2 rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent resize-none"
             rows={3}
             placeholder={t('seller.description', { defaultValue: 'Product description' })}
             value={form.description}
@@ -408,7 +409,7 @@ export default function SellerProducts() {
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-3 font-bold text-background transition-colors hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed md:w-fit"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 font-bold text-primary transition-opacity hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed md:w-fit"
           >
             <Save className="h-4 w-4" />
             {saving ? 'Saving…' : t('seller.saveProduct', { defaultValue: 'Save product' })}
@@ -416,9 +417,52 @@ export default function SellerProducts() {
         </form>
       </section>
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h2 className="text-lg font-bold">{t('seller.catalog', { defaultValue: 'Catalog' })}</h2>
-        <div className="mt-4 overflow-x-auto">
+
+        {/* Mobile: card list */}
+        <div className="mt-4 space-y-3 md:hidden">
+          {displayedProducts.length === 0 ? (
+            <p className="py-6 text-center text-sm italic text-secondary">No products yet. Add your first product above.</p>
+          ) : (
+            displayedProducts.map((product) => (
+              <div key={product.id} className="rounded-2xl border border-border bg-background p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-primary">{product.name}</p>
+                    <p className="text-xs text-secondary">{t(`categories.${product.category.slug}.name`, { defaultValue: product.category.name })}</p>
+                  </div>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${product.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                    {product.is_active ? t('seller.active', { defaultValue: 'Active' }) : t('seller.inactive', { defaultValue: 'Inactive' })}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center gap-1">
+                  {product.images?.slice(0, 3).map((img, i) => (
+                    <img key={i} src={img.image_url} alt="" className="h-10 w-10 rounded-lg object-cover border border-border" />
+                  ))}
+                  {(product.images?.length ?? 0) === 0 && <span className="text-xs italic text-secondary">No images</span>}
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                  <div className="text-sm">
+                    <span className="font-bold text-primary">{formatPrice(product.discount_price || product.price)}</span>
+                    <span className="ml-2 text-secondary">Stock: {product.stock}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => openEdit(product)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-secondary hover:border-accent-secondary hover:text-accent-secondary">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button type="button" onClick={() => deleteProduct(product)} disabled={deleting === product.id} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-secondary hover:border-red-500 hover:text-red-600 disabled:opacity-50">
+                      {deleting === product.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="mt-4 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[680px] text-left text-sm">
             <thead className="text-secondary">
               <tr>
@@ -432,7 +476,7 @@ export default function SellerProducts() {
               </tr>
             </thead>
             <tbody>
-              {(isDemo ? demoProducts : products).map((product) => (
+              {displayedProducts.map((product) => (
                 <tr key={product.id} className="border-t border-border">
                   <td className="py-3 pr-4 font-semibold">{product.name}</td>
                   <td className="py-3 pr-4">
@@ -442,11 +486,11 @@ export default function SellerProducts() {
                           key={i}
                           src={img.image_url}
                           alt=""
-                          className="h-9 w-9 rounded-md object-cover border border-border"
+                          className="h-9 w-9 rounded-lg object-cover border border-border"
                         />
                       ))}
                       {(product.images?.length ?? 0) > 3 && (
-                        <span className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted text-xs font-semibold text-secondary">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-muted text-xs font-semibold text-secondary">
                           +{(product.images?.length ?? 0) - 3}
                         </span>
                       )}
@@ -469,7 +513,7 @@ export default function SellerProducts() {
                         type="button"
                         onClick={() => openEdit(product)}
                         aria-label={t('seller.editProduct', { defaultValue: `Edit ${product.name}` })}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-secondary transition-colors hover:border-accent hover:text-accent"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-secondary transition-colors hover:border-accent-secondary hover:text-accent-secondary"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
@@ -478,7 +522,7 @@ export default function SellerProducts() {
                         onClick={() => deleteProduct(product)}
                         disabled={deleting === product.id}
                         aria-label={t('seller.deleteProduct', { defaultValue: `Delete ${product.name}` })}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-secondary transition-colors hover:border-red-500 hover:text-red-600 disabled:opacity-50"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-secondary transition-colors hover:border-red-500 hover:text-red-600 disabled:opacity-50"
                       >
                         {deleting === product.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                       </button>
@@ -486,7 +530,7 @@ export default function SellerProducts() {
                   </td>
                 </tr>
               ))}
-              {(isDemo ? demoProducts : products).length === 0 && (
+              {displayedProducts.length === 0 && (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-sm text-secondary italic">No products yet. Add your first product above.</td>
                 </tr>
@@ -503,7 +547,7 @@ export default function SellerProducts() {
           aria-modal="true"
           aria-labelledby="edit-product-title"
         >
-          <div className="anim-scale-in w-full max-w-lg rounded-lg border border-border bg-surface p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="anim-scale-in w-full max-w-lg rounded-2xl border border-border bg-surface p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 id="edit-product-title" className="text-lg font-bold">
@@ -514,25 +558,25 @@ export default function SellerProducts() {
               <button
                 type="button"
                 onClick={closeEdit}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary hover:text-primary"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-secondary hover:text-primary"
                 aria-label={t('seller.close', { defaultValue: 'Close' })}
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            {editError && <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{editError}</p>}
+            {editError && <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{editError}</p>}
 
             <form onSubmit={updateProduct} className="mt-5 grid gap-4 md:grid-cols-2">
               <input
-                className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                 placeholder={t('seller.productName', { defaultValue: 'Product name' })}
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                 required
               />
               <select
-                className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                 value={editForm.category_id}
                 onChange={(e) => setEditForm({ ...editForm, category_id: e.target.value })}
                 required
@@ -543,22 +587,22 @@ export default function SellerProducts() {
                 ))}
               </select>
               <input
-                className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
-                placeholder={t('seller.price', { defaultValue: 'Price (NPR)' })}
+                className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                placeholder={t('seller.price', { defaultValue: 'Price (PKR)' })}
                 type="number" min="0"
                 value={editForm.price}
                 onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
                 required
               />
               <input
-                className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                 placeholder={t('seller.discountPrice', { defaultValue: 'Discount price (optional)' })}
                 type="number" min="0"
                 value={editForm.discount_price}
                 onChange={(e) => setEditForm({ ...editForm, discount_price: e.target.value })}
               />
               <input
-                className="rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent"
                 placeholder={t('seller.stock', { defaultValue: 'Stock quantity' })}
                 type="number" min="0"
                 value={editForm.stock}
@@ -575,11 +619,11 @@ export default function SellerProducts() {
                     const marked = removeImageIds.includes(img.id);
                     return (
                       <div key={img.id} className={`relative group ${marked ? 'opacity-40 grayscale' : ''}`}>
-                        <div className="h-20 w-20 overflow-hidden rounded-lg border-2 border-border">
+                        <div className="h-20 w-20 overflow-hidden rounded-xl border-2 border-border">
                           <img src={img.image_url} alt="" className="h-full w-full object-cover" />
                         </div>
                         {marked && (
-                          <span className="absolute inset-0 flex items-center justify-center rounded-lg bg-red-500/20 text-[9px] font-bold text-red-600">
+                          <span className="absolute inset-0 flex items-center justify-center rounded-xl bg-red-500/20 text-[9px] font-bold text-red-600">
                             {t('seller.willRemove', { defaultValue: 'Will remove' })}
                           </span>
                         )}
@@ -590,9 +634,8 @@ export default function SellerProducts() {
                               ? setRemoveImageIds((prev) => prev.filter((id) => id !== img.id))
                               : setRemoveImageIds((prev) => [...prev, img.id])
                           }
-                          className={`absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full text-white shadow-sm transition-colors ${
-                            marked ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
-                          }`}
+                          className={`absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full text-white shadow-sm transition-colors ${marked ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+                            }`}
                           aria-label={marked ? t('seller.keepImage', { defaultValue: 'Keep image' }) : t('seller.removeImage', { defaultValue: 'Remove image' })}
                         >
                           {marked ? <Plus className="h-3 w-3" /> : <X className="h-3 w-3" />}
@@ -602,7 +645,7 @@ export default function SellerProducts() {
                   })}
                   {editImages.map((img, idx) => (
                     <div key={img.url} className="relative group">
-                      <div className="h-20 w-20 overflow-hidden rounded-lg border-2 border-accent">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl border-2 border-accent">
                         <img src={img.url} alt="" className="h-full w-full object-cover" />
                       </div>
                       <button
@@ -618,7 +661,7 @@ export default function SellerProducts() {
                   <button
                     type="button"
                     onClick={() => editFileInputRef.current?.click()}
-                    className="h-20 w-20 flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-border bg-background text-secondary hover:border-accent hover:text-accent transition-colors"
+                    className="h-20 w-20 flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border bg-background text-secondary hover:border-accent-secondary hover:text-accent-secondary transition-colors"
                   >
                     <ImagePlus className="h-5 w-5" />
                     <span className="text-[10px] font-semibold">{t('seller.addImages', { defaultValue: 'Add images' })}</span>
@@ -635,7 +678,7 @@ export default function SellerProducts() {
               </div>
 
               <textarea
-                className="md:col-span-2 rounded-md border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent resize-none"
+                className="md:col-span-2 rounded-xl border border-border bg-background px-3 py-3 text-base outline-none focus:border-accent resize-none"
                 rows={3}
                 placeholder={t('seller.description', { defaultValue: 'Product description' })}
                 value={editForm.description}
@@ -647,14 +690,14 @@ export default function SellerProducts() {
                 <button
                   type="button"
                   onClick={closeEdit}
-                  className="rounded-md border border-border px-4 py-3 text-sm font-semibold text-secondary hover:text-primary"
+                  className="rounded-full border border-border px-4 py-3 text-sm font-semibold text-secondary hover:text-primary"
                 >
                   {t('seller.cancel', { defaultValue: 'Cancel' })}
                 </button>
                 <button
                   type="submit"
                   disabled={editSaving}
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-3 font-bold text-background transition-colors hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 font-bold text-primary transition-opacity hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {editSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                   {editSaving ? 'Saving…' : t('seller.saveChanges', { defaultValue: 'Save changes' })}

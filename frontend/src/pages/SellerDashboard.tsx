@@ -25,16 +25,16 @@ export default function SellerDashboard() {
   useEffect(() => {
     if (isDemo) {
       setSummary({
-        store: { name: 'Thakali Kitchen' },
+        store: { name: 'Lahori Zaiqa Kitchen' },
         products: 24,
         active_products: 19,
         orders: 148,
         units_sold: 317,
         revenue: '182500',
         top_products: [
-          { id: 1, name: 'Set Thakali', stock: 42, order_count: 86 },
-          { id: 2, name: 'Dal Bhat Power Set', stock: 27, order_count: 54 },
-          { id: 3, name: 'Ghiraula Tea (1kg)', stock: 15, order_count: 31 },
+          { id: 1, name: 'Chicken Karahi Meal Set', stock: 42, order_count: 86 },
+          { id: 2, name: 'Beef Nihari Family Pack', stock: 27, order_count: 54 },
+          { id: 3, name: 'Kashmiri Chai (1kg)', stock: 15, order_count: 31 },
         ],
       });
       return;
@@ -51,14 +51,16 @@ export default function SellerDashboard() {
     { label: t('dashboard.revenue', { defaultValue: 'Revenue' }), value: formatPrice(summary?.revenue || 0), icon: TrendingUp },
   ];
 
+  const topProducts = summary?.top_products || [];
+
   return (
     <div className="space-y-6">
-      <section className="rounded-lg border border-accent/30 bg-accent/5 p-4 sm:p-6">
-        <p className="text-sm font-semibold uppercase tracking-wide text-accent">{t('dashboard.sellerCrm', { defaultValue: 'Seller CRM' })}</p>
+      <section className="rounded-2xl border border-accent-secondary/30 bg-accent-secondary/5 p-4 sm:p-6">
+        <p className="text-sm font-semibold uppercase tracking-wide text-accent-secondary">{t('dashboard.sellerCrm', { defaultValue: 'Seller CRM' })}</p>
         <h1 className="mt-2 text-2xl font-black tracking-tight">{summary?.store?.name || t('dashboard.storeDashboard', { defaultValue: 'Store dashboard' })}</h1>
         <p className="mt-2 text-secondary">{t('dashboard.sellerDescription', { defaultValue: 'Manage catalog, inventory, orders, customer records, and sales performance.' })}</p>
         {isDemo && (
-          <p className="mt-3 rounded-md bg-accent/10 px-3 py-2 text-xs font-semibold text-accent">
+          <p className="mt-3 rounded-xl bg-accent-secondary/10 px-3 py-2 text-xs font-semibold text-accent-secondary">
             {t('dashboard.demoNotice', { defaultValue: 'Demo mode: sample data shown, nothing is saved. Everything resets on refresh.' })}
           </p>
         )}
@@ -70,8 +72,10 @@ export default function SellerDashboard() {
         {cards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="rounded-lg border border-border bg-surface p-4 sm:p-5">
-              <Icon className="h-5 w-5 text-accent" />
+            <div key={card.label} className="rounded-2xl border border-border bg-surface p-4 sm:p-5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-secondary/15 text-accent-secondary">
+                <Icon className="h-4.5 w-4.5" />
+              </span>
               <p className="mt-4 text-sm text-secondary">{card.label}</p>
               <p className="mt-1 text-2xl font-black">{card.value}</p>
             </div>
@@ -79,9 +83,28 @@ export default function SellerDashboard() {
         })}
       </div>
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h2 className="text-lg font-bold">{t('dashboard.topProducts', { defaultValue: 'Top products' })}</h2>
-        <div className="mt-4 overflow-x-auto">
+
+        {/* Mobile: card list */}
+        <div className="mt-4 space-y-2 md:hidden">
+          {topProducts.length === 0 ? (
+            <p className="py-4 text-center text-sm text-secondary">{t('dashboard.noOrders', { defaultValue: 'No data yet.' })}</p>
+          ) : (
+            topProducts.map((product) => (
+              <div key={product.id} className="flex items-center justify-between rounded-xl bg-background p-3">
+                <p className="font-semibold text-primary">{product.name}</p>
+                <div className="flex gap-4 text-xs text-secondary">
+                  <span>{t('dashboard.stock', { defaultValue: 'Stock' })}: <span className="font-bold text-primary">{product.stock}</span></span>
+                  <span>{t('dashboard.orders', { defaultValue: 'Orders' })}: <span className="font-bold text-primary">{product.order_count}</span></span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="mt-4 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[520px] text-left text-sm">
             <thead className="text-secondary">
               <tr>
@@ -91,7 +114,7 @@ export default function SellerDashboard() {
               </tr>
             </thead>
             <tbody>
-              {(summary?.top_products || []).map((product) => (
+              {topProducts.map((product) => (
                 <tr key={product.id} className="border-t border-border">
                   <td className="py-3 font-semibold">{product.name}</td>
                   <td className="py-3">{product.stock}</td>
@@ -104,7 +127,7 @@ export default function SellerDashboard() {
       </section>
 
       {!isDemo && (
-        <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 sm:p-6 mt-8">
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 sm:p-6 mt-8">
           <h2 className="text-lg font-bold text-red-600 mb-2">Danger Zone</h2>
           <p className="text-sm text-secondary mb-4">Once you delete your account, there is no going back. Please be certain.</p>
           <button
@@ -113,7 +136,7 @@ export default function SellerDashboard() {
                 requestDeleteAccount().catch((err: any) => alert("Failed to request account deletion: " + err.message));
               }
             }}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full transition-colors text-sm"
           >
             Delete Account
           </button>

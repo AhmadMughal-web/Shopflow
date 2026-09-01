@@ -35,18 +35,20 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
-        <p className="text-sm font-semibold uppercase tracking-wide text-accent">{t('dashboard.platformAdmin', { defaultValue: 'Platform Admin' })}</p>
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <p className="text-sm font-semibold uppercase tracking-wide text-accent-secondary">{t('dashboard.platformAdmin', { defaultValue: 'Platform Admin' })}</p>
         <h1 className="mt-2 text-2xl font-black tracking-tight">{t('dashboard.moderationOverview', { defaultValue: 'Moderation and CRM overview' })}</h1>
         <p className="mt-2 text-secondary">{t('dashboard.manageUsers', { defaultValue: 'Manage users, sellers, products, disputes, CRM records, and platform health.' })}</p>
       </section>
 
-      <div className="grid gap-4 md:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="rounded-lg border border-border bg-surface p-4 sm:p-5">
-              <Icon className="h-5 w-5 text-accent" />
+            <div key={card.label} className="rounded-2xl border border-border bg-surface p-4 sm:p-5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-secondary/15 text-accent-secondary">
+                <Icon className="h-4.5 w-4.5" />
+              </span>
               <p className="mt-4 text-sm text-secondary">{card.label}</p>
               <p className="mt-1 text-2xl font-black">{card.value}</p>
             </div>
