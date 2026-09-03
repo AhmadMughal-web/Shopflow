@@ -19,16 +19,16 @@
     "promptDeals": "Find best deals",
     "promptDelivery": "Explain delivery",
     "promptSellers": "How sellers work",
-    "title": "Kinu AI",
+    "title": "ShopFlow AI",
     "subtitle": "Local commerce assistant",
     "ready": "Ready",
     "newChat": "New chat",
-    "placeholder": "Ask KinaHub AI",
+    "placeholder": "Ask ShopFlow AI",
     "error": "Sorry, something went wrong. Please try again.",
     "addToCart": "Add to cart",
     "addedToCart": "Added to cart",
     "confirmAdd": "Sure! Shall I add",
     "confirmAddToCart": "to your cart?",
-    "founderReply": "KinaHub was founded by **Bikram Gole** as his Class 10 OJT school project, built with Django. He is a minimalist builder from Nepal who runs Linux from Scratch and writes C++, Python, and Bash. His other projects include Ytdaily, BinodLivestock, Snapcode, and RVX-UltraLock."
+    "founderReply": "ShopFlow is a high-performance Django platform built by the visionary team at Naralith Studio. Crafted with precision and minimal design, it blends raw technical power with a seamless web experience—built from the ground up by the Naralith Studio team."
   }
 }

@@ -19,9 +19,9 @@ function upsertMeta(selector: string, attributes: Record<string, string>) {
   });
 }
 
-export default function Seo({ title, description = 'KinaHub local marketplace for products, seller stores, delivery, and checkout.', image, type = 'website' }: SeoProps) {
+export default function Seo({ title, description = 'ShopFlow local marketplace for products, seller stores, delivery, and checkout.', image, type = 'website' }: SeoProps) {
   useEffect(() => {
-    const fullTitle = title.includes('KinaHub') ? title : `${title} | KinaHub`;
+    const fullTitle = title.includes('ShopFlow') ? title : `${title} | ShopFlow`;
     document.title = fullTitle;
 
     upsertMeta('meta[name="description"]', { name: 'description', content: description });

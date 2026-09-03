@@ -70,9 +70,9 @@ Address.objects.update_or_create(
     defaults={
         "full_name": "Demo Customer",
         "phone": "9800000000",
-        "line1": "Lazimpat",
-        "city": "Kathmandu",
-        "country": "Nepal",
+        "line1": "Gulberg",
+        "city": "Lahore",
+        "country": "Pakistan",
         "is_default": True,
     },
 )
@@ -91,17 +91,17 @@ seller_user.set_password("seller123")
 seller_user.save()
 seller_profile, _ = SellerProfile.objects.update_or_create(
     user=seller_user,
-    defaults={"business_name": "Barat Kirana Pasal", "phone": "9811111111", "status": "verified"},
+    defaults={"business_name": "Baghbanpura Kirana Store", "phone": "9811111111", "status": "verified"},
 )
 barat_store, _ = Store.objects.update_or_create(
     seller=seller_profile,
     defaults={
-        "name": "Barat Kirana Pasal",
+        "name": "Baghbanpura Kirana Store",
         "slug": "barat-kirana-pasal",
-        "description": "Local general store from Pabitranagar, Gongabu for groceries, hygiene, and daily essentials.",
-        "address": "Pabitranagar, Gongabu, Kathmandu",
-        "area": "Pabitranagar, Gongabu",
-        "map_url": "https://www.google.com/maps/search/?api=1&query=Pabitranagar%20Gongabu%20Kathmandu",
+        "description": "Local general store from Baghbanpura for groceries, hygiene, and daily essentials.",
+        "address": "Baghbanpura, Lahore",
+        "area": "Baghbanpura",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Baghbanpura%20Lahore",
         "support_email": "seller@dukan.local",
         "support_phone": "9811111111",
         "logo_url": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80",
@@ -129,32 +129,32 @@ def ensure_seller_store(email, password, business_name, phone, description, logo
         defaults={"business_name": business_name, "phone": phone, "status": "verified"},
     )
     address_val = {
-        "New Road Tech Suppliers": "New Road, Kathmandu",
-        "Thamel Style House": "Thamel, Kathmandu",
-        "Baneshwor Home Mart": "New Baneshwor, Kathmandu",
-        "Boudha Books & Stationery": "Boudha, Kathmandu",
-        "Kalanki Sports Hub": "Kalanki, Kathmandu",
-        "New Road Console Garage": "New Road, Kathmandu",
-        "Teku Auto & Bike Store": "Teku, Kathmandu",
-        "Patan Eco & Pet Mart": "Patan, Lalitpur",
-        "Bharatpur General Store": "Bharatpur, Chitwan",
-        "Everest Lifestyle Mart": "Gyaneshwor, Kathmandu",
-        "Pokhara Modern Mall": "Lakeside, Pokhara",
+        "Mall Road Tech Suppliers": "Mall Road, Lahore",
+        "Liberty Style House": "Liberty Market, Lahore",
+        "Gulberg Home Mart": "Gulberg, Lahore",
+        "Model Town Books & Stationery": "Model Town, Lahore",
+        "Township Sports Hub": "Township, Lahore",
+        "Anarkali Console Garage": "Anarkali, Lahore",
+        "Ichhra Auto & Bike Store": "Ichhra, Lahore",
+        "Johar Town Eco & Pet Mart": "Johar Town, Lahore",
+        "Faisal Town General Store": "Faisal Town, Lahore",
+        "DHA Lifestyle Mart": "DHA Phase 5, Lahore",
+        "Bahria Modern Mall": "Bahria Town, Lahore",
     }.get(business_name, "Lahore, Pakistan")
     
     area_val = {
-        "New Road Tech Suppliers": "New Road",
-        "Thamel Style House": "Thamel",
-        "Baneshwor Home Mart": "New Baneshwor",
-        "Boudha Books & Stationery": "Boudha",
-        "Kalanki Sports Hub": "Kalanki",
-        "New Road Console Garage": "New Road",
-        "Teku Auto & Bike Store": "Teku",
-        "Patan Eco & Pet Mart": "Patan",
-        "Bharatpur General Store": "Bharatpur",
-        "Everest Lifestyle Mart": "Gyaneshwor",
-        "Pokhara Modern Mall": "Lakeside",
-    }.get(business_name, "Kathmandu")
+        "Mall Road Tech Suppliers": "Mall Road",
+        "Liberty Style House": "Liberty Market",
+        "Gulberg Home Mart": "Gulberg",
+        "Model Town Books & Stationery": "Model Town",
+        "Township Sports Hub": "Township",
+        "Anarkali Console Garage": "Anarkali",
+        "Ichhra Auto & Bike Store": "Ichhra",
+        "Johar Town Eco & Pet Mart": "Johar Town",
+        "Faisal Town General Store": "Faisal Town",
+        "DHA Lifestyle Mart": "DHA Phase 5",
+        "Bahria Modern Mall": "Bahria Town",
+    }.get(business_name, "Lahore")
     
     map_url_val = "https://www.google.com/maps/search/?api=1&query=" + address_val.replace(" ", "%20").replace(",", "")
 
@@ -180,7 +180,7 @@ def ensure_seller_store(email, password, business_name, phone, description, logo
 tech_store = ensure_seller_store(
     "newroad.tech@dukan.local",
     "seller123",
-    "New Road Tech Suppliers",
+    "Mall Road Tech Suppliers",
     "9822222222",
     "Mobile, laptop, audio, gaming, and networking seller from New Road.",
     logo_url="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
@@ -189,7 +189,7 @@ tech_store = ensure_seller_store(
 fashion_store = ensure_seller_store(
     "thamel.style@dukan.local",
     "seller123",
-    "Thamel Style House",
+    "Liberty Style House",
     "9833333333",
     "Fashion, sports, books, and lifestyle shop from Thamel.",
     logo_url="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80",
@@ -198,7 +198,7 @@ fashion_store = ensure_seller_store(
 home_store = ensure_seller_store(
     "baneshwor.home@dukan.local",
     "seller123",
-    "Baneshwor Home Mart",
+    "Gulberg Home Mart",
     "9844444444",
     "Home, appliance, beauty, and household essentials seller from Baneshwor.",
     logo_url="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=600&q=80",
@@ -207,7 +207,7 @@ home_store = ensure_seller_store(
 books_store = ensure_seller_store(
     "books@dukan.local",
     "seller123",
-    "Boudha Books & Stationery",
+    "Model Town Books & Stationery",
     "9855555555",
     "Books, exam prep, stationery, and school gear from Boudha.",
     logo_url="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
@@ -216,7 +216,7 @@ books_store = ensure_seller_store(
 sports_store = ensure_seller_store(
     "sports@dukan.local",
     "seller123",
-    "Kalanki Sports Hub",
+    "Township Sports Hub",
     "9866666666",
     "Fitness, football, basketball, and outdoor training gear from Kalanki.",
     logo_url="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80",
@@ -225,7 +225,7 @@ sports_store = ensure_seller_store(
 console_store = ensure_seller_store(
     "console@dukan.local",
     "seller123",
-    "New Road Console Garage",
+    "Anarkali Console Garage",
     "9877777777",
     "Consoles, gaming chairs, controllers, and maker gear from New Road.",
     logo_url="https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=600&q=80",
@@ -234,7 +234,7 @@ console_store = ensure_seller_store(
 auto_store = ensure_seller_store(
     "auto@dukan.local",
     "seller123",
-    "Teku Auto & Bike Store",
+    "Ichhra Auto & Bike Store",
     "9888888888",
     "Helmets, bike accessories, and riding gear from Teku.",
     logo_url="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80",
@@ -243,7 +243,7 @@ auto_store = ensure_seller_store(
 eco_store = ensure_seller_store(
     "eco@dukan.local",
     "seller123",
-    "Patan Eco & Pet Mart",
+    "Johar Town Eco & Pet Mart",
     "9899999999",
     "Reusable goods, bamboo products, pet food, and solar gadgets from Patan.",
     logo_url="https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=600&q=80",
@@ -252,7 +252,7 @@ eco_store = ensure_seller_store(
 fake_store = ensure_seller_store(
     "bharatpur@kinahub.local",
     "seller123",
-    "Bharatpur General Store",
+    "Faisal Town General Store",
     "9800000001",
     "Marketplace-style general store with clothing, electronics, and jewelry.",
     logo_url="https://images.unsplash.com/photo-1556742205-9ba1fefe7f4d?auto=format&fit=crop&w=600&q=80",
@@ -261,7 +261,7 @@ fake_store = ensure_seller_store(
 dummy_store = ensure_seller_store(
     "lifestyle@kinahub.local",
     "seller123",
-    "Everest Lifestyle Mart",
+    "DHA Lifestyle Mart",
     "9800000002",
     "Beauty, furniture, and grocery products sourced from premium brands.",
     logo_url="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=600&q=80",
@@ -270,7 +270,7 @@ dummy_store = ensure_seller_store(
 platzi_store = ensure_seller_store(
     "pokhara@kinahub.local",
     "seller123",
-    "Pokhara Modern Mall",
+    "Bahria Modern Mall",
     "9800000003",
     "Fashion, electronics, and furniture from top brands in Pokhara.",
     logo_url="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
@@ -412,7 +412,7 @@ products_data = [
         "is_featured": True,
         "store": "barat",
         "image_url": "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=900&q=80",
-        "description": "Family pack of Wai Wai noodles stocked by Barat Kirana Pasal in Gongabu.",
+        "description": "Family pack of Wai Wai noodles stocked by Baghbanpura Kirana Store in Gongabu.",
         "specifications": "Pack: 30 pcs\nArea: Pabitranagar, Gongabu\nDelivery: Same-day in nearby areas\nPayment: COD and wallets",
     },
     {
@@ -442,7 +442,7 @@ products_data = [
         "is_featured": False,
         "store": "barat",
         "image_url": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=900&q=80",
-        "description": "Daily cooking oil available from Barat Kirana Pasal.",
+        "description": "Daily cooking oil available from Baghbanpura Kirana Store.",
         "specifications": "Volume: 1L\nType: Sunflower oil\nArea: Pabitranagar\nDelivery: Standard or express",
     },
     {
@@ -569,8 +569,8 @@ products_data = [
         "tag": "Local",
         "is_featured": True,
         "image_url": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80",
-        "description": "Affordable Nepali everyday sneakers with solid grip.",
-        "specifications": "Origin: Nepal\nSizes: 38-44\nUse: Daily wear\nReturn: 7 days",
+        "description": "Affordable Pakistani everyday sneakers with solid grip.",
+        "specifications": "Origin: Pakistan\nSizes: 38-44\nUse: Daily wear\nReturn: 7 days",
     },
     {
         "name": "Philips Air Fryer 4.1L",
@@ -654,7 +654,7 @@ products_data = [
         "is_featured": False,
         "image_url": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=900&q=80",
         "description": "Roasted coffee beans for home brewing.",
-        "specifications": "Weight: 250g\nRoast: Medium\nOrigin: Nepal\nUse: Espresso or filter",
+        "specifications": "Weight: 250g\nRoast: Medium\nOrigin: Pakistan\nUse: Espresso or filter",
     },
     {
         "name": "Razer DeathAdder V3",
@@ -1009,7 +1009,7 @@ extra_products = [
         "store": "books",
         "image_url": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80",
         "description": "Exam-focused prep books for SEE and local entrance tests.",
-        "specifications": "Format: Paperback\nUse: Exam prep\nStore: Boudha Books & Stationery\nDelivery: Kathmandu valley",
+        "specifications": "Format: Paperback\nUse: Exam prep\nStore: Model Town Books & Stationery\nDelivery: Kathmandu valley",
     },
     {
         "name": "Programming Books Bundle",
@@ -1039,7 +1039,7 @@ extra_products = [
         "store": "books",
         "image_url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
         "description": "Bright adjustable lamp for desks, study tables, and hostel rooms.",
-        "specifications": "Light: LED\nUse: Study desk\nPower: USB\nStore: Boudha Books & Stationery",
+        "specifications": "Light: LED\nUse: Study desk\nPower: USB\nStore: Model Town Books & Stationery",
     },
     {
         "name": "Scientific Calculator Pro",
@@ -1578,7 +1578,7 @@ def build_diverse_products():
     ]
 
     name_templates = {
-        "Books": ["SEE Prep Guide", "+2 Physics Book", "Entrance Exam Mastery", "Python Programming Book", "GK Nepal Book", "English Grammar Workbook", "Novel Collection", "Kids Story Book"],
+        "Books": ["SEE Prep Guide", "+2 Physics Book", "Entrance Exam Mastery", "Python Programming Book", "GK Pakistan Book", "English Grammar Workbook", "Novel Collection", "Kids Story Book"],
         "Stationery": ["Gel Pen Pack", "A4 Notebook Bundle", "Highlighter Set", "Geometry Box", "Planner Notebook", "Sticky Notes Pack", "Marker Set", "Clip Board"],
         "School": ["School Backpack", "Lunch Box Set", "Study Lamp", "Scientific Calculator", "Exam Answer Sheet Pack", "Exam Clipboard", "Water Bottle Set", "Desk Organizer"],
         "Gaming": ["PSX Retro Console", "Xbox Series Controller", "Gaming Chair Pro", "RGB Mouse Pad", "Arcade Stick", "VR Headset", "Game Storage Rack", "Mechanical Keyboard"],
@@ -1642,7 +1642,7 @@ def build_diverse_products():
         "School": ["Science Project Kit", "Math Practice Set", "Roller Bag", "Class Bell Timer"],
         "Gaming": ["Arcade Fight Stick", "Retro Cartridge Pack", "Console Cooling Dock", "Trigger Grip Set"],
         "Accessories": ["GitHub Fork T-Shirt", "USB-C Cable Bundle", "Phone Ring Stand", "Laptop Sleeve Pro"],
-        "Fashion": ["Denim Shirt", "Nepali Hoodie", "Summer Kurta", "Street Jacket"],
+        "Fashion": ["Denim Shirt", "Pakistani Hoodie", "Summer Kurta", "Street Jacket"],
         "Home": ["Curtain Light Set", "Kitchen Knife Block", "Storage Basket Set", "Smart Plug Pack"],
         "Sports": ["Cricket Bat Grip", "Basketball Net", "Fitness Timer", "Training Cone Set"],
         "Automotive & Bikes": ["Car Tire Inflator", "Bike Mirror Set", "Reflective Vest", "Helmet Visor"],

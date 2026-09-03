@@ -57,7 +57,7 @@ class ToastErrorBoundary extends Component<{ children: ReactNode; fallback?: Rea
 
 const CartContext = createContext<CartContextType | null>(null);
 
-const CART_KEY = 'kinahub_cart';
+const CART_KEY = 'ShopFlow_cart';
 
 function normalizeProductForCart(product: ProductType): ProductType {
   const normalizedCategory =

@@ -75,7 +75,7 @@ class RegisterSerializer(serializers.Serializer):
         user.otp_created_at = timezone.now()
         user.save(update_fields=['otp_code', 'otp_created_at'])
 
-        send_otp_email(user.email, otp, "Your KinaHub Registration Code")
+        send_otp_email(user.email, otp, "Your ShopFlow Registration Code")
 
         return {
             "require_2fa": True,

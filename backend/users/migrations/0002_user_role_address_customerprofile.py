@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(max_length=120)),
                 ('state', models.CharField(blank=True, max_length=120)),
                 ('postal_code', models.CharField(blank=True, max_length=30)),
-                ('country', models.CharField(default='Nepal', max_length=80)),
+                ('country', models.CharField(default='Pakistan', max_length=80)),
                 ('is_default', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='addresses', to=settings.AUTH_USER_MODEL)),

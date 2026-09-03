@@ -41,8 +41,8 @@ def seed_clothes():
             "description": "Premium clothing for men and women. Trendy, comfortable, and affordable.",
             "logo_url": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
             "banner_url": "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
-            "address": "Durbar Marg, Kathmandu",
-            "area": "Durbar Marg",
+            "address": "Mall Road, Lahore",
+            "area": "Mall Road",
             "is_active": True
         }
     )

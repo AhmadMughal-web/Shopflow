@@ -62,16 +62,42 @@ export default function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h1 className="text-2xl font-black tracking-tight">{t('dashboard.usersAndSellers', { defaultValue: 'Users and sellers' })}</h1>
         <p className="mt-2 text-secondary">{t('dashboard.manageUsers', { defaultValue: 'Moderate user accounts, seller verification, and seller status.' })}</p>
       </section>
 
-      {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h2 className="text-lg font-bold">{t('dashboard.sellerVerification', { defaultValue: 'Seller verification' })}</h2>
-        <div className="mt-4 overflow-x-auto">
+
+        {/* Mobile: card list */}
+        <div className="mt-4 space-y-2 md:hidden">
+          {sellers.length === 0 ? (
+            <p className="py-4 text-center text-sm text-secondary">—</p>
+          ) : (
+            sellers.map((seller) => (
+              <div key={seller.id} className="rounded-xl bg-background p-3">
+                <p className="font-semibold text-primary">{seller.business_name}</p>
+                <p className="text-xs text-secondary">{seller.user_email}</p>
+                <p className="mt-1 text-xs text-secondary">{t('dashboard.store', { defaultValue: 'Store' })}: {seller.store?.name || '-'}</p>
+                <select
+                  value={seller.status}
+                  onChange={(event) => updateSellerStatus(seller.id, event.target.value as SellerProfile['status'])}
+                  className="mt-2 w-full rounded-xl border border-border bg-surface px-2 py-2 text-sm capitalize outline-none focus:border-accent"
+                >
+                  <option value="pending">{t('common.pending', { defaultValue: 'Pending' })}</option>
+                  <option value="verified">{t('common.verified', { defaultValue: 'Verified' })}</option>
+                  <option value="suspended">{t('common.suspended', { defaultValue: 'Suspended' })}</option>
+                </select>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="mt-4 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="text-secondary">
               <tr>
@@ -91,7 +117,7 @@ export default function AdminUsersPage() {
                     <select
                       value={seller.status}
                       onChange={(event) => updateSellerStatus(seller.id, event.target.value as SellerProfile['status'])}
-                      className="rounded-md border border-border bg-background px-2 py-2 text-base capitalize outline-none focus:border-accent"
+                      className="rounded-xl border border-border bg-background px-2 py-2 text-base capitalize outline-none focus:border-accent"
                     >
                       <option value="pending">{t('common.pending', { defaultValue: 'Pending' })}</option>
                       <option value="verified">{t('common.verified', { defaultValue: 'Verified' })}</option>
@@ -105,9 +131,30 @@ export default function AdminUsersPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
         <h2 className="text-lg font-bold">{t('dashboard.users', { defaultValue: 'Users' })}</h2>
-        <div className="mt-4 overflow-x-auto">
+
+        {/* Mobile: card list */}
+        <div className="mt-4 space-y-2 md:hidden">
+          {users.length === 0 ? (
+            <p className="py-4 text-center text-sm text-secondary">—</p>
+          ) : (
+            users.map((user) => (
+              <div key={user.id} className="flex items-center justify-between rounded-xl bg-background p-3">
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-primary">{user.email}</p>
+                  <p className="text-xs text-secondary">{[user.first_name, user.last_name].filter(Boolean).join(' ') || '-'} · {getRoleLabel(user.effective_role, t)}</p>
+                </div>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${user.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                  {user.is_active ? t('common.yes', { defaultValue: 'Yes' }) : t('common.no', { defaultValue: 'No' })}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="mt-4 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[680px] text-left text-sm">
             <thead className="text-secondary">
               <tr>

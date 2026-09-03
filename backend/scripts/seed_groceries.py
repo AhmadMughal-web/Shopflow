@@ -40,8 +40,8 @@ def seed_groceries():
             "description": "Your neighborhood grocery store with fresh produce and daily essentials.",
             "logo_url": "https://loremflickr.com/200/200/store",
             "banner_url": "https://loremflickr.com/800/400/grocery",
-            "address": "Baneshwor, Kathmandu",
-            "area": "Baneshwor",
+            "address": "Gulberg, Lahore",
+            "area": "Gulberg",
             "is_active": True
         }
     )
@@ -61,8 +61,8 @@ def seed_groceries():
             "description": "Hot and fresh meals delivered straight to your door.",
             "logo_url": "https://loremflickr.com/200/200/restaurant",
             "banner_url": "https://loremflickr.com/800/400/food",
-            "address": "Thamel, Kathmandu",
-            "area": "Thamel",
+            "address": "Liberty Market, Lahore",
+            "area": "Liberty Market",
             "is_active": True
         }
     )
@@ -174,7 +174,7 @@ def seed_groceries():
             "slug": "steamed-veg-momo",
             "price": "150.00",
             "stock": 50,
-            "description": "Authentic Nepali steamed dumplings stuffed with finely chopped fresh vegetables.",
+            "description": "Authentic Pakistani steamed dumplings stuffed with finely chopped fresh vegetables.",
             "image": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=900&q=80",
             "delivery_time_estimate": "30-45 mins",
             "base_delivery_fee": "80.00",

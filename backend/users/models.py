@@ -62,7 +62,7 @@ class Address(models.Model):
     city = models.CharField(max_length=120)
     state = models.CharField(max_length=120, blank=True)
     postal_code = models.CharField(max_length=30, blank=True)
-    country = models.CharField(max_length=80, default="Nepal")
+    country = models.CharField(max_length=80, default="Pakistan")
     is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

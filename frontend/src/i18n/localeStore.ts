@@ -12,7 +12,6 @@ const localeDirections: Record<Locale, 'ltr' | 'rtl'> = {
   np: 'ltr',
 };
 
-// English-only for now — Nepali is disabled at the source so it can never
 // be loaded or selected, even if an old value is sitting in localStorage.
 export function isLocale(value: string | null | undefined): value is Locale {
   return value === 'en';

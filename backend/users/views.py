@@ -237,7 +237,7 @@ class LoginWithOTPView(TokenObtainPairView):
         user.otp_created_at = timezone.now()
         user.save(update_fields=['otp_code', 'otp_created_at'])
         
-        subject = "Your KinaHub Login Code"
+        subject = "Your ShopFlow Login Code"
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = user.email
         
@@ -299,7 +299,7 @@ class RequestDeleteAccountView(APIView):
         user.otp_created_at = timezone.now()
         user.save(update_fields=['otp_code', 'otp_created_at'])
 
-        subject = "KinaHub — Account Deletion Verification"
+        subject = "ShopFlow — Account Deletion Verification"
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = user.email
 
@@ -308,7 +308,7 @@ class RequestDeleteAccountView(APIView):
             "email": user.email,
         })
         text_content = (
-            f"You requested to delete your KinaHub account ({user.email}).\n"
+            f"You requested to delete your ShopFlow account ({user.email}).\n"
             f"Your verification code is: {otp}\n"
             f"This code expires in 5 minutes.\n\n"
             f"If you did not request this, please change your password immediately."
@@ -406,8 +406,8 @@ class SendPromoEmailView(APIView):
     permission_classes = [permissions.IsAdminUser]
 
     def post(self, request):
-        subject = request.data.get("subject") or "KinaHub special offer"
-        headline = request.data.get("headline") or "Special offers from KinaHub"
+        subject = request.data.get("subject") or "ShopFlow special offer"
+        headline = request.data.get("headline") or "Special offers from ShopFlow"
         body = request.data.get("body") or "Discover discounts, events, and special sales from local seller stores."
         cta_text = request.data.get("cta_text") or "Shop now"
         cta_url = request.data.get("cta_url") or "http://localhost:5173/products"

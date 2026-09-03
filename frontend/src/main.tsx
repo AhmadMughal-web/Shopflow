@@ -17,7 +17,7 @@ import App from "./App.tsx";
       .then(() => {
         const ms = Date.now() - start;
         if (ms > 5000) {
-          console.log(`[KinaHub] Backend woke up in ${(ms / 1000).toFixed(1)}s`);
+          console.log(`[ShopFlow] Backend woke up in ${(ms / 1000).toFixed(1)}s`);
         }
       })
       .catch(() => {
