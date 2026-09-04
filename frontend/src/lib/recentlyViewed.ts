@@ -1,6 +1,6 @@
 import type { ProductType } from './products';
 
-const RECENTLY_VIEWED_KEY = 'kinahub_recently_viewed';
+const RECENTLY_VIEWED_KEY = 'shopflow_recently_viewed';
 const MAX_RECENTLY_VIEWED = 12;
 
 export function getRecentlyViewedProducts() {

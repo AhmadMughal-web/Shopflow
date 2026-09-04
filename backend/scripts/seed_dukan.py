@@ -250,7 +250,7 @@ eco_store = ensure_seller_store(
     banner_url="https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=1600&q=80",
 )
 fake_store = ensure_seller_store(
-    "bharatpur@kinahub.local",
+    "bharatpur@shopflow.local",
     "seller123",
     "Faisal Town General Store",
     "9800000001",
@@ -259,7 +259,7 @@ fake_store = ensure_seller_store(
     banner_url="https://images.unsplash.com/photo-1556742205-9ba1fefe7f4d?auto=format&fit=crop&w=1600&q=80",
 )
 dummy_store = ensure_seller_store(
-    "lifestyle@kinahub.local",
+    "lifestyle@shopflow.local",
     "seller123",
     "DHA Lifestyle Mart",
     "9800000002",
@@ -268,7 +268,7 @@ dummy_store = ensure_seller_store(
     banner_url="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80",
 )
 platzi_store = ensure_seller_store(
-    "pokhara@kinahub.local",
+    "pokhara@shopflow.local",
     "seller123",
     "Bahria Modern Mall",
     "9800000003",
@@ -313,9 +313,9 @@ def download_image(source_url, target_filename, store_slug=""):
 review_people = [
     ("Ram Shah", "Overall a solid pick.", True),
     ("Sita Karki", "Arrived quickly and matched the description.", False),
-    ("Aarav Shrestha", "Good value for the price in Kathmandu.", True),
+    ("Ahmed Raza", "Good value for the price in Lahore.", True),
     ("Nisha Thapa", "Packaging was fine and the product works well.", False),
-    ("Bikram Gurung", "Better than expected from a local seller.", True),
+    ("Hamza Tariq", "Better than expected from a local seller.", True),
     ("Mina Lama", "Would buy again from the same store.", False),
 ]
 
@@ -569,7 +569,7 @@ products_data = [
         "tag": "Local",
         "is_featured": True,
         "image_url": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80",
-        "description": "Affordable Pakistani everyday sneakers with solid grip.",
+        "description": "Affordable everyday sneakers with solid grip.",
         "specifications": "Origin: Pakistan\nSizes: 38-44\nUse: Daily wear\nReturn: 7 days",
     },
     {
@@ -993,7 +993,7 @@ extra_products = [
         "is_featured": False,
         "store": "books",
         "image_url": "/product-media/atomic-habits.jpg",
-        "description": "A second local store listing of the same book for Kathmandu readers.",
+        "description": "A second local store listing of the same book for Lahore readers.",
         "specifications": "Format: Paperback\nLanguage: English\nPages: 320\nCategory: Self improvement",
     },
     {
@@ -1009,7 +1009,7 @@ extra_products = [
         "store": "books",
         "image_url": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80",
         "description": "Exam-focused prep books for SEE and local entrance tests.",
-        "specifications": "Format: Paperback\nUse: Exam prep\nStore: Model Town Books & Stationery\nDelivery: Kathmandu valley",
+        "specifications": "Format: Paperback\nUse: Exam prep\nStore: Model Town Books & Stationery\nDelivery: Lahore",
     },
     {
         "name": "Programming Books Bundle",
@@ -1024,7 +1024,7 @@ extra_products = [
         "store": "books",
         "image_url": "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=900&q=80",
         "description": "Python, web, and data books for students and junior developers.",
-        "specifications": "Format: Paperback\nUse: Programming study\nPackage: Bundle\nDelivery: Kathmandu valley",
+        "specifications": "Format: Paperback\nUse: Programming study\nPackage: Bundle\nDelivery: Lahore",
     },
     {
         "name": "Study Lamp LED Desk Light",
@@ -1429,7 +1429,7 @@ def build_diverse_products():
             "tag": "Book",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80",
-            "specs": "Format: Paperback\nUse: Reading and study\nDelivery: Kathmandu valley",
+            "specs": "Format: Paperback\nUse: Reading and study\nDelivery: Lahore",
         },
         {
             "category": "Stationery",
@@ -1438,7 +1438,7 @@ def build_diverse_products():
             "tag": "Stationery",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: School and office\nPack: Mixed set\nDelivery: Kathmandu valley",
+            "specs": "Use: School and office\nPack: Mixed set\nDelivery: Lahore",
         },
         {
             "category": "School",
@@ -1447,7 +1447,7 @@ def build_diverse_products():
             "tag": "School",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Study desk\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Study desk\nDelivery: Lahore\nWarranty: 1 year",
         },
         {
             "category": "Gaming",
@@ -1456,7 +1456,7 @@ def build_diverse_products():
             "tag": "Gaming",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Home gaming\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Home gaming\nDelivery: Lahore\nWarranty: 1 year",
         },
         {
             "category": "Accessories",
@@ -1465,7 +1465,7 @@ def build_diverse_products():
             "tag": "Maker",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Maker and learning\nDelivery: Kathmandu valley\nIncludes: Board and cables",
+            "specs": "Use: Maker and learning\nDelivery: Lahore\nIncludes: Board and cables",
         },
         {
             "category": "Fashion",
@@ -1474,7 +1474,7 @@ def build_diverse_products():
             "tag": "Clothes",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Daily wear\nDelivery: Kathmandu valley\nMaterial: Cotton blend",
+            "specs": "Use: Daily wear\nDelivery: Lahore\nMaterial: Cotton blend",
         },
         {
             "category": "Home",
@@ -1483,7 +1483,7 @@ def build_diverse_products():
             "tag": "Home",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Home and kitchen\nDelivery: Kathmandu valley\nWarranty: 6 months",
+            "specs": "Use: Home and kitchen\nDelivery: Lahore\nWarranty: 6 months",
         },
         {
             "category": "Sports",
@@ -1492,7 +1492,7 @@ def build_diverse_products():
             "tag": "Sports",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Training and outdoor\nDelivery: Kathmandu valley\nMaterial: Durable",
+            "specs": "Use: Training and outdoor\nDelivery: Lahore\nMaterial: Durable",
         },
         {
             "category": "Automotive & Bikes",
@@ -1501,7 +1501,7 @@ def build_diverse_products():
             "tag": "Ride",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Ride safety and accessories\nDelivery: Kathmandu valley\nFit: Universal",
+            "specs": "Use: Ride safety and accessories\nDelivery: Lahore\nFit: Universal",
         },
         {
             "category": "Eco & Sustainable",
@@ -1510,7 +1510,7 @@ def build_diverse_products():
             "tag": "Eco",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Daily sustainable living\nDelivery: Kathmandu valley\nMaterial: Eco-friendly",
+            "specs": "Use: Daily sustainable living\nDelivery: Lahore\nMaterial: Eco-friendly",
         },
         {
             "category": "Cameras",
@@ -1519,7 +1519,7 @@ def build_diverse_products():
             "tag": "Camera",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Photo and video\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Photo and video\nDelivery: Lahore\nWarranty: 1 year",
         },
         {
             "category": "Pets",
@@ -1528,7 +1528,7 @@ def build_diverse_products():
             "tag": "Pets",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Pet daily care\nDelivery: Kathmandu valley\nType: Household",
+            "specs": "Use: Pet daily care\nDelivery: Lahore\nType: Household",
         },
         {
             "category": "Groceries",
@@ -1537,7 +1537,7 @@ def build_diverse_products():
             "tag": "Grocery",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Daily household needs\nDelivery: Kathmandu valley\nType: Grocery",
+            "specs": "Use: Daily household needs\nDelivery: Lahore\nType: Grocery",
         },
         {
             "category": "Mobiles",
@@ -1546,7 +1546,7 @@ def build_diverse_products():
             "tag": "Mobile",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Mobile and accessories\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Mobile and accessories\nDelivery: Lahore\nWarranty: 1 year",
         },
         {
             "category": "Laptops",
@@ -1555,7 +1555,7 @@ def build_diverse_products():
             "tag": "Laptop",
             "is_featured": True,
             "image_url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Work and study\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Work and study\nDelivery: Lahore\nWarranty: 1 year",
         },
         {
             "category": "Audio",
@@ -1564,7 +1564,7 @@ def build_diverse_products():
             "tag": "Audio",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Audio and music\nDelivery: Kathmandu valley\nWarranty: 6 months",
+            "specs": "Use: Audio and music\nDelivery: Lahore\nWarranty: 6 months",
         },
         {
             "category": "Appliances",
@@ -1573,7 +1573,7 @@ def build_diverse_products():
             "tag": "Appliance",
             "is_featured": False,
             "image_url": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
-            "specs": "Use: Home appliance\nDelivery: Kathmandu valley\nWarranty: 1 year",
+            "specs": "Use: Home appliance\nDelivery: Lahore\nWarranty: 1 year",
         },
     ]
 
@@ -1642,7 +1642,7 @@ def build_diverse_products():
         "School": ["Science Project Kit", "Math Practice Set", "Roller Bag", "Class Bell Timer"],
         "Gaming": ["Arcade Fight Stick", "Retro Cartridge Pack", "Console Cooling Dock", "Trigger Grip Set"],
         "Accessories": ["GitHub Fork T-Shirt", "USB-C Cable Bundle", "Phone Ring Stand", "Laptop Sleeve Pro"],
-        "Fashion": ["Denim Shirt", "Pakistani Hoodie", "Summer Kurta", "Street Jacket"],
+        "Fashion": ["Denim Shirt", "Lahori Hoodie", "Summer Kurta", "Street Jacket"],
         "Home": ["Curtain Light Set", "Kitchen Knife Block", "Storage Basket Set", "Smart Plug Pack"],
         "Sports": ["Cricket Bat Grip", "Basketball Net", "Fitness Timer", "Training Cone Set"],
         "Automotive & Bikes": ["Car Tire Inflator", "Bike Mirror Set", "Reflective Vest", "Helmet Visor"],
@@ -2009,7 +2009,7 @@ for index, (category_name, store_ref, brand_ref, image_ref, names) in enumerate(
             }[store_ref],
             "image_url": image_ref,
             "description": f"Rare and interesting demo item for {category_name.lower()} shoppers.",
-            "specifications": f"Category: {category_name}\\nDelivery: Kathmandu valley\\nStore: {store_ref.name}",
+            "specifications": f"Category: {category_name}\\nDelivery: Lahore\\nStore: {store_ref.name}",
         })
 
 products_data.extend(reserve_products)

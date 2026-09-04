@@ -60,7 +60,7 @@ class Command(BaseCommand):
                             import cloudinary.uploader
                             result = cloudinary.uploader.upload(
                                 filepath,
-                                folder='kinahub/products',
+                                folder='shopflow/products',
                                 public_id=pi.product.slug,
                                 overwrite=True,
                             )
@@ -90,7 +90,7 @@ class Command(BaseCommand):
                         import cloudinary.uploader
                         result = cloudinary.uploader.upload(
                             filepath,
-                            folder='kinahub/products',
+                            folder='shopflow/products',
                             public_id=pi.product.slug,
                             overwrite=True,
                         )

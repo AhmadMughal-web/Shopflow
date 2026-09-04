@@ -120,7 +120,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'kinahub-cache',
+        'LOCATION': 'shopflow-cache',
         'OPTIONS': {
             'MAX_ENTRIES': 1000,
         },
@@ -226,13 +226,13 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 if DEBUG and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'KinaHub <no-reply@kinahub.local>'
+    DEFAULT_FROM_EMAIL = 'ShopFlow <no-reply@shopflow.local>'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = f"KinaHub <{EMAIL_HOST_USER}>"
+    DEFAULT_FROM_EMAIL = f"ShopFlow <{EMAIL_HOST_USER}>"
 
 EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '5' if DEBUG else '10'))
 

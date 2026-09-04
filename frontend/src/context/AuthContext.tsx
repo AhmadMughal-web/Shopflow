@@ -44,8 +44,8 @@ interface RegisterPayload {
   seller_code?: string;
 }
 
-const ACCESS_KEY = 'kinahub_access_token';
-const REFRESH_KEY = 'kinahub_refresh_token';
+const ACCESS_KEY = 'shopflow_access_token';
+const REFRESH_KEY = 'shopflow_refresh_token';
 const DEMO_TOKEN_PREFIX = '__demo_';
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const demoUser: User = {
       id: role === 'seller' ? -2 : -1,
       username: role === 'seller' ? 'demo.seller' : 'demo.customer',
-      email: role === 'seller' ? 'demo.seller@kinahub.local' : 'demo.customer@kinahub.local',
+      email: role === 'seller' ? 'demo.seller@shopflow.local' : 'demo.customer@shopflow.local',
       first_name: 'Demo',
       last_name: role === 'seller' ? 'Seller' : 'Customer',
       phone: null,

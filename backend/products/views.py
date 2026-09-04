@@ -148,7 +148,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                     import cloudinary.uploader
                     result = cloudinary.uploader.upload(
                         img_file,
-                        folder='kinahub/products',
+                        folder='shopflow/products',
                         public_id=f"{product.slug}-{idx}",
                         overwrite=True,
                     )
@@ -387,7 +387,7 @@ def curation_view(request):
                     import cloudinary.uploader
                     result = cloudinary.uploader.upload(
                         new_image,
-                        folder='kinahub/products',
+                        folder='shopflow/products',
                         public_id=product.slug,
                         overwrite=True,
                     )
@@ -467,7 +467,7 @@ class AiChatView(APIView):
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
                     "HTTP-Referer": "https://kinahub.vercel.app",
-                    "X-Title": "KinaHub",
+                    "X-Title": "ShopFlow",
                 },
                 json={
                     "model": model,

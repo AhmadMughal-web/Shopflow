@@ -9,7 +9,7 @@ interface ThemeContextType {
   setTheme: (theme: ThemeMode) => void;
 }
 
-const THEME_KEY = 'ShopFlow_theme';
+const THEME_KEY = 'shopflow_theme';
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
 function getPreferredTheme(): ThemeMode {
