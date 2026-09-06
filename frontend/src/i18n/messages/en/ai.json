@@ -19,7 +19,7 @@
     "promptDeals": "Find best deals",
     "promptDelivery": "Explain delivery",
     "promptSellers": "How sellers work",
-    "title": "ShopFlow AI",
+    "title": "Kinu AI",
     "subtitle": "Local commerce assistant",
     "ready": "Ready",
     "newChat": "New chat",
@@ -29,6 +29,6 @@
     "addedToCart": "Added to cart",
     "confirmAdd": "Sure! Shall I add",
     "confirmAddToCart": "to your cart?",
-    "founderReply": "ShopFlow is a high-performance Django platform built by the visionary team at Naralith Studio. Crafted with precision and minimal design, it blends raw technical power with a seamless web experience—built from the ground up by the Naralith Studio team."
+    "founderReply": "ShopFlow is a high-performance Django platform built by the visionary team at Naralith Studio. Crafted with precision and minimal design, it blends raw technical power with a seamless web experience—built from the ground up by the Naralith Studio team. Visit https://naralithstudio.com to learn more."
   }
 }

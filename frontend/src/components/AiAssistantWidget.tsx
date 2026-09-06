@@ -234,7 +234,7 @@ export default function AiAssistantWidget() {
         ...current,
         {
           role: 'assistant',
-          text: t('ai.widget.founderReply', { defaultValue: 'ShopFlow is built by the **team at Naralith Studio**, a development studio based in Lahore, Pakistan. Want a business or website built for you? Reach out at https://naralithstudio.com.' }) + '\n\n[IMAGE:founder]',
+          text: t('ai.widget.founderReply', { defaultValue: 'ShopFlow is a high-performance Django platform built by the visionary team at Naralith Studio. Crafted with precision and minimal design, it blends raw technical power with a seamless web experience—built from the ground up by the Naralith Studio team. Visit https://naralithstudio.com to learn more.' }) + '\n\n[IMAGE:founder]',
         },
       ]);
       return;
@@ -418,11 +418,24 @@ export default function AiAssistantWidget() {
   ];
 
   const renderMessage = (text: string) => {
-    const parts = text.split(/(\*\*.*?\*\*|\[PRODUCT:[a-zA-Z0-9_-]+\]|\[ADD_TO_CART:[a-zA-Z0-9_-]+\]|\[IMAGE:[a-z]+\])/g);
+    const parts = text.split(/(\*\*.*?\*\*|\[PRODUCT:[a-zA-Z0-9_-]+\]|\[ADD_TO_CART:[a-zA-Z0-9_-]+\]|\[IMAGE:[a-z]+\]|https?:\/\/[^\s]+)/g);
 
     return parts.map((part, index) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return <strong key={index} className="font-bold">{part.slice(2, -2)}</strong>;
+      }
+      if (/^https?:\/\//.test(part)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noreferrer"
+            className="font-semibold text-accent-secondary underline underline-offset-2 hover:opacity-80"
+          >
+            {part}
+          </a>
+        );
       }
       if (part.startsWith('[IMAGE:') && part.endsWith(']')) {
         const key = part.slice(7, -1);
