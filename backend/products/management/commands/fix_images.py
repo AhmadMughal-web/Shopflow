@@ -22,7 +22,7 @@ FALLBACK_IMAGES = {
     "school": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
     "sports": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80",
     "stationery": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80",
-    "eco-sustainable": "https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=900&q=80",
+    "eco-sustainable": "https://picsum.photos/seed/eco-sustainable-reserve/900/900",
 }
 
 class Command(BaseCommand):

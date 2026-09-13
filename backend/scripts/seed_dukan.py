@@ -1506,7 +1506,7 @@ def build_diverse_products():
             "store": "eco",
             "tag": "Eco",
             "is_featured": False,
-            "image_url": "https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=900&q=80",
+            "image_url": "https://picsum.photos/seed/eco-sustainable/900/900",
             "specs": "Use: Daily sustainable living\nDelivery: Lahore\nMaterial: Eco-friendly",
         },
         {
@@ -1948,7 +1948,7 @@ reserve_specs = [
     ("Home", home_store, brands["Philips"], "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80", ["Ultra Smart Plug", "Ultra Light Set", "Ultra Storage Basket"]),
     ("Sports", sports_store, brands["Adidas"], "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80", ["Ultra Ball Pack", "Ultra Fitness Timer", "Ultra Cone Set"]),
     ("Automotive & Bikes", auto_store, brands["Dukan Basics"], "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80", ["Ultra Helmet Visor", "Ultra Bike Mirror", "Ultra Tire Inflator"]),
-    ("Eco & Sustainable", eco_store, brands["Bamboo Earth"], "https://images.unsplash.com/photo-1472141521881-95d0f57e1f47?auto=format&fit=crop&w=900&q=80", ["Ultra Bamboo Cutlery", "Ultra Solar Lantern", "Ultra Reusable Straw Kit"]),
+    ("Eco & Sustainable", eco_store, brands["Bamboo Earth"], "https://picsum.photos/seed/eco-fallback/900/900", ["Ultra Bamboo Cutlery", "Ultra Solar Lantern", "Ultra Reusable Straw Kit"]),
     ("Cameras", tech_store, brands["Canon"], "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80", ["Ultra Tripod Pro", "Ultra Camera Case", "Ultra Ring Light Kit"]),
     ("Pets", eco_store, brands["PetSafe"], "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=80", ["Ultra Dog Leash", "Ultra Cat Scratch Board", "Ultra Pet Snack Pack"]),
     ("Groceries", barat_store, brands["Wai Wai"], "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80", ["Ultra Orange Juice", "Ultra Honey Jar", "Ultra Tea Box"]),
