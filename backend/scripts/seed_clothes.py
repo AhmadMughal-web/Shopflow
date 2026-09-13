@@ -11,6 +11,7 @@ django.setup()
 from django.contrib.auth import get_user_model
 from sellers.models import SellerProfile, Store
 from products.models import Category, Product, ProductImage
+from fetch_helpers import fetch_json_with_fallback
 
 User = get_user_model()
 
@@ -47,18 +48,23 @@ def seed_clothes():
         }
     )
 
-    # Fetch products
+    # Fetch products (live fetch with retries, falls back to bundled fixture on failure)
     print("Fetching men's clothing...")
-    req_men = urllib.request.Request("https://fakestoreapi.com/products/category/men's%20clothing", headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req_men) as response:
-        mens_clothing = json.loads(response.read().decode())
+    mens_clothing = fetch_json_with_fallback(
+        "https://fakestoreapi.com/products/category/men's%20clothing",
+        "fakestore_mens_clothing.json",
+    ) or []
 
     print("Fetching women's clothing...")
-    req_women = urllib.request.Request("https://fakestoreapi.com/products/category/women's%20clothing", headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req_women) as response:
-        womens_clothing = json.loads(response.read().decode())
+    womens_clothing = fetch_json_with_fallback(
+        "https://fakestoreapi.com/products/category/women's%20clothing",
+        "fakestore_womens_clothing.json",
+    ) or []
 
     all_clothes = mens_clothing + womens_clothing
+    if not all_clothes:
+        print("No clothing data available (live fetch and fixtures both failed) — skipping clothing seed")
+        return
 
     media_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend/public/product-media"))
     os.makedirs(media_dir, exist_ok=True)

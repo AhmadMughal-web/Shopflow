@@ -16,6 +16,7 @@ from crm.models import CustomerRecord, SellerRecord, Ticket, Notification
 from products.models import Category, Brand, Inventory, Product, ProductImage, Review
 from sellers.models import SellerProfile, Store
 from users.models import Address, CustomerProfile
+from fetch_helpers import fetch_json_with_fallback
 
 User = get_user_model()
 
@@ -288,12 +289,6 @@ Notification.objects.get_or_create(
     defaults={"notification_type": "status", "body": "Your demo store has CRM and product tools enabled."},
 )
 print("Demo accounts ready: customer@dukan.local/customer123, seller@dukan.local/seller123, admin@dukan.local/admin")
-
-
-def fetch_json(url):
-    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode())
 
 
 def download_image(source_url, target_filename, store_slug=""):
@@ -1695,44 +1690,6 @@ def build_diverse_products():
                 })
     return rows
 
-    for template in templates:
-        category = template["category"]
-        brand = template["brand"]
-        store = template["store"]
-        for name_base in bonus_names.get(category, []):
-            if len(rows) >= 202:
-                return rows
-            index += 1
-            name = f"{name_base} {((index % 4) + 1)}"
-            price = 500 + (index * 137) % 65000
-            if category in {"Mobiles", "Laptops", "Cameras", "Gaming"}:
-                price = 4999 + (index * 137) % 145000
-            elif category in {"Books", "Stationery", "School"}:
-                price = 120 + (index * 37) % 3500
-            elif category in {"Groceries", "Pets"}:
-                price = 90 + (index * 23) % 3200
-            elif category in {"Fashion", "Accessories", "Sports", "Automotive & Bikes", "Eco & Sustainable", "Home", "Appliances", "Audio"}:
-                price = 180 + (index * 83) % 18000
-            discount_price = max(1, int(price * (0.88 if index % 4 == 0 else 0.93)))
-            rating = round(4.1 + ((index % 9) * 0.1), 1)
-            stock = 8 + (index * 5) % 70
-            rows.append({
-                "name": name,
-                "category": category,
-                "brand": brand,
-                "price": price,
-                "discount_price": discount_price,
-                "stock": stock,
-                "rating": rating,
-                "tag": template["tag"],
-                "is_featured": template["is_featured"] or index % 7 == 0,
-                "store": store,
-                "image_url": template["image_url"],
-                "description": f"Diverse marketplace item for {category.lower()} shoppers, sourced as a demo listing for the store ecosystem.",
-                "specifications": template["specs"],
-            })
-    return rows
-
 project_root = os.getcwd()
 if not os.path.isdir(os.path.join(project_root, "frontend")):
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -1873,6 +1830,7 @@ def build_external_products():
             "source_label": "Fake Store API",
             "delivery_time_estimate": "2-4 business days",
             "base_delivery_fee": Decimal("180.00"),
+            "fixture": "fakestore_products.json",
         },
         {
             "key": "dummyjson",
@@ -1883,6 +1841,7 @@ def build_external_products():
             "source_label": "DummyJSON Products API",
             "delivery_time_estimate": "1-3 business days",
             "base_delivery_fee": Decimal("160.00"),
+            "fixture": "dummyjson_products.json",
         },
         {
             "key": "platzi",
@@ -1893,70 +1852,78 @@ def build_external_products():
             "source_label": "Platzi Fake Store API",
             "delivery_time_estimate": "2-5 business days",
             "base_delivery_fee": Decimal("170.00"),
+            "fixture": "platzi_products.json",
         },
     ]
 
     extra_rows = []
     for source in source_specs:
-        payload = fetch_json(source["url"])
-        items = payload.get("products", payload) if isinstance(payload, dict) else payload
-        for index, item in enumerate(items[:source["limit"]]):
-            title = str(item.get("title") or item.get("name") or "").strip()
-            if not title:
+        try:
+            payload = fetch_json_with_fallback(source["url"], source["fixture"])
+            if payload is None:
+                print(f"Skipping {source['source_label']} \u2014 no live data and no fixture")
                 continue
+            items = payload.get("products", payload) if isinstance(payload, dict) else payload
+            for index, item in enumerate(items[:source["limit"]]):
+                title = str(item.get("title") or item.get("name") or "").strip()
+                if not title:
+                    continue
 
-            base_price = Decimal(str(item.get("price") or 0))
-            price_npr = (base_price * Decimal("130")).quantize(Decimal("1"))
-            discount_price = None
-            discount_percentage = item.get("discountPercentage")
-            if discount_percentage:
-                discount_price = (
-                    price_npr * (Decimal("1") - Decimal(str(discount_percentage)) / Decimal("100"))
-                ).quantize(Decimal("1"))
-            elif index % 4 == 0:
-                discount_price = (price_npr * Decimal("0.9")).quantize(Decimal("1"))
+                base_price = Decimal(str(item.get("price") or 0))
+                price_npr = (base_price * Decimal("130")).quantize(Decimal("1"))
+                discount_price = None
+                discount_percentage = item.get("discountPercentage")
+                if discount_percentage:
+                    discount_price = (
+                        price_npr * (Decimal("1") - Decimal(str(discount_percentage)) / Decimal("100"))
+                    ).quantize(Decimal("1"))
+                elif index % 4 == 0:
+                    discount_price = (price_npr * Decimal("0.9")).quantize(Decimal("1"))
 
-            stock = int(item.get("stock") or (18 + index * 2))
-            raw_rating = item.get("rating")
-            if isinstance(raw_rating, dict):
-                raw_rating = raw_rating.get("rate") or raw_rating.get("rating") or 4.3
-            rating = float(raw_rating or 4.3)
-            image_url = external_source_image(item, source["key"])
-            category_name = external_category_name(source["key"], item)
-            brand_name = str(item.get("brand") or source["brand"]).strip()
-            brand, _ = Brand.objects.get_or_create(name=brand_name)
-            brands[brand.name] = brand
+                stock = int(item.get("stock") or (18 + index * 2))
+                raw_rating = item.get("rating")
+                if isinstance(raw_rating, dict):
+                    raw_rating = raw_rating.get("rate") or raw_rating.get("rating") or 4.3
+                rating = float(raw_rating or 4.3)
+                image_url = external_source_image(item, source["key"])
+                category_name = external_category_name(source["key"], item)
+                brand_name = str(item.get("brand") or source["brand"]).strip()
+                brand, _ = Brand.objects.get_or_create(name=brand_name)
+                brands[brand.name] = brand
 
-            details = [
-                f"Category: {item.get('category', {}).get('name') if isinstance(item.get('category'), dict) else item.get('category', '')}",
-                f"Rating: {rating:.1f}",
-                f"Stock: {stock}",
-                f"Delivery: {source['delivery_time_estimate']}",
-            ]
-            if item.get("shippingInformation"):
-                details.append(f"Shipping: {item['shippingInformation']}")
-            if item.get("warrantyInformation"):
-                details.append(f"Warranty: {item['warrantyInformation']}")
-            if item.get("returnPolicy"):
-                details.append(f"Return: {item['returnPolicy']}")
+                details = [
+                    f"Category: {item.get('category', {}).get('name') if isinstance(item.get('category'), dict) else item.get('category', '')}",
+                    f"Rating: {rating:.1f}",
+                    f"Stock: {stock}",
+                    f"Delivery: {source['delivery_time_estimate']}",
+                ]
+                if item.get("shippingInformation"):
+                    details.append(f"Shipping: {item['shippingInformation']}")
+                if item.get("warrantyInformation"):
+                    details.append(f"Warranty: {item['warrantyInformation']}")
+                if item.get("returnPolicy"):
+                    details.append(f"Return: {item['returnPolicy']}")
 
-            extra_rows.append(
-                {
-                    "name": title,
-                    "category": category_name,
-                    "brand": brand.name,
-                    "price": price_npr,
-                    "discount_price": discount_price,
-                    "stock": stock,
-                    "rating": rating,
-                    "tag": product_deal_tag(title, category_name, price_npr, discount_price, rating, stock),
-                    "is_featured": index < 2 or rating >= 4.6,
-                    "store": source["store"],
-                    "image_url": image_url,
-                    "description": item.get("description") or f"Imported from {source['source_label']}.",
-                    "specifications": "\n".join(details),
-                }
-            )
+                extra_rows.append(
+                    {
+                        "name": title,
+                        "category": category_name,
+                        "brand": brand.name,
+                        "price": price_npr,
+                        "discount_price": discount_price,
+                        "stock": stock,
+                        "rating": rating,
+                        "tag": product_deal_tag(title, category_name, price_npr, discount_price, rating, stock),
+                        "is_featured": index < 2 or rating >= 4.6,
+                        "store": source["store"],
+                        "image_url": image_url,
+                        "description": item.get("description") or f"Imported from {source['source_label']}.",
+                        "specifications": "\n".join(details),
+                    }
+                )
+        except Exception as exc:
+            print(f"{source['source_label']} failed entirely, skipping: {exc}")
+            continue
 
     return extra_rows
 
