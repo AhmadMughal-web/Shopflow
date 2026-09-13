@@ -7,6 +7,7 @@ import type { ProductType, StoreType } from '../lib/products';
 import { API_BASE } from '../lib/api';
 import { useTranslation } from '../i18n/LocaleContext';
 import { useTheme } from '../context/ThemeContext';
+import { resolveImageUrl } from '../lib/products';
 
 export default function StoreDetails() {
   const { slug } = useParams();
@@ -86,12 +87,12 @@ export default function StoreDetails() {
         {/* Banner with overlapping logo avatar */}
         <div className="relative">
           {store.banner_url ? (
-            <img src={store.banner_url} alt="" className="h-32 w-full object-cover sm:h-48" />
+            <img src={resolveImageUrl(store.banner_url)} alt="" className="h-32 w-full object-cover sm:h-48" />
           ) : (
             <div className="h-32 bg-gradient-to-br from-accent/20 via-surface to-accent-secondary/10 sm:h-48" />
           )}
           <span className="absolute -bottom-8 left-5 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-surface bg-background text-accent-secondary shadow-lg sm:h-24 sm:w-24">
-            {store.logo_url ? <img src={store.logo_url} alt="" className="h-full w-full rounded-xl object-cover" /> : <Store className="h-8 w-8" />}
+            {store.logo_url ? <img src={resolveImageUrl(store.logo_url)} alt="" className="h-full w-full rounded-xl object-cover" /> : <Store className="h-8 w-8" />}
           </span>
         </div>
 

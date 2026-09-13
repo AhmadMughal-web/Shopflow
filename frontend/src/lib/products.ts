@@ -91,11 +91,20 @@ export interface StoreType {
   updated_at: string;
 }
 
+const BACKEND_ORIGIN = API_BASE.replace(/\/api\/?$/, '');
+
+export function resolveImageUrl(url?: string | null): string {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  return `${BACKEND_ORIGIN}${url.startsWith('/') ? url : `/${url}`}`;
+}
+
 export function productImage(product: ProductType) {
   if (!product) return '';
-  if (product.image_url) return product.image_url;
+  if (product.image_url) return resolveImageUrl(product.image_url);
   if (Array.isArray(product.images) && product.images.length > 0) {
-    return product.images.find((image) => image.is_primary)?.image_url || product.images[0]?.image_url || '';
+    const raw = product.images.find((image) => image.is_primary)?.image_url || product.images[0]?.image_url || '';
+    return resolveImageUrl(raw);
   }
   return '';
 }

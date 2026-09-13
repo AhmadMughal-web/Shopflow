@@ -12,6 +12,7 @@ import AiInsightPanel from '../components/AiInsightPanel';
 import { productAiSummary } from '../lib/ai';
 import Seo from '../components/Seo';
 import ProductCard from '../components/ProductCard';
+import { resolveImageUrl } from '../lib/products';
 import { addRecentlyViewedProduct, getRecentlyViewedProducts } from '../lib/recentlyViewed';
 import { useAuth } from '../context/AuthContext';
 
@@ -258,10 +259,10 @@ export default function ProductDetails() {
               {product.images.map((img) => (
                 <button
                   key={img.id}
-                  onClick={() => setActiveImage(img.image_url)}
+                  onClick={() => setActiveImage(resolveImageUrl(img.image_url))}
                   className={`relative aspect-square w-16 md:w-full shrink-0 overflow-hidden rounded-xl border-2 transition-all ${activeImage === img.image_url ? 'border-accent' : 'border-transparent hover:border-border'}`}
                 >
-                  <img src={img.image_url} alt={img.alt_text || product.name} className="h-full w-full object-cover object-center" loading="lazy" decoding="async" />
+                  <img src={resolveImageUrl(img.image_url)} alt={img.alt_text || product.name} className="h-full w-full object-cover object-center" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>
@@ -619,7 +620,7 @@ export default function ProductDetails() {
                       )}
                       {review.image_url && (
                         <div className="relative h-48 w-32 shrink-0 snap-center overflow-hidden rounded-xl bg-muted">
-                          <img src={review.image_url} alt="Review attachment" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                          <img src={resolveImageUrl(review.image_url)} alt="Review attachment" className="h-full w-full object-cover" loading="lazy" decoding="async" />
                         </div>
                       )}
                     </div>

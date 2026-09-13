@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { API, formatPrice } from '../lib/products';
 import type { CategoryType, ProductType } from '../lib/products';
 import { useTranslation } from '../i18n/LocaleContext';
+import { resolveImageUrl } from '../lib/products';
 
 
 interface ProductFormState {
@@ -438,7 +439,7 @@ export default function SellerProducts() {
                 </div>
                 <div className="mt-2 flex items-center gap-1">
                   {product.images?.slice(0, 3).map((img, i) => (
-                    <img key={i} src={img.image_url} alt="" className="h-10 w-10 rounded-lg object-cover border border-border" />
+                    <img key={i} src={resolveImageUrl(resolveImageUrl(img.image_url))} alt="" className="h-10 w-10 rounded-lg object-cover border border-border" />
                   ))}
                   {(product.images?.length ?? 0) === 0 && <span className="text-xs italic text-secondary">No images</span>}
                 </div>
@@ -484,7 +485,7 @@ export default function SellerProducts() {
                       {product.images?.slice(0, 3).map((img, i) => (
                         <img
                           key={i}
-                          src={img.image_url}
+                          src={resolveImageUrl(resolveImageUrl(img.image_url))}
                           alt=""
                           className="h-9 w-9 rounded-lg object-cover border border-border"
                         />
@@ -620,7 +621,7 @@ export default function SellerProducts() {
                     return (
                       <div key={img.id} className={`relative group ${marked ? 'opacity-40 grayscale' : ''}`}>
                         <div className="h-20 w-20 overflow-hidden rounded-xl border-2 border-border">
-                          <img src={img.image_url} alt="" className="h-full w-full object-cover" />
+                          <img src={resolveImageUrl(resolveImageUrl(img.image_url))} alt="" className="h-full w-full object-cover" />
                         </div>
                         {marked && (
                           <span className="absolute inset-0 flex items-center justify-center rounded-xl bg-red-500/20 text-[9px] font-bold text-red-600">
