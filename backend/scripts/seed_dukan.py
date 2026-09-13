@@ -16,6 +16,8 @@ from crm.models import CustomerRecord, SellerRecord, Ticket, Notification
 from products.models import Category, Brand, Inventory, Product, ProductImage, Review
 from sellers.models import SellerProfile, Store
 from users.models import Address, CustomerProfile
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fetch_helpers import fetch_json_with_fallback
 
 User = get_user_model()

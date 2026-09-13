@@ -11,6 +11,8 @@ django.setup()
 from django.contrib.auth import get_user_model
 from sellers.models import SellerProfile, Store
 from products.models import Category, Product, ProductImage
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fetch_helpers import fetch_json_with_fallback
 
 User = get_user_model()
